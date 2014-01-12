@@ -20,23 +20,49 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
-#include "ofMain.h"
+#pragma once
 
-#include "App.h"
+#include "ofxAppUtils.h"
+
 #include "Config.h"
+#include "OscReceiver.h"
 
-int main(int argc, char *argv[]) {
+class App : public ofBaseApp, public OscObject {
 
-	// parse the commandline
-	if(!Config::instance().parseCommandLine(argc, argv)) {
-		return EXIT_FAILURE;
-	}
-
-	// setup graphics
-	ofSetupOpenGL(640, 480, OF_WINDOW);
-
-	// main app loop
-	ofRunApp(new App());
+	public:
 	
-	return EXIT_SUCCESS;
-}
+		App();
+	
+		void setup();
+		void update();
+		void draw();
+		void exit();
+
+		void keyPressed(int key);
+		void keyReleased(int key);
+		void mouseMoved(int x, int y );
+		void mouseDragged(int x, int y, int button);
+		void mousePressed(int x, int y, int button);
+		void mouseReleased(int x, int y, int button);
+		void windowResized(int w, int h);
+		void dragEvent(ofDragInfo dragInfo);
+		void gotMessage(ofMessage msg);
+		
+		bool shiftPressed; //< shift key modifier
+		
+		bool bDebug;
+		bool bRunning;  //< running or paused?
+		
+		Config &config;
+		OscReceiver &receiver;
+		ofxOscSender &sender;
+		
+		ofxSceneManager sceneManager;
+		
+		unsigned int reloadTimestamp;
+		unsigned int saveTimestamp;
+		
+	protected:
+	
+		bool processOscMessage(const ofxOscMessage& message);
+};

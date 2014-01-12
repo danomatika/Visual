@@ -20,23 +20,47 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
-#include "ofMain.h"
+#pragma once
 
-#include "App.h"
-#include "Config.h"
+#include "DrawableObject.h"
 
-int main(int argc, char *argv[]) {
+class Image : public DrawableObject {
 
-	// parse the commandline
-	if(!Config::instance().parseCommandLine(argc, argv)) {
-		return EXIT_FAILURE;
-	}
+	public:
 
-	// setup graphics
-	ofSetupOpenGL(640, 480, OF_WINDOW);
+		Image(string name, string parentOscAddress);
 
-	// main app loop
-	ofRunApp(new App());
-	
-	return EXIT_SUCCESS;
-}
+		bool loadFile(string filename="");
+
+		void setup();
+
+		void draw();
+		void draw(int x, int y);
+		void draw(int x, int y, unsigned int w, unsigned int h);
+
+		void setSize(unsigned int w, unsigned int h);
+		void setDrawFromCenter(bool yesno) {bDrawFromCenter = yesno;}
+		
+		string getType() {return "image";}
+
+	protected:
+
+		// resize the image if needed
+		void resizeIfNecessary();
+
+		/* ***** XML CALLBACKS ***** */
+
+//		bool readXml(TiXmlElement* e);
+//		bool writeXml(TiXmlElement* e);
+
+		/* ***** OSC CALLBACKS ***** */
+
+		bool processOscMessage(const ofxOscMessage& message);
+		
+		ofImage* image;
+
+		string filename;
+		ofPoint pos;
+		unsigned int width, height;
+		bool bDrawFromCenter;       /// draw from the center using pos
+};

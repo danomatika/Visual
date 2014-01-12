@@ -20,23 +20,15 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
-#include "ofMain.h"
+#ifndef OBJECTS_H
+#define OBJECTS_H
 
-#include "App.h"
-#include "Config.h"
+#include "Pixel.h"
+#include "Line.h"
+#include "Rect.h"
+#include "Bitmap.h"
+#include "Sprite.h"
+#include "Image.h"
+#include "Text.h"
 
-int main(int argc, char *argv[]) {
-
-	// parse the commandline
-	if(!Config::instance().parseCommandLine(argc, argv)) {
-		return EXIT_FAILURE;
-	}
-
-	// setup graphics
-	ofSetupOpenGL(640, 480, OF_WINDOW);
-
-	// main app loop
-	ofRunApp(new App());
-	
-	return EXIT_SUCCESS;
-}
+#endif // OBJECTS_H

@@ -20,23 +20,34 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
+#pragma once
+
 #include "ofMain.h"
 
-#include "App.h"
-#include "Config.h"
+class ResourceManager {
 
-int main(int argc, char *argv[]) {
+	public:
 
-	// parse the commandline
-	if(!Config::instance().parseCommandLine(argc, argv)) {
-		return EXIT_FAILURE;
-	}
+		~ResourceManager();
 
-	// setup graphics
-	ofSetupOpenGL(640, 480, OF_WINDOW);
+		void clear();
 
-	// main app loop
-	ofRunApp(new App());
-	
-	return EXIT_SUCCESS;
-}
+		/// fonts
+		bool addFont(const string& name, const string& file, unsigned int size);
+		void removeFont(const string& name);
+		bool fontExists(const string& name);
+		ofTrueTypeFont* getFont(const string& name);
+		void clearFonts();
+		
+		/// images
+		bool addImage(const string& name, const string& file);
+		void removeImage(const string& name);
+		bool imageExists(const string& name);
+		ofImage* getImage(const string& name);
+		void clearImages();
+
+	protected:
+
+		map<string,ofPtr<ofTrueTypeFont> > fonts;
+		map<string,ofPtr<ofImage> > images;
+};
