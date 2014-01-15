@@ -24,7 +24,6 @@
 
 #include "OscObject.h"
 #include "../Config.h"
-#include "../Util.h"
 
 class DrawableObject : public OscObject {
 

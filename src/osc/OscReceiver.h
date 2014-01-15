@@ -31,11 +31,11 @@ class OscReceiver {
 
 	public:
 
-		OscReceiver(string rootAddress="");
+		OscReceiver();
 		virtual ~OscReceiver();
 
 		/// calls setup automatically
-		OscReceiver(unsigned int port, string rootAddress="");
+		OscReceiver(unsigned int port);
 
 		/// setup the udp socket using the given port
 		/// returns false if socket cannot be setup
@@ -49,27 +49,18 @@ class OscReceiver {
 		/// stop the listening thread, closes connection
 		void stop();
 		
-		/// attach osc objects to handle messages
+		/// attach osc objects to handle messages, does not delete
 		void addOscObject(OscObject *object);
 		void removeOscObject(OscObject *object);
 
 		/// is the thread running?
-		bool isListening() {return true;}
+		bool isListening() {return m_receiver != NULL;}
 
 		/// get port num
 		unsigned int getPort();
 
-		/// get/set the root address of this object
-		void setOscRootAddress(std::string rootAddress);
-		string& getOscRootAddress();
-
 		// ignore incoming messages?
 		void ignoreMessages(bool yesno);
-
-	protected:
-
-		/// root address of this object, something like "/root/test1/string2"
-		string oscRootAddress;
 
 	private:
 

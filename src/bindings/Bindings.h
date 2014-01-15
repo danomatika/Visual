@@ -34,9 +34,14 @@ class Bindings {
 			luabind::module(lua, "visual") [
 				registerBindings()
 			];
+			
+			luabind::module(lua, "osc") [
+				registerOsc()
+			];
 		}
 		
 	private:
 		
 		static luabind::scope registerBindings();
+		static luabind::scope registerOsc();
 };

@@ -25,7 +25,10 @@
 #include "objects/Objects.h"
 
 //--------------------------------------------------------------
-Scene::Scene(string name) : _name(name), _background(0), _fps(-1) {}
+Scene::Scene(string name) : _name(name), _background(0), _fps(-1) {
+	// set address here as the baseAddress might have been changed in lua
+	oscRootAddress = Config::instance().baseAddress+"/"+name;
+}
 
 //--------------------------------------------------------------
 Scene::~Scene() {
@@ -45,6 +48,7 @@ void Scene::addObject(DrawableObject* object) {
 	
 	ofLogVerbose(PACKAGE) << "Scene \"" << _name << "\": added " << object->getType()
 		<< " \"" << object->getName() << "\"";
+	cout << "OBJECT " << object->getOscRootAddress() << endl;
 }
 
 //--------------------------------------------------------------

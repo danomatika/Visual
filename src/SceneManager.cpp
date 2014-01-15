@@ -25,11 +25,10 @@
 #include "Config.h"
 
 #define SCENE_NAME_MS			1250
-#define SCENE_NAME_FONT_SIZE	50
+#define SCENE_NAME_FONT_SIZE	36
 
 //--------------------------------------------------------------
-SceneManager::SceneManager() :
-	OscObject(Config::instance().baseAddress),
+SceneManager::SceneManager() : OscObject(""),
 	_currentScene(-1), _bShowSceneName(true) {}
 
 //--------------------------------------------------------------
@@ -44,6 +43,7 @@ void SceneManager::addScene(Scene* scene) {
 		return;
 	}
 	scene->setOscRootAddress(oscRootAddress+"/"+scene->getName());
+	cout << "SCENE " << scene->getOscRootAddress() << endl;
 	_sceneList.push_back(scene);
 }
 
@@ -150,7 +150,7 @@ void SceneManager::setup() {
 	
 	// load scene change font
 	if(!_sceneNameFont.isLoaded()) {
-		_sceneNameFont.loadFont(Config::instance().fontFilename, SCENE_NAME_FONT_SIZE);
+		_sceneNameFont.loadFont(Config::instance().fontFilename, SCENE_NAME_FONT_SIZE, false);
 	}
 	
 	// setup all scenes
@@ -173,7 +173,7 @@ void SceneManager::draw() {
 		if(_bShowSceneName && !_sceneNameTimer.alarm()) {
 			ofSetHexColor(0xFF00FF);
 			_sceneNameFont.drawString(s->getName(),
-				0, Config::instance().renderHeight-SCENE_NAME_FONT_SIZE);
+				0, (int) Config::instance().renderHeight-_sceneNameFont.stringHeight(s->getName())*0.25);
 		}
 	}
 }

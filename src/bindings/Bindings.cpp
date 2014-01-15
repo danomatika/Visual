@@ -34,6 +34,14 @@ Config* getConfig() {
 }
 
 //--------------------------------------------------------------
+void configSetBaseAddress(Config *config, string base) {
+	config->baseAddress = base;
+	// make sure to update base objects ...
+	config->app->setOscRootAddress(base);
+	config->app->sceneManager.setOscRootAddress(base);
+}
+
+//--------------------------------------------------------------
 void addScene(Scene *scene) {
 	Config::instance().app->sceneManager.addScene(scene);
 }
@@ -60,10 +68,13 @@ luabind::scope Bindings::registerBindings() {
 			.def_readwrite("listeningPort", &Config::listeningPort)
 			.def_readwrite("sendingIp", &Config::sendingIp)
 			.def_readwrite("sendingPort", &Config::sendingPort)
-			.def_readwrite("baseAddress", &Config::baseAddress)
+			.property("baseAddress", &Config::baseAddress, &configSetBaseAddress)
 			.def_readwrite("notificationAddress", &Config::notificationAddress)
 			.def_readwrite("deviceAddress", &Config::deviceAddress)
-			.def_readwrite("connectionId", &Config::connectionId),
+			.def_readwrite("connectionId", &Config::connectionId)
+			.def("setRenderSize", &Config::setRenderSize)
+			.def_readonly("renderWidth", &Config::renderWidth)
+			.def_readonly("renderHeight", &Config::renderHeight),
 		
 		///////////////////////////////
 		/// \section Scene.h

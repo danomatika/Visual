@@ -23,10 +23,9 @@
 #include "App.h"
 
 #include "Scene.h"
-#include "Util.h"
 
 //--------------------------------------------------------------
-App::App() : OscObject(""), config(Config::instance()),
+App::App() : config(Config::instance()),
 	receiver(Config::instance().oscReceiver),
 	sender(Config::instance().oscSender) {
 	
@@ -37,8 +36,8 @@ App::App() : OscObject(""), config(Config::instance()),
 	saveTimestamp = 0;
 	
 	// set osc addresses
-	setOscRootAddress(Config::instance().baseAddress);
-	receiver.setOscRootAddress(Config::instance().baseAddress);
+	setOscRootAddress(config.baseAddress);
+	sceneManager.setOscRootAddress(config.baseAddress);
 
 	// add osc objects
 	receiver.addOscObject(this);
@@ -57,9 +56,11 @@ void App::setup() {
 	ofBackground(0);
 	
 	// set render size
-	config.renderWidth = ofGetWidth();
-	config.renderHeight = ofGetHeight();
-	transformer.setRenderSize(ofGetWidth(), ofGetHeight());
+	if(config.renderWidth == 0 && config.renderHeight == 0) {
+		config.renderWidth = ofGetWidth();
+		config.renderHeight = ofGetHeight();
+	}
+	transformer.setRenderSize(config.renderWidth, config.renderHeight);
 	
 	// load fonts
 	config.setup();
@@ -125,6 +126,8 @@ void App::exit() {
 	scriptEngine.lua.scriptExit();
 	receiver.stop();
 	sceneManager.clear();
+	
+	ofLog() << "exiting ...";
 }
 
 //--------------------------------------------------------------
@@ -147,7 +150,7 @@ void App::keyPressed(int key) {
 		case OF_KEY_DOWN: {
 			ofxOscMessage message;
 			message.setAddress(config.deviceAddress + "/keyboard");
-			message.addStringArg("up");
+			message.addStringArg("down");
 			sender.sendMessage(message);
 			return;
 		}
@@ -205,6 +208,12 @@ void App::keyPressed(int key) {
 			ofToggleFullscreen();
 			break;
 	}
+	
+	// forward key events
+	ofxOscMessage message;
+	message.setAddress(config.deviceAddress + "/keyboard");
+	message.addIntArg(key);
+	sender.sendMessage(message);
 	
 	scriptEngine.lua.scriptKeyPressed(key);
 }
@@ -282,7 +291,7 @@ void App::reloadConfigScript() {
 //--------------------------------------------------------------
 bool App::processOscMessage(const ofxOscMessage& message) {
 
-	ofLogVerbose("visual") << "received " << message.getAddress();
+//	ofLogVerbose("visual") << "received " << message.getAddress();
 	
 	if(message.getAddress() == getOscRootAddress() + "/scene") {
 	
@@ -334,7 +343,7 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 		return true;
 	}
 	
-	scriptEngine.sendOsc(message);
+//	scriptEngine.sendOsc(message);
 
 	return false;
 }

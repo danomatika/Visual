@@ -74,6 +74,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "../res/example.lua"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "../res/visual_sprites_new.lua"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

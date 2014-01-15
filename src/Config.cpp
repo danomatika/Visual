@@ -94,19 +94,26 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 //--------------------------------------------------------------
 void Config::setup() {
+	ofTrueTypeFont::setGlobalDpi(96);
 	fontFilename = ofToDataPath(CONFIG_FONT, true);
-	font.loadFont(fontFilename, CONFIG_FONT_SIZE);
+	font.loadFont(fontFilename, CONFIG_FONT_SIZE, false);
 }
 
 //--------------------------------------------------------------
 void Config::print() {
 	ofLog() << "listening port: " << listeningPort;
-	ofLog() << "listening address: " << baseAddress;
 	ofLog() << "sending ip: " << sendingIp;
 	ofLog() << "sending port: " << sendingPort;
+	ofLog() << "base address: " << baseAddress;
 	ofLog() << "sending address for notifications: " << notificationAddress;
 	ofLog() << "sending address for devices: " << deviceAddress;
 	ofLog() << "connection id for notifications: " << connectionId;
+	ofLog() << "render size: " << renderWidth << "x" << renderHeight;
+}
+
+void Config::setRenderSize(unsigned int w, unsigned int h) {
+	renderWidth = w;
+	renderHeight = h;
 }
 
 // PRIVATE

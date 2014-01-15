@@ -25,15 +25,13 @@
 #include "OscReceiver.h"
 
 //--------------------------------------------------------------
-OscReceiver::OscReceiver(std::string rootAddress) :
-	oscRootAddress(rootAddress),
+OscReceiver::OscReceiver() :
 	m_bIsRunning(false), m_bIgnoreMessages(false) {
 	m_receiver = ofPtr<ofxOscReceiver>();
 }
 
 //--------------------------------------------------------------
-OscReceiver::OscReceiver(unsigned int port, std::string rootAddress) :
-	oscRootAddress(rootAddress),
+OscReceiver::OscReceiver(unsigned int port) :
 	m_bIsRunning(false), m_bIgnoreMessages(false) {
 	m_receiver = ofPtr<ofxOscReceiver>();
 	setup(port);
@@ -143,16 +141,6 @@ void OscReceiver::removeOscObject(OscObject *object) {
 //--------------------------------------------------------------
 unsigned int OscReceiver::getPort() {
 	return m_port;
-}
-
-//--------------------------------------------------------------
-void OscReceiver::setOscRootAddress(std::string rootAddress) {
-	oscRootAddress = rootAddress;
-}
-
-//--------------------------------------------------------------
-string& OscReceiver::getOscRootAddress()	{
-	return oscRootAddress;
 }
 
 //--------------------------------------------------------------

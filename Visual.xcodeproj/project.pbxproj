@@ -29,6 +29,7 @@
 		302E99AC188324EE00AF7621 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99AA188324EE00AF7621 /* SceneManager.cpp */; };
 		302E99B318838D7C00AF7621 /* Bindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99B218838D7C00AF7621 /* Bindings.cpp */; };
 		302E99B81884AE1A00AF7621 /* ScriptEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99B61884AE1A00AF7621 /* ScriptEngine.cpp */; };
+		3084985F18870B42005785B6 /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3084985E18870B42005785B6 /* Osc.cpp */; };
 		3099FD261880E2B300175228 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD241880E2B300175228 /* Scene.cpp */; };
 		3099FD3818822C1E00175228 /* OscObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3418822C1E00175228 /* OscObject.cpp */; };
 		3099FD3918822C1E00175228 /* OscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3618822C1E00175228 /* OscReceiver.cpp */; };
@@ -190,6 +191,7 @@
 		302E99B218838D7C00AF7621 /* Bindings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bindings.cpp; sourceTree = "<group>"; };
 		302E99B61884AE1A00AF7621 /* ScriptEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptEngine.cpp; sourceTree = "<group>"; };
 		302E99B71884AE1A00AF7621 /* ScriptEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptEngine.h; sourceTree = "<group>"; };
+		3084985E18870B42005785B6 /* Osc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Osc.cpp; sourceTree = "<group>"; };
 		3099FD23187FC2DA00175228 /* ofxLuaTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxLuaTouchEvent.h; path = ../../../addons/ofxLua/src/ofxLuaTouchEvent.h; sourceTree = "<group>"; };
 		3099FD241880E2B300175228 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		3099FD251880E2B300175228 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 			children = (
 				302E99B018837E4500AF7621 /* Bindings.h */,
 				302E99B218838D7C00AF7621 /* Bindings.cpp */,
+				3084985E18870B42005785B6 /* Osc.cpp */,
 			);
 			path = bindings;
 			sourceTree = "<group>";
@@ -919,6 +922,7 @@
 				FEA1EAC05DD5E2BE3F6B88BE /* PolyGlyph.cpp in Sources */,
 				302E99B318838D7C00AF7621 /* Bindings.cpp in Sources */,
 				6E519BD2FB1F63665E6903B5 /* Unicode.cpp in Sources */,
+				3084985F18870B42005785B6 /* Osc.cpp in Sources */,
 				73C055E39DB2E2CC82FE2F33 /* 3d.cpp in Sources */,
 				30134424187EFE5E00CA92B7 /* ofxSceneManager.cpp in Sources */,
 				231C3D71366244D2984A4BFE /* App.cpp in Sources */,
