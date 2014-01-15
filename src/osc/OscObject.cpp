@@ -85,3 +85,92 @@ string& OscObject::getOscRootAddress() {
 void OscObject::prependOscRootAddress(string prepend) {
 	oscRootAddress = prepend + oscRootAddress;
 }
+
+//--------------------------------------------------------------
+bool OscObject::tryBool(const ofxOscMessage& message, bool &dest, unsigned int at) {
+	if(message.getArgType(at) == OFXOSC_TYPE_INT32 ||
+	   message.getArgType(at) == OFXOSC_TYPE_INT64) {
+		dest = (bool) message.getArgAsInt32(at);
+		return true;
+	}
+	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
+		dest = (bool) message.getArgAsFloat(at);
+		return false;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+bool OscObject::tryChar(const ofxOscMessage& message, char &dest, unsigned int at) {
+	if(message.getArgType(at) == OFXOSC_TYPE_INT32 ||
+	   message.getArgType(at) == OFXOSC_TYPE_INT64) {
+		dest = (char) message.getArgAsInt32(at);
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+bool OscObject::tryNumber(const ofxOscMessage& message, int &dest, unsigned int at) {
+	if(message.getArgType(at) == OFXOSC_TYPE_INT32 ||
+	   message.getArgType(at) == OFXOSC_TYPE_INT64) {
+		dest = message.getArgAsInt32(at);
+		return true;
+	}
+	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
+		dest = (int) message.getArgAsFloat(at);
+		return false;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+bool OscObject::tryNumber(const ofxOscMessage& message, unsigned int &dest, unsigned int at) {
+	if(message.getArgType(at) == OFXOSC_TYPE_INT32 ||
+	   message.getArgType(at) == OFXOSC_TYPE_INT64) {
+		dest = (unsigned int) message.getArgAsInt32(at);
+		return true;
+	}
+	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
+		dest = (unsigned int) message.getArgAsFloat(at);
+		return false;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+bool OscObject::tryNumber(const ofxOscMessage& message, float &dest, unsigned int at) {
+	if(message.getArgType(at) == OFXOSC_TYPE_INT32 ||
+	   message.getArgType(at) == OFXOSC_TYPE_INT64) {
+		dest = (float) message.getArgAsInt32(at);
+		return true;
+	}
+	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
+		dest = message.getArgAsFloat(at);
+		return false;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+bool OscObject::tryNumber(const ofxOscMessage& message, double &dest, unsigned int at) {
+	if(message.getArgType(at) == OFXOSC_TYPE_INT32 ||
+	   message.getArgType(at) == OFXOSC_TYPE_INT64) {
+		dest = (double) message.getArgAsInt32(at);
+		return true;
+	}
+	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
+		dest = (double) message.getArgAsFloat(at);
+		return false;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+bool OscObject::tryString(const ofxOscMessage& message, string &dest, unsigned int at) {
+	if(message.getArgType(at) == OFXOSC_TYPE_STRING) {
+		dest = message.getArgAsString(at);
+		return true;
+	}
+	return false;
+}

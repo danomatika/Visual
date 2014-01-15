@@ -22,56 +22,56 @@
 ==============================================================================*/
 #pragma once
 
-#include "ofxTransformer.h"
+//#include "Config.h"
+#include "Scene.h"
+#include "ofxTimer.h"
 
-#include "Config.h"
-#include "OscReceiver.h"
-#include "SceneManager.h"
-#include "ScriptEngine.h"
-
-class App : public ofBaseApp, public OscObject {
+class SceneManager : public OscObject {
 
 	public:
-	
-		App();
-	
-		void setup();
-		void update();
-		void draw();
-		void exit();
 
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+		SceneManager();
+		virtual ~SceneManager();
+
+		/// add a scene
+		void addScene(Scene* scene);
+
+		/// remove a scene
+		void removeScene(Scene* scene);
+
+		/// clears (deletes) all the objects in the list
+		void clear(bool keepCurScene=false);
+
+		// scene transport
+		void nextScene();
+		void prevScene();
+		void gotoScene(unsigned int num);
+		void gotoScene(string name);
+
+		/// loads graphics resources
+		void setup();
+
+		/// draw all the objects in the list
+		void draw();
 		
-		void loadConfigScript();
-		void reloadConfigScript();
-		
-		bool shiftPressed; //< shift key modifier
-		
-		bool bDebug;
-		bool bRunning;  //< running or paused?
-		
-		Config &config;
-		OscReceiver &receiver;
-		ofxOscSender &sender;
-		
-		SceneManager sceneManager;
-		ScriptEngine scriptEngine;
-		
-		unsigned int reloadTimestamp;
-		unsigned int saveTimestamp;
-		
-		ofxTransformer transformer; ///< for screen scaling
-		
+		/// show the scene name when changing?
+		void showSceneName(bool yesno) {_bShowSceneName = yesno;}
+		void toggleSceneName() {_bShowSceneName = !_bShowSceneName;}
+
 	protected:
-	
+
+		/// set the background and fps from a scene
+		void setupScene(Scene* s);
+
 		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message);
+
+	private:
+
+		int _currentScene;
+		vector<Scene*> _sceneList;
+		
+		bool _bShowSceneName;
+		ofxTimer _sceneNameTimer;
+		ofTrueTypeFont _sceneNameFont;
 };

@@ -22,7 +22,8 @@
 ==============================================================================*/
 #include "App.h"
 
-//#include "Scene.h"
+#include "Scene.h"
+#include "Util.h"
 
 //--------------------------------------------------------------
 App::App() : OscObject(""), config(Config::instance()),
@@ -38,20 +39,35 @@ App::App() : OscObject(""), config(Config::instance()),
 	// set osc addresses
 	setOscRootAddress(Config::instance().baseAddress);
 	receiver.setOscRootAddress(Config::instance().baseAddress);
-	
-//	ofLogNotice() << "SCENE MANAGER " << sceneManager.getOscRootAddress() << endl;
 
 	// add osc objects
 	receiver.addOscObject(this);
-//	receiver.addOscObject(&sceneManager);
+	receiver.addOscObject(&sceneManager);
+	
+	// translate origin, scale to screen size,
+	// no quad warp, keep aspect ratio, center when scaling
+	transformer.setTransforms(true, true, false, true, true);
 }
 
 //--------------------------------------------------------------
 void App::setup() {
 	
 	ofSetLogLevel("visual", OF_LOG_VERBOSE);
-	
+	ofSetVerticalSync(true);
 	ofBackground(0);
+	
+	// set render size
+	config.renderWidth = ofGetWidth();
+	config.renderHeight = ofGetHeight();
+	transformer.setRenderSize(ofGetWidth(), ofGetHeight());
+	
+	// load fonts
+	config.setup();
+	sceneManager.setup();
+	
+	// load lua config / playlist
+	loadConfigScript();
+	config.print();
 	
 	// don't show the cursor if not debugging
 	if(bDebug) {
@@ -60,21 +76,16 @@ void App::setup() {
 	else {
 		ofHideCursor();
 	}
-
+	
 	// setup the osc receiver
-	receiver.setup(9990);
+	receiver.setup(config.listeningPort);
 	receiver.start();
 	
 	// setup the osc sender
 	sender.setup(config.sendingIp, config.sendingPort);
 	
-	config.print();
-	config.setup();
-	
-	ofSetVerticalSync(true);
-	
-	// try to load first scene
-//	sceneManager.setup();
+	// setup & try to load first scene
+	sceneManager.setup();
 	
 	// notify of connection
 	ofxOscMessage message;
@@ -87,12 +98,18 @@ void App::setup() {
 //--------------------------------------------------------------
 void App::update() {
 	receiver.update();
-	sceneManager.update();
+	scriptEngine.lua.scriptUpdate();
 }
 
 //--------------------------------------------------------------
 void App::draw() {
-	sceneManager.draw();
+
+	transformer.pushTransforms();
+
+		sceneManager.draw();
+		scriptEngine.lua.scriptDraw();
+	
+	transformer.popTransforms();
 }
 
 //--------------------------------------------------------------
@@ -105,6 +122,7 @@ void App::exit() {
 	message.addIntArg(config.connectionId);
 	sender.sendMessage(message);
 
+	scriptEngine.lua.scriptExit();
 	receiver.stop();
 	sceneManager.clear();
 }
@@ -136,8 +154,8 @@ void App::keyPressed(int key) {
 	
 		case OF_KEY_LEFT: {
 			if(shiftPressed) {
-//				sceneManager.prevScene();
-//				return;
+				sceneManager.prevScene();
+				return;
 			}
 			ofxOscMessage message;
 			message.setAddress(config.deviceAddress + "/keyboard");
@@ -148,8 +166,8 @@ void App::keyPressed(int key) {
 
 		case OF_KEY_RIGHT: {
 			if(shiftPressed) {
-//				sceneManager.prevScene();
-//				return;
+				sceneManager.nextScene();
+				return;
 			}
 			ofxOscMessage message;
 			message.setAddress(config.deviceAddress + "/keyboard");
@@ -161,7 +179,7 @@ void App::keyPressed(int key) {
 		case 'P':
 			bRunning = !bRunning;
 			receiver.ignoreMessages(!bRunning);
-			ofLogVerbose("visual") << "Running: " << bRunning;
+			ofLogVerbose(PACKAGE) << "Running: " << bRunning;
 			return;
 
 		case 'D':
@@ -172,23 +190,13 @@ void App::keyPressed(int key) {
 			else {
 				ofHideCursor();
 			}
-			ofLogVerbose("visual") << "Debug: " << bDebug;
+			ofLogVerbose(PACKAGE) << "Debug: " << bDebug;
 			return;
 
 		case 'R':
 			if(ofGetElapsedTimeMillis() - reloadTimestamp > 5000) {
-//				ofLogNotice() << "Reloading xml file: " << ofFilePath::getFileName(sceneManager.getXmlFilename());
-//				sceneManager.reload();
+				reloadConfigScript();
 				reloadTimestamp = ofGetElapsedTimeMillis();
-				return;
-			}
-			break;
-			
-		case 'S':
-			if(ofGetElapsedTimeMillis() - saveTimestamp > 5000) {
-//				ofLogNotice() << "Saving xml file: " << ofFilePath::getFileName(sceneManager.getXmlFilename());
-//				sceneManager.saveXmlFile();
-				saveTimestamp = ofGetElapsedTimeMillis();
 				return;
 			}
 			break;
@@ -198,7 +206,7 @@ void App::keyPressed(int key) {
 			break;
 	}
 	
-	sceneManager.keyPressed(key);
+	scriptEngine.lua.scriptKeyPressed(key);
 }
 
 //--------------------------------------------------------------
@@ -211,42 +219,63 @@ void App::keyReleased(int key) {
 			break;
 	}
 	
-	sceneManager.keyReleased(key);
+	scriptEngine.lua.scriptKeyReleased(key);
 }
 
 //--------------------------------------------------------------
 void App::mouseMoved(int x, int y ) {
-	sceneManager.mouseMoved(x, y);
+	scriptEngine.lua.scriptMouseMoved(x, y);
 }
 
 //--------------------------------------------------------------
 void App::mouseDragged(int x, int y, int button) {
-	sceneManager.mousePressed(x, y, button);
+	scriptEngine.lua.scriptMousePressed(x, y, button);
 }
 
 //--------------------------------------------------------------
 void App::mousePressed(int x, int y, int button) {
-	sceneManager.mouseReleased(x, y, button);
+	scriptEngine.lua.scriptMouseReleased(x, y, button);
 }
 
 //--------------------------------------------------------------
 void App::mouseReleased(int x, int y, int button) {
-	sceneManager.mouseDragged(x, y, button);
+	scriptEngine.lua.scriptMouseDragged(x, y, button);
 }
 
 //--------------------------------------------------------------
 void App::windowResized(int w, int h) {
-
+	// set up transforms with new screen size
+	transformer.setNewScreenSize(w, h);
 }
 
 //--------------------------------------------------------------
-void App::gotMessage(ofMessage msg) {
+void App::gotMessage(ofMessage msg) {}
 
+//--------------------------------------------------------------
+void App::dragEvent(ofDragInfo dragInfo) {}
+
+//--------------------------------------------------------------
+void App::loadConfigScript() {
+	if(!config.file.empty()) {
+		ofLogNotice() << "loading \"" << config.file << "\"";
+		
+		// set data path to config file folder
+		ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(config.file));
+		
+		scriptEngine.loadScript(config.file);
+	}
 }
 
 //--------------------------------------------------------------
-void App::dragEvent(ofDragInfo dragInfo) { 
-
+void App::reloadConfigScript() {
+	if(!config.file.empty()) {
+		ofLogNotice() << "reloading  \"" << config.file << "\"";
+		
+		sceneManager.clear(true);
+		config.resourceManager.clear();
+		scriptEngine.reloadScript();
+		sceneManager.setup();
+	}
 }
 
 // PROTECTED
@@ -281,29 +310,21 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 
 	else if(message.getAddress() == getOscRootAddress() + "/file"
 		&& message.getArgType(0) == OFXOSC_TYPE_STRING) {
-	
-//		if(bSceneFileIsConfigFile) {
-//		
-//			// don't save config data to new file
-//			sceneManager.removeXmlObject(&config);
-//			bSceneFileIsConfigFile = false;
-//		}
-//		sceneManager.loadXmlFile(message.getArgAsString(0));
+		if(tryString(message, config.file, 0)) {
+			loadConfigScript();
+		}
 		return true;
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/reload") {
-//		sceneManager.reload();
+		reloadConfigScript();
 		return true;
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/framerate") {
-	
-		if(message.getArgType(0) == OFXOSC_TYPE_INT32) {
-			ofSetFrameRate(message.getArgAsInt32(0));
-		}
-		else if (message.getArgType(0) == OFXOSC_TYPE_FLOAT) {
-			ofSetFrameRate(message.getArgAsFloat(0));
+		unsigned int fps;
+		if(OscObject::tryNumber(message, fps, 0)) {
+			ofSetFrameRate(fps);
 		}
 		return true;
 	}
@@ -312,6 +333,8 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 		exitApp();
 		return true;
 	}
+	
+	scriptEngine.sendOsc(message);
 
 	return false;
 }

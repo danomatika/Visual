@@ -22,31 +22,31 @@
 ==============================================================================*/
 #pragma once
 
-//#include "Config.h"
-
 #include "DrawableObject.h"
 
 class Text : public DrawableObject {
 
 	public:
 
-		Text(string name, string parentOscAddress) :
-			DrawableObject("text", name, parentOscAddress),
-			pos(0, 0), bDrawFromCenter(0) {
-//			// add variables to Xml
-//			addXmlAttribute("x", "position", XML_TYPE_FLOAT, &pos.x);
-//			addXmlAttribute("y", "position", XML_TYPE_FLOAT, &pos.y);
-//			addXmlAttribute("yesno", "center", XML_TYPE_BOOL, &bDrawFromCenter);
-//			addXmlElement("string", &text);
-		}
+		Text(string name) :
+			DrawableObject(name), pos(0, 0), bDrawFromCenter(false) {}
+		
+		Text(string name, string text) :
+			DrawableObject(name), pos(0, 0), bDrawFromCenter(false), text(text) {}
+		
+		Text(string name, string text, int x, int y) :
+			DrawableObject(name), pos(x, y), bDrawFromCenter(false), text(text) {}
+
+		Text(string name, string text, ofPoint& p) :
+			DrawableObject(name), pos(p), bDrawFromCenter(false), text(text) {}
 
 		void draw() {
 			if(bVisible && !text.empty()) {
 				ofSetColor(color);
-					
 				if(bDrawFromCenter) {
 					int w = Config::instance().font.stringWidth(text);
-					Config::instance().font.drawString(text, pos.x-w/2, pos.y);
+					int h = Config::instance().font.stringHeight(text);
+					Config::instance().font.drawString(text, pos.x-w/2, pos.y-h/2);
 				}
 				else {
 					Config::instance().font.drawString(text, pos.x, pos.y);
@@ -54,10 +54,35 @@ class Text : public DrawableObject {
 			}
 		}
 		
+		void draw(int x, int y) {
+			if(bVisible && !text.empty()) {
+				ofSetColor(color);
+				if(bDrawFromCenter) {
+					int w = Config::instance().font.stringWidth(text);
+					int h = Config::instance().font.stringHeight(text);
+					Config::instance().font.drawString(text, x-w/2, y-h/2);
+				}
+				else {
+					Config::instance().font.drawString(text, x, y);
+				}
+			}
+		}
+		
+		// getters / setters
+		ofPoint& getPos() {return pos;}
+		void setPos(ofPoint &p) {pos = p;}
+		
+		string getText() {return text;}
+		void setText(string t) {text = t;}
+		
+		bool getDrawFromCenter() {return bDrawFromCenter;}
+		void setDrawFromCenter(bool c) {bDrawFromCenter = c;}
+		
 		string getType() {return "text";}
 
 	protected:
 
+		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message) {
 		
 			// call the base class
@@ -67,27 +92,27 @@ class Text : public DrawableObject {
 
 
 			if(message.getAddress() == oscRootAddress + "/position") {
-				Util::tryNumber(message, pos.x, 0);
-				Util::tryNumber(message, pos.y, 1);
+				tryNumber(message, pos.x, 0);
+				tryNumber(message, pos.y, 1);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position/x") {
-				Util::tryNumber(message, pos.x, 0);
+				tryNumber(message, pos.x, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position/y") {
-				Util::tryNumber(message, pos.y, 0);
+				tryNumber(message, pos.y, 0);
 				return true;
 			}
 
 
-			else if(message.getAddress() == oscRootAddress + "/string") {
-				Util::tryBool(message, text, 0);
+			else if(message.getAddress() == oscRootAddress + "/text") {
+				tryString(message, text, 0);
 				return true;
 			}
 			
 			else if(message.getAddress() == oscRootAddress + "/center") {
-				Util::tryBool(message, bDrawFromCenter, 0);
+				tryBool(message, bDrawFromCenter, 0);
 				return true;
 			}
 

@@ -22,9 +22,7 @@
 ==============================================================================*/
 #pragma once
 
-#include "ofMain.h"
 #include "OscReceiver.h"
-
 #include "ResourceManager.h"
 
 #define PACKAGE	"visual"
@@ -33,16 +31,15 @@
 #define CONFIG_FONT	"fonts/ATARCC__.TTF"
 #define CONFIG_FONT_SIZE	24
 
-/**
-	\class  Config
-	\brief  global, per-application instance state variable container class
+class App;
 
-	implemented as a singleton class following:
-	http://en.wikipedia.org/wiki/Singleton_pattern
-
-	no initialization is needed, just use equt::Config::instance() to access
-	member functions, data
-**/
+/// global, per-application instance state variable container class
+///
+///	implemented as a singleton class following:
+///	http://en.wikipedia.org/wiki/Singleton_pattern
+///
+///	no initialization is needed, just use equt::Config::instance() to access
+///	member functions, data
 class Config {
 
 	public:
@@ -60,23 +57,28 @@ class Config {
 		/// print current variables
 		void print();
 		
-		/* ***** VARIABLES ***** */
+		/// \section Variables
+		
+		string file;					///< initial lua config/playlist file
 		
 		unsigned int listeningPort;		///< the listening port
-		string listeningAddress;		///< base listening address
 		
 		string sendingIp;				///< ip to send to
 		unsigned int sendingPort;		///< port to send to
 		
-		string baseAddress;				///< base osc sending address
+		string baseAddress;				///< base osc listening/sending address
 		string notificationAddress;		///< base osc sending address for notifications
 		string deviceAddress;			///< base osc sending addess for devices
 	
 		unsigned int connectionId;		///< our connection id when sending notifications
 		
 		string fontFilename;			///< font filename
+		
+		unsigned int renderWidth, renderHeight; ///< render dimensions
 
-		/* **** OBJECTS ***** */
+		// \section Objects
+		
+		ofPtr<App> app; ///< global app pointer
 		
 		ofxOscSender oscSender;       	///< global osc sender
 		OscReceiver oscReceiver;		///< global osc receiver

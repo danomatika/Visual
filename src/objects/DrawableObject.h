@@ -30,71 +30,68 @@ class DrawableObject : public OscObject {
 
 	public:
 
-		DrawableObject(string objectType, string objectName, string parentOscAddress) :
-//			XmlObject(objectType),
-			OscObject(parentOscAddress+"/"+objectName),
-			bVisible(true), name(objectName) {
-			
-//			// attach variables to Xml
-//			addXmlAttribute("name", objectType, XML_TYPE_STRING, &name);
-//			
-//			addXmlAttribute("R", "color", XML_TYPE_BYTE, &color.R);
-//			addXmlAttribute("G", "color", XML_TYPE_BYTE, &color.G);
-//			addXmlAttribute("B", "color", XML_TYPE_BYTE, &color.B);
-//			addXmlAttribute("A", "color", XML_TYPE_BYTE, &color.A);
-//
-//			addXmlAttribute("yesno", "visible", XML_TYPE_BOOL, &bVisible);
-			
-			ofLog() << "	OBJECT " << parentOscAddress+"/"+objectName << endl;
-		}
+		DrawableObject(string objectName) : bVisible(true), name(objectName) {}
 		virtual ~DrawableObject() {}
 
 		virtual void setup() {};
-		virtual void draw() = 0;
+		virtual void draw() {} // = 0;
 		virtual void draw(int x, int y) {}
+		virtual void draw(int x, int y, unsigned int w, unsigned h) {}
+		virtual void clear() {}
 		
-		virtual void setSize(unsigned int width, unsigned int height) {}
+		// for children
+		virtual void setSize(unsigned int w, unsigned int h) {}
+		virtual void setWidth(unsigned int w) {}
+		virtual void setHeight(unsigned int h) {}
 		virtual void setDrawFromCenter(bool yesno) {}
 
+		// getters / setters
+		ofColor& getColor() {return color;}
+		void setColor(ofColor& c) {color = c;}
+		
+		bool getVisible() {return bVisible;}
+		void setVisible(bool v) {bVisible = v;}
+		
 		string getName() {return name;}
-		virtual string getType() = 0;
+		
+		virtual string getType() {return "Object";}// = 0;
 
 	protected:
 
-		/// process one osc message, derived objects should call this
-		/// using DrawableObject::processOscMessage() to handle the base variables
+		/// process one osc message, derived objects should call this and call
+		/// DrawableObject::processOscMessage() to handle the base variables
 		virtual bool processOscMessage(const ofxOscMessage& message) {
 									   
 			if(message.getAddress() == oscRootAddress + "/color") {
 				if(message.getNumArgs() > 2) {
-					Util::tryNumber(message, (unsigned int&) color.r, 0);
-					Util::tryNumber(message, (unsigned int&) color.g, 1);
-					Util::tryNumber(message, (unsigned int&) color.b, 2);
+					tryNumber(message, (unsigned int&) color.r, 0);
+					tryNumber(message, (unsigned int&) color.g, 1);
+					tryNumber(message, (unsigned int&) color.b, 2);
 					if(message.getNumArgs() > 3) {
-						Util::tryNumber(message, (unsigned int&) color.a, 3);
+						tryNumber(message, (unsigned int&) color.a, 3);
 					}
 				}
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/color/R") {
-				Util::tryNumber(message, (unsigned int&) color.r, 0);
+				tryNumber(message, (unsigned int&) color.r, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/color/G") {
-				Util::tryNumber(message, (unsigned int&) color.g, 0);
+				tryNumber(message, (unsigned int&) color.g, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/color/B") {
-				Util::tryNumber(message, (unsigned int&) color.b, 0);
+				tryNumber(message, (unsigned int&) color.b, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/color/A") {
-				Util::tryNumber(message, (unsigned int&) color.a, 0);
+				tryNumber(message, (unsigned int&) color.a, 0);
 				return true;
 			}
 
 			else if(message.getAddress() == oscRootAddress + "/visible") {
-				Util::tryBool(message, bVisible, 0);
+				tryBool(message, bVisible, 0);
 				return true;
 			}
 
@@ -104,4 +101,25 @@ class DrawableObject : public OscObject {
 		ofColor color;
 		bool bVisible;
 		string name;
+};
+
+// drawable object with an animation frame time
+class DrawableFrame : public DrawableObject {
+
+	public:
+		
+		DrawableFrame(string objectName) :
+			DrawableObject(objectName), frameTime(0) {}
+			
+		DrawableFrame(string objectName, unsigned int frameTime) :
+			DrawableObject(objectName), frameTime(frameTime) {}
+		
+		virtual ~DrawableFrame() {}
+		
+		unsigned int getFrameTime()	{return frameTime;}
+		void setFrameTime(unsigned int time) {frameTime = time;}
+	
+	protected:
+	
+		unsigned int frameTime;
 };

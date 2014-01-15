@@ -22,10 +22,21 @@
 ==============================================================================*/
 #pragma once
 
-#include "Pixel.h"
-#include "Line.h"
-#include "Rectangle.h"
-#include "Bitmap.h"
-#include "Sprite.h"
-#include "Image.h"
-#include "Text.h"
+#include "ofxLua.h"
+
+class Bindings {
+
+	public:
+	
+		/// static function called when binding
+		static void bind(ofxLua& lua) {
+			
+			luabind::module(lua, "visual") [
+				registerBindings()
+			];
+		}
+		
+	private:
+		
+		static luabind::scope registerBindings();
+};

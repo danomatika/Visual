@@ -37,7 +37,7 @@ void ResourceManager::clear() {
 //--------------------------------------------------------------
 bool ResourceManager::addFont(const string& name, const string& file, unsigned int size) {
 	ofPtr<ofTrueTypeFont> f = ofPtr<ofTrueTypeFont>(new ofTrueTypeFont);
-	if(!f->loadFont(file, size)) {
+	if(!f->loadFont(ofToDataPath(file), size)) {
 		return false;
 	}
 	fonts.insert(pair<string,ofPtr<ofTrueTypeFont> >(name, f));
@@ -63,13 +63,13 @@ bool ResourceManager::fontExists(const string& name) {
 }
 
 //--------------------------------------------------------------
-ofTrueTypeFont* ResourceManager::getFont(const string& name) {
+ofPtr<ofTrueTypeFont> ResourceManager::getFont(const string& name) {
 	map<string,ofPtr<ofTrueTypeFont> >::iterator iter = fonts.find(name);
 	if(iter != fonts.end()) {
-		return &(*iter->second);
+		return iter->second;
 	}
 	else {
-		return NULL;
+		return ofPtr<ofTrueTypeFont>(); // NULL
 	}
 }
 
@@ -86,7 +86,7 @@ void ResourceManager::clearFonts() {
 //--------------------------------------------------------------
 bool ResourceManager::addImage(const string& name, const string& file) {
 	ofPtr<ofImage> i = ofPtr<ofImage>(new ofImage);
-	if(!i->loadImage(file)) {
+	if(!i->loadImage(ofToDataPath(file))) {
 		return false;
 	}
 	images.insert(pair<string,ofPtr<ofImage> >(name, i));
@@ -94,8 +94,7 @@ bool ResourceManager::addImage(const string& name, const string& file) {
 }
 
 //--------------------------------------------------------------
-void ResourceManager::removeImage(const string& name)
-{
+void ResourceManager::removeImage(const string& name) {
 	map<string,ofPtr<ofImage> >::iterator iter = images.find(name);
 	if(iter != images.end()) {
 		(iter->second).reset();
@@ -113,13 +112,13 @@ bool ResourceManager::imageExists(const string& name) {
 }
 
 //--------------------------------------------------------------
-ofImage* ResourceManager::getImage(const string& name) {
+ofPtr<ofImage> ResourceManager::getImage(const string& name) {
 	map<string,ofPtr<ofImage> >::iterator iter = images.find(name);
 	if(iter != images.end()) {
-		return &(*iter->second);
+		return iter->second;
 	}
 	else {
-		return NULL;
+		return ofPtr<ofImage>(); // NULL
 	}
 }
 

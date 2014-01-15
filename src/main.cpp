@@ -27,6 +27,9 @@
 
 int main(int argc, char *argv[]) {
 
+	// create app before parsing
+	Config::instance().app = ofPtr<App>(new App);
+
 	// parse the commandline
 	if(!Config::instance().parseCommandLine(argc, argv)) {
 		return EXIT_FAILURE;
@@ -36,7 +39,7 @@ int main(int argc, char *argv[]) {
 	ofSetupOpenGL(640, 480, OF_WINDOW);
 
 	// main app loop
-	ofRunApp(new App());
+	ofRunApp(Config::instance().app);
 	
 	return EXIT_SUCCESS;
 }

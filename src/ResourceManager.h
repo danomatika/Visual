@@ -36,14 +36,14 @@ class ResourceManager {
 		bool addFont(const string& name, const string& file, unsigned int size);
 		void removeFont(const string& name);
 		bool fontExists(const string& name);
-		ofTrueTypeFont* getFont(const string& name);
+		ofPtr<ofTrueTypeFont> getFont(const string& name);
 		void clearFonts();
 		
 		/// images
 		bool addImage(const string& name, const string& file);
 		void removeImage(const string& name);
 		bool imageExists(const string& name);
-		ofImage* getImage(const string& name);
+		ofPtr<ofImage> getImage(const string& name);
 		void clearImages();
 
 	protected:

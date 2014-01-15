@@ -30,42 +30,47 @@ class Pixel : public DrawableObject {
 
 	public:
 
-		Pixel(string name, string parentOscAddress) :
-			DrawableObject("pixel", name, parentOscAddress), pos(0, 0) {
-			// add variables to Xml
-			addXmlAttribute("x", "position", XML_TYPE_FLOAT, &pos.x);
-			addXmlAttribute("y", "position", XML_TYPE_FLOAT, &pos.y);
-		}
+		Pixel(string name) :
+			DrawableObject(name), pos(0, 0) {}
+		
+		Pixel(string name, int x, int y) : DrawableObject(name), pos(x, y) {}
 
 		void draw() {
 			if(bVisible) {
-				visual::Graphics::stroke(color);
-				visual::Graphics::point(pos.x, pos.y);
+				ofSetColor(color);
+				ofFill();
+				ofRect(pos, 1, 1);
 			}
 		}
+		
+		// getters / setters
+		ofPoint& getPos() {return pos;}
+		void setPos(ofPoint &p) {pos = p;}
 		
 		string getType() {return "pixel";}
 
 	protected:
 
+		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message) {
+		
 			// call the base class
-			if(DrawableObject::processOscMessage(message, source)) {
+			if(DrawableObject::processOscMessage(message)) {
 				return true;
 			}
 
 
 			else if(message.getAddress() == oscRootAddress + "/position") {
-				Util::tryNumber(message, pos.x, 0);
-				Util::tryNumber(message, pos.y, 1);
+				tryNumber(message, pos.x, 0);
+				tryNumber(message, pos.y, 1);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position/x") {
-				Util::tryNumber(message, pos.x, 0);
+				tryNumber(message, pos.x, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position/y") {
-				Util::tryNumber(message, pos.y, 0);
+				tryNumber(message, pos.y, 0);
 				return true;
 			}
 

@@ -46,6 +46,18 @@ class OscObject {
 		void setOscRootAddress(string rootAddress);
 		string& getOscRootAddress();
 		void prependOscRootAddress(string prepend);
+		
+		/// try to get an argument as a given type, fail silently
+		static bool tryBool(const ofxOscMessage &message, bool &dest, unsigned int at);
+
+		static bool tryChar(const ofxOscMessage &message, char &dest, unsigned int at);
+		
+		static bool tryNumber(const ofxOscMessage &message, int &dest, unsigned int at);
+		static bool tryNumber(const ofxOscMessage &message, unsigned int &dest, unsigned int at);
+		static bool tryNumber(const ofxOscMessage &message, float &dest, unsigned int at);
+		static bool tryNumber(const ofxOscMessage &message, double &dest, unsigned int at);
+		
+		static bool tryString(const ofxOscMessage &message, string &dest, unsigned int at);
 
 	protected:
 

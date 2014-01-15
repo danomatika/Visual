@@ -26,21 +26,21 @@
 
 #include "DrawableObject.h"
 
-class Rect : public DrawableObject {
+class Rectangle : public DrawableObject {
 
 	public:
 
-		Rect(string name, string parentOscAddress) :
-			DrawableObject("rect", name, parentOscAddress), pos(0, 0),
-			width(1), height(1), bFilled(true), bDrawFromCenter(0) {
-//			// add variables to Xml
-//			addXmlAttribute("x", "position", XML_TYPE_FLOAT, &pos.x);
-//			addXmlAttribute("y", "position", XML_TYPE_FLOAT, &pos.y);
-//			addXmlAttribute("width", "size", XML_TYPE_UINT, &width);
-//			addXmlAttribute("height", "size", XML_TYPE_UINT, &height);
-//			addXmlAttribute("yesno", "filled", XML_TYPE_BOOL, &bFilled);
-//			addXmlAttribute("yesno", "center", XML_TYPE_BOOL, &bDrawFromCenter);
-		}
+		Rectangle(string name) :
+			DrawableObject(name), pos(0, 0),
+			width(1), height(1), bFilled(true), bDrawFromCenter(false) {}
+		
+		Rectangle(string name, int x, int y, unsigned int w, unsigned int h) :
+			DrawableObject(name), pos(x, y), width(w), height(h), bFilled(true),
+			bDrawFromCenter(false) {}
+			
+		Rectangle(string name, ofPoint &p, unsigned int w, unsigned int h) :
+			DrawableObject(name), pos(p), width(w), height(h), bFilled(true),
+			bDrawFromCenter(false) {}
 
 		void draw() {
 		
@@ -55,65 +55,85 @@ class Rect : public DrawableObject {
 				}
 					
 				if(bDrawFromCenter) {
-					ofSetRectmode(OF_RECTMODE_CENTER);
+					ofSetRectMode(OF_RECTMODE_CENTER);
 				}
 				else {
-					ofSetRectmode(OF_RECTMODE_CORNER);
+					ofSetRectMode(OF_RECTMODE_CORNER);
 				}
 
 				ofRect(pos, width, height);
 			}
 		}
 		
+		// getters / setters
+		ofPoint& getPos() {return pos;}
+		void setPos(ofPoint &p) {pos = p;}
+		
+		void setSize(unsigned int w, unsigned int h) {
+			width = w;
+			height = h;
+		}
+		unsigned int getWidth() {return width;}
+		void setWidth(unsigned int w) {width = w;}
+		unsigned int getHeight() {return height;}
+		void setHeight(unsigned int h) {height = h;}
+		
+		bool getFilled() {return bFilled;}
+		void setFilled(bool f) {bFilled = f;}
+		
+		bool getDrawFromCenter() {return bDrawFromCenter;}
+		void setDrawFromCenter(bool c) {bDrawFromCenter = c;}
+		
 		string getType() {return "rect";}
 
 	protected:
 
+		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message) {
 		
 			// call the base class
-			if(DrawableObject::processOscMessage(message, source)) {
+			if(DrawableObject::processOscMessage(message)) {
 				return true;
 			}
 
 
 			if(message.getAddress() == oscRootAddress + "/position") {
-				Util::tryNumber(message, pos.x, 0);
-				Util::tryNumber(message, pos.y, 1);
+				tryNumber(message, pos.x, 0);
+				tryNumber(message, pos.y, 1);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position/x") {
-				Util::tryNumber(message, pos.x, 0);
+				tryNumber(message, pos.x, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position/y") {
-				Util::tryNumber(message, pos.y, 0);
+				tryNumber(message, pos.y, 0);
 				return true;
 			}
 
 
 			else if(message.getAddress() == oscRootAddress + "/size") {
-				Util::tryNumber(message, width, 0);
-				Util::tryNumber(message, height, 1);
+				tryNumber(message, width, 0);
+				tryNumber(message, height, 1);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/size/width") {
-				Util::tryNumber(message, width, 0);
+				tryNumber(message, width, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/size/height") {
-				Util::tryNumber(message, height, 0);
+				tryNumber(message, height, 0);
 				return true;
 			}
 
 
 			else if(message.getAddress() == oscRootAddress + "/filled") {
-				message.tryBool(&bFilled, 0);
+				tryBool(message, bFilled, 0);
 				return true;
 			}
 			
 			else if(message.getAddress() == oscRootAddress + "/center") {
-				message.tryBool(&bDrawFromCenter, 0);
+				tryBool(message, bDrawFromCenter, 0);
 				return true;
 			}
 

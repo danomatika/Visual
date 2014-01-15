@@ -22,10 +22,39 @@
 ==============================================================================*/
 #pragma once
 
-#include "Pixel.h"
-#include "Line.h"
-#include "Rectangle.h"
-#include "Bitmap.h"
-#include "Sprite.h"
-#include "Image.h"
-#include "Text.h"
+#include "ofxLua.h"
+
+class ofxOscMessage;
+
+class ScriptEngine : private ofxLuaListener {
+
+	public:
+	
+		ScriptEngine();
+	
+		bool setup();
+		void clear();
+		
+		/// clears the current lua state
+		void clearScript();
+		
+		/// load a new script
+		/// clears the current lua state
+		bool loadScript(string script);
+		
+		/// exit, reinit the lua state, and reload the current script
+		bool reloadScript();
+		
+		/// send an osc message to the lua script
+		/// calls the oscReceived lua function
+		void sendOsc(const ofxOscMessage& msg);
+		
+		ofxLua lua;
+		
+	private:
+	
+		/// lua error callback
+		void errorReceived(string& msg);
+
+		string currentScript; ///< absolute path to current script
+};

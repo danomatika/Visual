@@ -23,19 +23,23 @@
 #include "Image.h"
 
 //--------------------------------------------------------------
-Image::Image(string name, string parentOscAddress) :
-	DrawableObject("image", name, parentOscAddress), image(NULL),
+Image::Image(string name) : DrawableFrame(name),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
-//	// add variables to Xml
-//	addXmlAttribute("file", "image", XML_TYPE_STRING, &filename);
-//	addXmlAttribute("x", "position", XML_TYPE_FLOAT, &pos.x);
-//	addXmlAttribute("y", "position", XML_TYPE_FLOAT, &pos.y);
-//	addXmlAttribute("width", "size", XML_TYPE_UINT, &width);
-//	addXmlAttribute("height", "size", XML_TYPE_UINT, &height);
-//	addXmlAttribute("yesno", "center", XML_TYPE_BOOL, &bDrawFromCenter);
-//
-//	// detach unneeded variables from Xml
-//	removeXmlElement("color");
+	clear();
+}
+
+//--------------------------------------------------------------
+Image::Image(string name, string filename) : DrawableFrame(name),
+	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
+	loadFile(filename);
+	color.set(255);
+}
+
+//--------------------------------------------------------------
+Image::Image(unsigned int frameTime, string filename) : DrawableFrame("", frameTime),
+	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
+	loadFile(filename);
+	color.set(255);
 }
 
 //--------------------------------------------------------------
@@ -44,19 +48,25 @@ bool Image::loadFile(string filename) {
 		filename = this->filename;
 	}
 	
-	if(!Config::instance().resourceManager.addImage(filename, filename)) {
-		ofLogWarning() << "Image: \"" << name << "\" couldn't load \""
-			<< filename << "\"";
-		return false;
+	bool loaded = false;
+	if(!Config::instance().resourceManager.imageExists(filename)) {
+		if(!Config::instance().resourceManager.addImage(filename, filename)) {
+			ofLogWarning() << "Image: \"" << name << "\" couldn't load \""
+				<< filename << "\"";
+			return false;
+		}
+		loaded = true;
 	}
 	image = Config::instance().resourceManager.getImage(filename);
 
+	if(loaded) {
+		ofLogVerbose(PACKAGE) << "Image: loaded \"" << filename << "\" "
+				<< image->getWidth() << "x" << image->getHeight();
+	}
+	
+	// get dimes from image if not set
 	if(width == 0)	width = image->getWidth();
 	if(height == 0) height = image->getHeight();
-	
-	ofLog() << "Image: loaded \"" << filename << "\" " << width << "x" << height;
-		  
-	//resizeIfNecessary();
 
 	return true;
 }
@@ -83,49 +93,30 @@ void Image::draw(int x, int y) {
 
 //--------------------------------------------------------------
 void Image::draw(int x, int y, unsigned int w, unsigned int h) {
-	if(!image || !image->isAllocated()) {
+	if(image.get() == NULL || !image->isAllocated() || !bVisible) {
 		return;
 	}
 
-	if(bVisible) {
-		if(bDrawFromCenter) {
-			image->draw(x-w/2, y-h/2, w, h);
-		}
-		else {
-			image->draw(x, y, w, h);
-		}
-	}    
+	ofSetColor(color);
+	if(bDrawFromCenter) {
+		image->draw(x-w/2, y-h/2, w, h);
+	}
+	else {
+		image->draw(x, y, w, h);
+	}
+}
+
+//--------------------------------------------------------------
+void Image::clear() {
+	image = ofPtr<ofImage>(); // NULL
+	color.set(255);
 }
 
 //--------------------------------------------------------------
 void Image::setSize(unsigned int w, unsigned int h) {
 	width = w;
 	height = h;
-	//resizeIfNecessary();
 }
-
-// PROTECTED
-//--------------------------------------------------------------
-//void Image::resizeIfNecessary()
-//{
-//	 // resize if needed
-//	if(image->width() != width || image->height() != height)
-//	{
-//		LOG_DEBUG << "Image: \"" << name << "\" resized to "
-//				  << width << "x" << height << std::endl;
-//		image->resize(width, height);
-//	}
-//}
-//
-//bool Image::readXml(TiXmlElement* e)
-//{
-//	return true;
-//}
-//
-//bool Image::writeXml(TiXmlElement* e)
-//{
-//	return true;
-//}
 
 //--------------------------------------------------------------
 bool Image::processOscMessage(const ofxOscMessage& message) {
@@ -137,43 +128,37 @@ bool Image::processOscMessage(const ofxOscMessage& message) {
 
 
 	if(message.getAddress() == oscRootAddress + "/position") {
-		Util::tryNumber(message, pos.x, 0);
-		Util::tryNumber(message, pos.y, 1);
+		tryNumber(message, pos.x, 0);
+		tryNumber(message, pos.y, 1);
 		return true;
 	}
 	else if(message.getAddress() == oscRootAddress + "/position/x") {
-		Util::tryNumber(message, pos.x, 0);
+		tryNumber(message, pos.x, 0);
 		return true;
 	}
 	else if(message.getAddress() == oscRootAddress + "/position/y") {
-		Util::tryNumber(message, pos.y, 0);
+		tryNumber(message, pos.y, 0);
 		return true;
 	}
 	
 	
-	else if(message.getAddress() == oscRootAddress + "/size")
-	{
-		Util::tryNumber(message, width, 0);
-		Util::tryNumber(message, height, 1);
-		resizeIfNecessary();
+	else if(message.getAddress() == oscRootAddress + "/size") {
+		tryNumber(message, width, 0);
+		tryNumber(message, height, 1);
 		return true;
 	}
-	else if(message.getAddress() == oscRootAddress + "/size/width")
-	{
-		Util::tryNumber(message, width, 0);
-		resizeIfNecessary();
+	else if(message.getAddress() == oscRootAddress + "/size/width") {
+		tryNumber(message, width, 0);
 		return true;
 	}
-	else if(message.getAddress() == oscRootAddress + "/size/height")
-	{
-		Util::tryNumber(message, height, 0);
-		resizeIfNecessary();
+	else if(message.getAddress() == oscRootAddress + "/size/height") {
+		tryNumber(message, height, 0);
 		return true;
 	}
 
 
 	else if(message.getAddress() == oscRootAddress + "/center") {
-		Util::tryBool(message, bDrawFromCenter, 0);
+		tryBool(message, bDrawFromCenter, 0);
 		return true;
 	}
 

@@ -24,11 +24,13 @@
 
 #include "DrawableObject.h"
 
-class Image : public DrawableObject {
+class Image : public DrawableFrame {
 
 	public:
 
-		Image(string name, string parentOscAddress);
+		Image(string name);
+		Image(string name, string filename);
+		Image(unsigned int frameTime, string filename);
 
 		bool loadFile(string filename="");
 
@@ -37,27 +39,34 @@ class Image : public DrawableObject {
 		void draw();
 		void draw(int x, int y);
 		void draw(int x, int y, unsigned int w, unsigned int h);
-
+		
+		void clear();
+		
+		// getters / setters
+		ofImage& getImage() {return *image;}
+		
+		string getFilename() {return filename;}
+		
+		ofPoint& getPos() {return pos;}
+		void setPos(ofPoint &p) {pos = p;}
+		
 		void setSize(unsigned int w, unsigned int h);
-		void setDrawFromCenter(bool yesno) {bDrawFromCenter = yesno;}
+		unsigned int getWidth() {return width;}
+		void setWidth(unsigned int w) {width = w;}
+		unsigned int getHeight() {return height;}
+		void setHeight(unsigned int h) {height = h;}
+		
+		bool getDrawFromCenter() {return bDrawFromCenter;}
+		void setDrawFromCenter(bool c) {bDrawFromCenter = c;}
 		
 		string getType() {return "image";}
 
 	protected:
 
-		// resize the image if needed
-		void resizeIfNecessary();
-
-		/* ***** XML CALLBACKS ***** */
-
-//		bool readXml(TiXmlElement* e);
-//		bool writeXml(TiXmlElement* e);
-
-		/* ***** OSC CALLBACKS ***** */
-
+		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message);
 		
-		ofImage* image;
+		ofPtr<ofImage> image;
 
 		string filename;
 		ofPoint pos;

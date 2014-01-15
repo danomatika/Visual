@@ -22,24 +22,42 @@
 ==============================================================================*/
 #pragma once
 
-#include "ofxAppUtils.h"
 #include "OscObject.h"
+#include "objects/DrawableObject.h"
 
-class Scene : public ofxScene, public OscObject {
+class Scene : public OscObject {
 
 	public:
 
-		Scene(string name, string parentOscAddress);
+		Scene(string name);
+		virtual ~Scene();
+
+		/// add an object
+		void addObject(DrawableObject* object);
+
+		/// remove an object
+		void removeObject(DrawableObject* object);
 		
+		/// clears (deletes) all the objects in the list
+		void clearObjects();
+
+		/// setup resources
 		void setup();
-		void update();
+
+		/// draw all the objects in the list
 		void draw();
-		void exit();
 		
-//		void keyPressed(int key);
-//		void keyReleased(int key);
-//		void mouseMoved(int x, int y);
-//		void mouseDragged(int x, int y, int button);
-//		void mousePressed(int x, int y, int button);
-//		void mouseReleased(int x, int y, int button);
+		/// Util
+		string getName() {return _name;}
+		ofColor& getBackground() {return _background;}
+		void setBackground(ofColor &c) {_background = c;}
+		int getFps() {return _fps;} // returns -1 if not set
+		void setFps(unsigned int fps) {_fps = fps;}
+
+	private:
+
+		string _name;
+		vector<DrawableObject*> _objectList;
+		ofColor _background;
+		int _fps;
 };

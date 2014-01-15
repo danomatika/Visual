@@ -30,14 +30,14 @@ class Line : public DrawableObject {
 
 	public:
 
-		Line(string name, string parentOscAddress) :
-			DrawableObject("line", name, parentOscAddress), pos1(0, 0), pos2(0, 0) {
-//			// add variables to Xml
-//			addXmlAttribute("x", "position1", XML_TYPE_FLOAT, &pos1.x);
-//			addXmlAttribute("y", "position1", XML_TYPE_FLOAT, &pos1.y);
-//			addXmlAttribute("x", "position2", XML_TYPE_FLOAT, &pos2.x);
-//			addXmlAttribute("y", "position2", XML_TYPE_FLOAT, &pos2.y);
-		}
+		Line(string name) :
+			DrawableObject(name), pos1(0, 0), pos2(0, 0) {}
+		
+		Line(string name, int x1, int y1, int x2, int y2) : DrawableObject(name),
+			pos1(x1, y1), pos2(x2, x2) {}
+			
+		Line(string name, ofPoint& p1, ofPoint& p2) : DrawableObject(name),
+			pos1(p1), pos2(p2) {}
 
 		void draw() {
 			if(bVisible) {
@@ -46,44 +46,52 @@ class Line : public DrawableObject {
 			}
 		}
 		
+		// getters / setters
+		ofPoint& getPos1() {return pos1;}
+		void setPos1(ofPoint &p) {pos1 = p;}
+		
+		ofPoint& getPos2() {return pos2;}
+		void setPos2(ofPoint &p) {pos2 = p;}
+		
 		string getType() {return "line";}
 
 	protected:
 
+		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message) {
 		
 			// call the base class
-			if(DrawableObject::processOscMessage(message, source)) {
+			if(DrawableObject::processOscMessage(message)) {
 				return true;
 			}
 
 
 			if(message.getAddress() == oscRootAddress + "/position1") {
-				Util::tryNumber(message, pos1.x, 0);
-				Util::tryNumber(message, pos1.y, 1);
+				tryNumber(message, pos1.x, 0);
+				tryNumber(message, pos1.y, 1);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position1/x") {
-				Util::tryNumber(message, pos1.x, 0);
+				tryNumber(message, pos1.x, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position1/y") {
-				Util::tryNumber(message, pos1.y, 0);
+				tryNumber(message, pos1.y, 0);
 				return true;
 			}
 
 
 			else if(message.getAddress() == oscRootAddress + "/position2") {
-				Util::tryNumber(message, pos2.x, 0);
-				Util::tryNumber(message, pos2.y, 1);
+				tryNumber(message, pos2.x, 0);
+				tryNumber(message, pos2.y, 1);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position2/x") {
-				Util::tryNumber(message, pos2.x, 0);
+				tryNumber(message, pos2.x, 0);
 				return true;
 			}
 			else if(message.getAddress() == oscRootAddress + "/position2/y") {
-				Util::tryNumber(message, pos2.y, 0);
+				tryNumber(message, pos2.y, 0);
 				return true;
 			}
 

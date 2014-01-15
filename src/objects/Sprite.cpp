@@ -23,41 +23,11 @@
 #include "Sprite.h"
 
 //--------------------------------------------------------------
-SpriteFrame::SpriteFrame(DrawableObject *object): frameTime(100), o(object) {
-
-//	// add variables to Xml
-//	o->addXmlAttribute("frametime", o->getType(), XML_TYPE_UINT, &frameTime);
-//	
-//	// detach unneeded variables from Xml
-//	o->removeXmlAttribute("name", o->getType());
-}
-
-//--------------------------------------------------------------
-SpriteFrame::~SpriteFrame() {
-	if(o) delete o;
-}
-
-//--------------------------------------------------------------
-Sprite::Sprite(string name, string parentOscAddress) :
-	DrawableObject("sprite", name, parentOscAddress),
-	pos(0, 0), width(0), height(0), bAnimate(true), bLoop(true), bPingPong(true),
+Sprite::Sprite(string name) : //, string parentOscAddress) :
+	DrawableObject(name), pos(0, 0), width(0), height(0),
+	bAnimate(true), bLoop(true), bPingPong(true),
 	bDrawFromCenter(false), bDrawAllLayers(false),
 	currentFrame(0), timestamp(0), bForward(true) {
-	
-//	// add variables to Xml
-//	addXmlAttribute("x", "position", XML_TYPE_FLOAT, &pos.x);
-//	addXmlAttribute("y", "position", XML_TYPE_FLOAT, &pos.y);
-//	addXmlAttribute("width", "size", XML_TYPE_UINT, &width);
-//	addXmlAttribute("height", "size", XML_TYPE_UINT, &height);
-//	addXmlAttribute("animate", "animation", XML_TYPE_BOOL, &bAnimate);
-//	addXmlAttribute("loop", "animation", XML_TYPE_BOOL, &bLoop);
-//	addXmlAttribute("pingpong", "animation", XML_TYPE_BOOL, &bPingPong);
-//	addXmlAttribute("yesno", "center", XML_TYPE_BOOL, &bDrawFromCenter);
-//	addXmlAttribute("yesno", "overlay", XML_TYPE_BOOL, &bDrawAllLayers);
-//
-//	// detach unneeded variables from Xml
-//	removeXmlElement("color");
-
 	timestamp = ofGetElapsedTimeMillis();
 }
 
@@ -67,37 +37,42 @@ Sprite::~Sprite() {
 }
 
 //--------------------------------------------------------------
-void Sprite::addFrame(SpriteFrame* frame) {
+void Sprite::addFrame(DrawableFrame* frame) {
 	if(frame == NULL) {
-		ofLogError() << "Sprite: cannot add NULL frame";
+		ofLogError() << "Sprite \"" << name << "\": cannot add NULL frame";
 		return;
 	}
 
-//	addXmlObject(frame->getObject());
+	// apply any settings to the added frame
+	if(width != 0 && height != 0) {
+		frame->setSize(width, height);
+	}
+	frame->setDrawFromCenter(bDrawFromCenter);
+	
 	frames.push_back(frame);
+	ofLogVerbose(PACKAGE) << "Sprite \"" << name << "\": added " << frame->getType();
 }
 
 //--------------------------------------------------------------
-void Sprite::removeFrame(SpriteFrame* frame) {
+void Sprite::removeFrame(DrawableFrame* frame) {
 	if(frame == NULL) {
-		ofLogError() << "Sprite: cannot remove NULL frame";
+		ofLogError() << "Sprite \"" << name << "\": cannot remove NULL frame";
 		return;
 	}
 
-	vector<SpriteFrame*>::iterator iter;
+	vector<DrawableFrame*>::iterator iter;
 	iter = find(frames.begin(), frames.end(), frame);
 	if(iter != frames.end()) {
-//		removeXmlObject((*iter)->getObject());
 		delete (*iter);
 		frames.erase(iter);
 	}
 }
 
 //--------------------------------------------------------------
-void Sprite::clear() {
+void Sprite::clearFrames() {
 	/// delete all frames
 	for(unsigned int i = 0; i < frames.size(); ++i) {
-		SpriteFrame* f = frames.at(i);
+		DrawableFrame* f = frames.at(i);
 		delete f;
 	}
 	frames.clear();
@@ -110,7 +85,6 @@ void Sprite::nextFrame() {
 	}
 
 	currentFrame++;
-
 	if(currentFrame >= (int) frames.size()) {
 		if(bPingPong) {
 			bForward = false;
@@ -129,7 +103,6 @@ void Sprite::prevFrame() {
 	}
 
 	currentFrame--;
-
 	if(currentFrame < 0) {
 		if(bPingPong) {
 			bForward = true;
@@ -144,7 +117,7 @@ void Sprite::prevFrame() {
 //--------------------------------------------------------------
 void Sprite::gotoFrame(unsigned int num) {
 	if(currentFrame >= (int) frames.size()) {
-		ofLogWarning() << "Sprite: Cannot goto frame num " << num
+		ofLogWarning() << "Sprite \"" << name << "\": cannot goto frame num " << num
 			<< ", index out of range" << endl;
 		return;
 	}
@@ -166,7 +139,7 @@ void Sprite::setup() {
 	for(unsigned int i = 0; i < frames.size(); ++i) {
 		frames[i]->setup();
 		if(width != 0 && height != 0) {
-			frames[i]->getObject()->setSize(width, height);
+			frames[i]->setSize(width, height);
 		}
 	}
 }
@@ -196,75 +169,69 @@ void Sprite::draw() {
 	if(bVisible) {
 		if(bDrawAllLayers) {
 			for(unsigned int i = 0; i < frames.size(); ++i) {
-				SpriteFrame* f = frames.at(i);
+				DrawableFrame* f = frames.at(i);
 				f->draw(pos.x, pos.y);
 			}
 		}
 		else if(currentFrame >= 0 && currentFrame < (int) frames.size()) {
-			SpriteFrame* f = frames.at(currentFrame);
+			DrawableFrame* f = frames.at(currentFrame);
 			f->draw(pos.x, pos.y);
 		}
 	}
 }
 
 //--------------------------------------------------------------
-//void Sprite::resizeIfNecessary() {
-//	if(width != 0 && height != 0) {
-//		for(unsigned int i = 0; i < frames.size(); ++i) {
-//			SpriteFrame* f = frames.at(i);
-//			f->getObject()->setSize(width, height);
-//		}
-//	}
-//}
+void Sprite::setSize(unsigned int w, unsigned int h) {
+	width = w;
+	height = h;
+	for(unsigned int i = 0; i < frames.size(); ++i) {
+		DrawableFrame* f = frames.at(i);
+		f->setSize(w, h);
+	}
+}
+
+//--------------------------------------------------------------
+void Sprite::setWidth(unsigned int w) {
+	for(unsigned int i = 0; i < frames.size(); ++i) {
+		DrawableFrame* f = frames.at(i);
+		f->setWidth(w);
+	}
+}
+
+//--------------------------------------------------------------
+void Sprite::setHeight(unsigned int h) {
+	for(unsigned int i = 0; i < frames.size(); ++i) {
+		DrawableFrame* f = frames.at(i);
+		f->setHeight(h);
+	}
+}
+
+//--------------------------------------------------------------
+void Sprite::setAnimation(bool animate, bool loop, bool pingPong) {
+	bAnimate = animate;
+	bLoop = loop;
+	bPingPong = pingPong;
+}
 
 //--------------------------------------------------------------
 void Sprite::setDrawFromCenter(bool yesno) {
 	bDrawFromCenter = yesno;
 	for(unsigned int i = 0; i < frames.size(); ++i) {
-		SpriteFrame* f = frames.at(i);
-		f->getObject()->setDrawFromCenter(bDrawFromCenter);
+		DrawableFrame* f = frames.at(i);
+		f->setDrawFromCenter(bDrawFromCenter);
 	}
 }
 
-////--------------------------------------------------------------
-//bool Sprite::readXml(TiXmlElement* e)
-//{
-//	string name;
-//
-//	TiXmlElement* child = e->FirstChildElement();
-//	while(child != NULL)
-//	{
-//		if(child->ValueStr() == "bitmap")
-//		{
-//			name = Xml::getAttrString(child, "name", visual::Util::toString(frames.size()));
-//			LOG_DEBUG << "Sprite: Loading bitmap \"" << name << "\"" << std::endl;
-//
-//			SpriteFrame* f = new SpriteFrame(new Bitmap(name, oscRootAddress));
-//			if(f->getObject()->loadXml(child))
-//			{
-//				addFrame(f);
-//			}
-//		}
-//		else if(child->ValueStr() == "image")
-//		{
-//			name = Xml::getAttrString(child, "name", visual::Util::toString(frames.size()));
-//			LOG_DEBUG << "Sprite: Loading image \"" << name << "\"" << std::endl;
-//
-//			SpriteFrame* f = new SpriteFrame(new Image(name, oscRootAddress));
-//			if(f->getObject()->loadXml(child))
-//			{
-//				addFrame(f);
-//			}
-//		}
-//
-//		child = child->NextSiblingElement();
-//	}
-//
-//	// init all loaded bitmaps draw settings
-//	setDrawFromCenter(bDrawFromCenter);
-//
-//	return true;
-//}
+// PROTECTED
+//--------------------------------------------------------------
+void Sprite::resizeIfNecessary() {
+	if(width != 0 && height != 0) {
+		for(unsigned int i = 0; i < frames.size(); ++i) {
+			DrawableFrame* f = frames.at(i);
+			f->setSize(width, height);
+		}
+	}
+}
 
 //--------------------------------------------------------------
 bool Sprite::processOscMessage(const ofxOscMessage& message) {
@@ -276,63 +243,69 @@ bool Sprite::processOscMessage(const ofxOscMessage& message) {
 
 
 	if(message.getAddress() == oscRootAddress + "/position") {
-		Util::tryNumber(message, pos.x, 0);
-		Util::tryNumber(message, pos.y, 1);
+		tryNumber(message, pos.x, 0);
+		tryNumber(message, pos.y, 1);
 		return true;
 	}
 	else if(message.getAddress() == oscRootAddress + "/position/x") {
-		Util::tryNumber(message, pos.x, 0);
+		tryNumber(message, pos.x, 0);
 		return true;
 	}
 	else if(message.getAddress() == oscRootAddress + "/position/y") {
-		Util::tryNumber(message, pos.y, 0);
+		tryNumber(message, pos.y, 0);
 		return true;
 	}
 	
 	
 	else if(message.getAddress() == oscRootAddress + "/size") {
-		Util::tryNumber(message, width, 0);
-		Util::tryNumber(message, height, 1);
-//		resizeIfNecessary();
+		tryNumber(message, width, 0);
+		tryNumber(message, height, 1);
+		resizeIfNecessary();
 		return true;
 	}
 	else if(message.getAddress() == oscRootAddress + "/size/width") {
-		Util::tryNumber(message, width, 0);
-//		resizeIfNecessary();
+		tryNumber(message, width, 0);
+		resizeIfNecessary();
 		return true;
 	}
 	else if(message.getAddress() == oscRootAddress + "/size/height") {
-		Util::tryNumber(message, height, 0);
-//		resizeIfNecessary();
+		tryNumber(message, height, 0);
+		resizeIfNecessary();
 		return true;
 	}
 
 	else if(message.getAddress() == oscRootAddress + "/frame") {
 		unsigned int frame = 0;
-		Util::tryNumber(message, frame, 0);
+		tryNumber(message, frame, 0);
 		gotoFrame(frame);
-		return true;
-	}
-
-	else if(message.getAddress() == oscRootAddress + "/center") {
-		bool b = bDrawFromCenter;
-		if(Util::tryBool(message, b, 0)) {
-			setDrawFromCenter(b);
-		}
 		return true;
 	}
 
 
 	else if(message.getAddress() == oscRootAddress + "/animate") {
-		Util::tryBool(message, bAnimate, 0);
+		tryBool(message, bAnimate, 0);
+		return true;
+	}
+	else if(message.getAddress() == oscRootAddress + "/loop") {
+		tryBool(message, bLoop, 0);
+		return true;
+	}
+	else if(message.getAddress() == oscRootAddress + "/pingpong") {
+		tryBool(message, bPingPong, 0);
 		return true;
 	}
 	
-	else if(message.getAddress() == oscRootAddress + "/overlay") {
-		Util::tryBool(message, bDrawFromCenter, 0);
+	else if(message.getAddress() == oscRootAddress + "/center") {
+		bool b = bDrawFromCenter;
+		if(tryBool(message, b, 0)) {
+			setDrawFromCenter(b);
+		}
 		return true;
 	}
-
+	else if(message.getAddress() == oscRootAddress + "/overlay") {
+		tryBool(message, bDrawAllLayers, 0);
+		return true;
+	}
 
 	return false;
 }

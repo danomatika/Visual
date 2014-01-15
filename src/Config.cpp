@@ -22,14 +22,16 @@
 ==============================================================================*/
 #include "Config.h"
 
-//#include "ofApp.h"
+#include "App.h"
 #include "tclap/tclap.h"
 
+//--------------------------------------------------------------
 Config& Config::instance() {
 	static Config * pointerToTheSingletonInstance = new Config;
 	return *pointerToTheSingletonInstance;
 }
 
+//--------------------------------------------------------------
 bool Config::parseCommandLine(int argc, char **argv) {
 	try {
 		// the commandline parser
@@ -66,69 +68,56 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		}
 		cmd.parse(line);
 
-		// load the config file (if one exists)
+		// set the config/playlist file path (if one exists)
 		if(fileCmd.getValue() != "") {
-		
-			string filePath = ofFilePath::getAbsolutePath(fileCmd.getValue(), false);
-			ofLogNotice() << "Config: loading \"" << filePath << "\"";
-			
-//			ofApp app = (ofApp*) ofGetAppPtr();
-//			if(app->getSceneManager().loadXmlFile(filePath)) {
-//			
-//				// set data path to config file folder
-//				visual::Util::setDataPath(visual::Util::getDirPath(filePath));
-//		
-//				closeXmlFile();
-//			}
+			file = ofFilePath::getAbsolutePath(fileCmd.getValue(), false);
+			if(ofFilePath::getFileExt(file) != "lua") {
+				ofLogError(PACKAGE) << "given config/playlist, << \"" << file << " is not a lua file";
+				file = "";
+				return false;
+			}
 		}
 		
-		// set the variables, may override xml settings
+		// set the variables, may override lua settings
 		if(ipOpt.isSet())			sendingIp = ipOpt.getValue();
 		if(portOpt.isSet())			sendingPort = portOpt.getValue();
 		if(inputPortOpt.isSet())	listeningPort = inputPortOpt.getValue();
 		if(connectionIdOpt.isSet())	connectionId = connectionIdOpt.getValue();
 	}
 	catch(TCLAP::ArgException &e) {	// catch any exceptions
-		ofLogError() << "CommandLine: " << e.error() << " for arg " << e.argId();
+		ofLogError(PACKAGE) << "CommandLine: " << e.error() << " for arg " << e.argId();
 		return false;
 	}
 
 	return true;
 }
 
+//--------------------------------------------------------------
 void Config::setup() {
+	fontFilename = ofToDataPath(CONFIG_FONT, true);
 	font.loadFont(fontFilename, CONFIG_FONT_SIZE);
 }
 
+//--------------------------------------------------------------
 void Config::print() {
-	ofLog() << "listening port:	" << listeningPort;
+	ofLog() << "listening port: " << listeningPort;
 	ofLog() << "listening address: " << baseAddress;
 	ofLog() << "sending ip: " << sendingIp;
 	ofLog() << "sending port: " << sendingPort;
 	ofLog() << "sending address for notifications: " << notificationAddress;
-	ofLog() << "sending address for devices:       " << deviceAddress;
+	ofLog() << "sending address for devices: " << deviceAddress;
 	ofLog() << "connection id for notifications: " << connectionId;
 }
 
-/* ***** PRIVATE ***** */
-
+// PRIVATE
+//--------------------------------------------------------------
 Config::Config() :
-//	XmlObject(""),
+	file(""),
 	listeningPort(9990),
 	sendingIp("127.0.0.1"), sendingPort(8880),
 	baseAddress((string) "/"+PACKAGE),
 	notificationAddress(baseAddress+"/notifications"),
 	deviceAddress(baseAddress+"/devices"),
 	connectionId(0),
-	fontFilename(ofToDataPath(CONFIG_FONT)) {
-	
-//	// attach config values to xml attributes
-//	addXmlAttribute("port", "listening", XML_TYPE_UINT, &listeningPort);
-//	
-//	addXmlAttribute("ip", "sending", XML_TYPE_STRING, &sendingIp);
-//	addXmlAttribute("port", "sending", XML_TYPE_UINT, &sendingPort);
-//	
-//	addXmlAttribute("notificationAddress", "osc", XML_TYPE_STRING, &notificationAddress);
-//	addXmlAttribute("deviceAddress", "osc", XML_TYPE_STRING, &deviceAddress);
-//	addXmlAttribute("connectionId", "osc", XML_TYPE_UINT, &connectionId);
-}
+	fontFilename(""),
+	renderWidth(0), renderHeight(0) {}

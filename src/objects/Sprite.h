@@ -22,103 +22,65 @@
 ==============================================================================*/
 #pragma once
 
-//#include "Config.h"
-
 #include "DrawableObject.h"
 #include "Bitmap.h"
 #include "Image.h"
-
-// one frame in the sprite
-struct SpriteFrame {
-
-	public:
-	
-		SpriteFrame(DrawableObject *object);
-		~SpriteFrame();
-	
-		virtual void setup()			{o->setup();}
-		virtual void draw(int x, int y)	{o->draw(x, y);}
-		virtual string getName()		{return o->getName();}
-		
-		void resize(unsigned int width, unsigned int height);
-	
-		unsigned int getFrameTime()	{return frameTime;}
-		
-		DrawableObject* getObject()	{return o;}
-	
-	protected:
-	
-		unsigned int frameTime;
-		DrawableObject *o;
-};
-
-//// base class for an object with frametime
-//class SpriteObject {
-//	
-//	public:
-//	
-//		unsigned int getFrameTime()	{return frameTime;}
-//	
-//	protected:
-//	
-//		unsigned int frameTime;
-//};
-//
-//// frame object types
-//class SpriteBitmap : public SpriteObject, public Bitmap {
-//	
-//	public:
-//	
-//		SpriteBitmap(string name, string parentOscAddress);
-//};
-//class SpriteImage : public SpriteObject, public Image {
-//	
-//	public:
-//	
-//		SpriteImage(string name, string parentOscAddress);
-//};
 
 class Sprite : public DrawableObject {
 
 	public:
 
-		Sprite(string name, string parentOscAddress);
+		Sprite(string name);
 		~Sprite();
 
-		void addFrame(SpriteFrame* frame);
-		void removeFrame(SpriteFrame* frame);
-		void clear();
+		void addFrame(DrawableFrame* frame);
+		void removeFrame(DrawableFrame* frame);
+		void clearFrames();
 
 		void nextFrame();
 		void prevFrame();
 		void gotoFrame(unsigned int num);
 		void gotoFrame(string name);
+		unsigned int getCurrentFrame() {return currentFrame;}
 
 		void setup();
 		void draw();
 		
-		string getType() {return "sprite";}
-
+		// getters / setters
+		ofPoint& getPos() {return pos;}
+		void setPos(ofPoint &p) {pos = p;}
+		
+		void setSize(unsigned int w, unsigned int h);
+		unsigned int getWidth() {return width;}
+		void setWidth(unsigned int w);
+		unsigned int getHeight() {return height;}
+		void setHeight(unsigned int h);
+		
+		void setAnimation(bool animate, bool loop, bool pingPong);
+		bool getAnimate() {return bAnimate;}
+		void setAnimate(bool a) {bAnimate = a;}
+		bool getLoop() {return bLoop;}
+		void setLoop(bool l) {bLoop = l;}
+		bool getPingPong() {return bPingPong;}
+		void setPingPong(bool p) {bPingPong = p;}
+		
+		bool getDrawFromCenter() {return bDrawFromCenter;}
 		void setDrawFromCenter(bool yesno);
+		
+		bool getDrawAllLayers() {return bDrawAllLayers;}
 		void setDrawAllLayers(bool yesno) {bDrawAllLayers = yesno;}
+		
+		string getType() {return "sprite";}
 
 	protected:
 
-//		void resizeIfNecessary();
+		/// resize child frames if height & width are set
+		void resizeIfNecessary();
 
-		/* ***** XML CALLBACKS ***** */
-
-//		bool readXml(TiXmlElement* e);
-
-		/* ***** OSC CALLBACKS ***** */
-
+		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message);
-
-		struct SpriteObject {
-			DrawableObject *object;		/// object to draw
-			unsigned int frameTime;     /// how long to display in ms
-		};
-		vector<SpriteFrame*> frames;
+		
+		vector<DrawableFrame*> frames;
 
 		ofPoint pos;
 		unsigned int width, height;
