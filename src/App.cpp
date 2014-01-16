@@ -41,7 +41,6 @@ App::App() : config(Config::instance()),
 
 	// add osc objects
 	receiver.addOscObject(this);
-	receiver.addOscObject(&sceneManager);
 	
 	// translate origin, scale to screen size,
 	// no quad warp, keep aspect ratio, center when scaling
@@ -111,6 +110,11 @@ void App::draw() {
 		scriptEngine.lua.scriptDraw();
 	
 	transformer.popTransforms();
+	
+	if(bDebug) {
+		ofSetColor(255);
+		ofDrawBitmapString(ofToString(ofGetFrameRate()), 12, 12);
+	}
 }
 
 //--------------------------------------------------------------
@@ -333,7 +337,7 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	else if(message.getAddress() == getOscRootAddress() + "/framerate") {
 		unsigned int fps;
 		if(OscObject::tryNumber(message, fps, 0)) {
-			ofSetFrameRate(fps);
+			sceneManager.setFrameRate(fps);
 		}
 		return true;
 	}
@@ -344,6 +348,7 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	}
 	
 //	scriptEngine.sendOsc(message);
+	sceneManager.processOsc(message);
 
-	return false;
+	return true;
 }

@@ -57,6 +57,9 @@ class SceneManager : public OscObject {
 		/// show the scene name when changing?
 		void showSceneName(bool yesno) {_bShowSceneName = yesno;}
 		void toggleSceneName() {_bShowSceneName = !_bShowSceneName;}
+		
+		/// set the psuedo frameRate calculated via timer
+		void setFrameRate(unsigned int rate);
 
 	protected:
 
@@ -74,4 +77,7 @@ class SceneManager : public OscObject {
 		bool _bShowSceneName;
 		ofxTimer _sceneNameTimer;
 		ofTrueTypeFont _sceneNameFont;
+		
+		ofxTimer _frameRateTimer;
+		unsigned int _frameRate;;
 };

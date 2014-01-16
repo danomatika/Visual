@@ -168,7 +168,17 @@ void SceneManager::setup() {
 void SceneManager::draw() {
 	if(_currentScene >= 0 && _currentScene < (int) _sceneList.size()) {
 		Scene* s = _sceneList.at(_currentScene);
-		s->draw();
+		
+		// artificial frame rate timing
+		if(s->getFps() > 0) {
+		if(_frameRateTimer.alarm()) {
+			s->draw();
+			_frameRateTimer.setAlarm(1000/s->getFps());
+		}
+		}
+		else {
+			s->draw();
+		}
 		
 		if(_bShowSceneName && !_sceneNameTimer.alarm()) {
 			ofSetHexColor(0xFF00FF);
@@ -178,13 +188,18 @@ void SceneManager::draw() {
 	}
 }
 
+void SceneManager::setFrameRate(unsigned int rate) {
+	_frameRate = rate;
+	if(_frameRate > 0) {
+		_frameRateTimer.setAlarm(0);
+	}
+}
+
 // PROTECTED
 //--------------------------------------------------------------
 void SceneManager::setupScene(Scene* s) {
 	ofBackground(s->getBackground());
-	if(s->getFps() > 0) {
-		ofSetFrameRate(s->getFps());
-	}
+	setFrameRate(s->getFps());
 	_sceneNameTimer.setAlarm(SCENE_NAME_MS);
 }
 
