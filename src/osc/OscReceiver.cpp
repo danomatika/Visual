@@ -27,13 +27,13 @@
 //--------------------------------------------------------------
 OscReceiver::OscReceiver() :
 	m_bIsRunning(false), m_bIgnoreMessages(false) {
-	m_receiver = ofPtr<ofxOscReceiver>();
+	m_receiver = ofPtr<Receiver>();
 }
 
 //--------------------------------------------------------------
 OscReceiver::OscReceiver(unsigned int port) :
 	m_bIsRunning(false), m_bIgnoreMessages(false) {
-	m_receiver = ofPtr<ofxOscReceiver>();
+	m_receiver = ofPtr<Receiver>();
 	setup(port);
 }
 
@@ -54,51 +54,18 @@ bool OscReceiver::setup(unsigned int port) {
 }
 
 //--------------------------------------------------------------
-void OscReceiver::update() {
-	if(!m_bIsRunning) {
-		return;
-	}
-
-	// check for waiting osc messages
-	while(m_receiver->hasWaitingMessages()) {
-		
-		ofxOscMessage message;
-		m_receiver->getNextMessage(&message);
-	
-		// ignore any incoming messages?
-		if(m_bIgnoreMessages) continue;
-		
-		// call any attached objects
-		vector<OscObject*>::iterator iter;
-		for(iter = _objectList.begin(); iter != _objectList.end();) {
-			
-			// try to process message, if processed then done
-			if((*iter) != NULL) {
-				if((*iter)->processOsc(message)) {
-					return true;
-				}
-				iter++; // increment iter
-			}
-			else {	// bad object, so erase it
-				iter = _objectList.erase(iter);
-				ofLogWarning() << "OscReceiver: removed NULL object";
-			}
-		}
-	}
-}
-
-//--------------------------------------------------------------
 void OscReceiver::start() {
 	if(m_receiver.get() != NULL) {
 		ofLogWarning() << "OscReceiver: can't start thread, already created";
 		return;
 	}
 
-	m_receiver = ofPtr<ofxOscReceiver>(new ofxOscReceiver);
+	m_receiver = ofPtr<Receiver>(new Receiver);
 	if(m_receiver.get() == NULL) {
 		ofLogWarning() << "OscReceiver: could not create thread";
 		return false;
 	}
+	m_receiver->receiver = this;
 	m_receiver->setup(m_port);
 	
 	m_bIsRunning = true;
@@ -146,4 +113,68 @@ unsigned int OscReceiver::getPort() {
 //--------------------------------------------------------------
 void OscReceiver::ignoreMessages(bool yesno) {
 	m_bIgnoreMessages = yesno;
+}
+
+//--------------------------------------------------------------
+void OscReceiver::processMessage(const ofxOscMessage &message) {
+	
+	// ignore any incoming messages?
+	if(m_bIgnoreMessages) return;
+	
+	// call any attached objects
+	vector<OscObject*>::iterator iter;
+	for(iter = _objectList.begin(); iter != _objectList.end();) {
+		
+		// try to process message, if processed then done
+		if((*iter) != NULL) {
+			if((*iter)->processOsc(message)) {
+				return true;
+			}
+			iter++; // increment iter
+		}
+		else {	// bad object, so erase it
+			iter = _objectList.erase(iter);
+			ofLogWarning() << "OscReceiver: removed NULL object";
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void OscReceiver::Receiver::ProcessMessage(const osc::ReceivedMessage &m,
+										   const IpEndpointName& remoteEndpoint) {
+	
+	// convert the message to an ofxOscMessage
+	ofxOscMessage message;
+
+	// set the address
+	message.setAddress(m.AddressPattern());
+
+	// set the sender ip/host
+	char endpoint_host[IpEndpointName::ADDRESS_STRING_LENGTH];
+	remoteEndpoint.AddressAsString(endpoint_host);
+    message.setRemoteEndpoint(endpoint_host, remoteEndpoint.port);
+
+	// transfer the arguments
+	for(osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
+		arg != m.ArgumentsEnd(); ++arg) {
+		if(arg->IsInt32()) {
+			message.addIntArg(arg->AsInt32Unchecked());
+		}
+		else if(arg->IsInt64()) {
+			message.addInt64Arg(arg->AsInt64Unchecked());
+		}
+		else if(arg->IsFloat()) {
+			message.addFloatArg(arg->AsFloatUnchecked());
+		}
+		else if(arg->IsString()) {
+			message.addStringArg(arg->AsStringUnchecked());
+		}
+		else {
+			ofLogError() << "OscReceiver: argument in message "
+				<< m.AddressPattern() << " is not an int, float, or string";
+		}
+	}
+	
+	// send
+	receiver->processMessage(message);
 }

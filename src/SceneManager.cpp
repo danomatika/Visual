@@ -29,7 +29,9 @@
 
 //--------------------------------------------------------------
 SceneManager::SceneManager() : OscObject(""),
-	_currentScene(-1), _bShowSceneName(true) {}
+	_currentScene(-1), _bShowSceneName(true) {
+	_bSetBackground = false;
+}
 
 //--------------------------------------------------------------
 SceneManager::~SceneManager() {
@@ -43,7 +45,6 @@ void SceneManager::addScene(Scene* scene) {
 		return;
 	}
 	scene->setOscRootAddress(oscRootAddress+"/"+scene->getName());
-	cout << "SCENE " << scene->getOscRootAddress() << endl;
 	_sceneList.push_back(scene);
 }
 
@@ -169,6 +170,13 @@ void SceneManager::draw() {
 	if(_currentScene >= 0 && _currentScene < (int) _sceneList.size()) {
 		Scene* s = _sceneList.at(_currentScene);
 		
+		// only set background in gl state since scene changes may happen
+		// in osc receiver thread
+		if(_bSetBackground) {
+			ofBackground(s->getBackground());
+			_bSetBackground = false;
+		}
+		
 		// artificial frame rate timing
 		if(s->getFps() > 0) {
 		if(_frameRateTimer.alarm()) {
@@ -198,7 +206,7 @@ void SceneManager::setFrameRate(unsigned int rate) {
 // PROTECTED
 //--------------------------------------------------------------
 void SceneManager::setupScene(Scene* s) {
-	ofBackground(s->getBackground());
+	_bSetBackground = true;
 	setFrameRate(s->getFps());
 	_sceneNameTimer.setAlarm(SCENE_NAME_MS);
 }

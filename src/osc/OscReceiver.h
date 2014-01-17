@@ -40,8 +40,6 @@ class OscReceiver {
 		/// setup the udp socket using the given port
 		/// returns false if socket cannot be setup
 		bool setup(unsigned int port);
-		
-		void update();
 
 		/// start the listening thread, opens connection
 		void start();
@@ -62,10 +60,24 @@ class OscReceiver {
 		// ignore incoming messages?
 		void ignoreMessages(bool yesno);
 
-	private:
-
+	protected:
+	
+		// handles message
+		void processMessage(const ofxOscMessage &message);
+		
+		// wrapper to override and implement message processing
+		class Receiver : public ofxOscReceiver {
+			public:
+				Receiver() : ofxOscReceiver(), receiver(NULL) {}
+				OscReceiver *receiver;
+			protected:
+				void ProcessMessage(const osc::ReceivedMessage &m,
+					const IpEndpointName& remoteEndpoint);
+		};
+		friend Receiver;
+		
 		unsigned int m_port;
-		ofPtr<ofxOscReceiver> m_receiver;
+		ofPtr<Receiver> m_receiver;
 		bool m_bIsRunning, m_bIgnoreMessages;
 		vector<OscObject*> _objectList;    /// list of osc objects
 };

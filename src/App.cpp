@@ -53,6 +53,7 @@ void App::setup() {
 	ofSetLogLevel("visual", OF_LOG_VERBOSE);
 	ofSetVerticalSync(true);
 	ofBackground(0);
+	ofHideCursor();
 	
 	// set render size
 	if(config.renderWidth == 0 && config.renderHeight == 0) {
@@ -72,9 +73,6 @@ void App::setup() {
 	// don't show the cursor if not debugging
 	if(bDebug) {
 		ofShowCursor();
-	}
-	else {
-		ofHideCursor();
 	}
 	
 	// setup the osc receiver
@@ -97,7 +95,7 @@ void App::setup() {
 
 //--------------------------------------------------------------
 void App::update() {
-	receiver.update();
+//	receiver.update();
 	scriptEngine.lua.scriptUpdate();
 }
 

@@ -48,7 +48,6 @@ void Scene::addObject(DrawableObject* object) {
 	
 	ofLogVerbose(PACKAGE) << "Scene \"" << _name << "\": added " << object->getType()
 		<< " \"" << object->getName() << "\"";
-	cout << "OBJECT " << object->getOscRootAddress() << endl;
 }
 
 //--------------------------------------------------------------

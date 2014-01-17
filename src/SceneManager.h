@@ -79,5 +79,7 @@ class SceneManager : public OscObject {
 		ofTrueTypeFont _sceneNameFont;
 		
 		ofxTimer _frameRateTimer;
-		unsigned int _frameRate;;
+		unsigned int _frameRate;
+		
+		bool _bSetBackground;
 };
