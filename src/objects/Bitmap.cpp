@@ -25,7 +25,7 @@
 //--------------------------------------------------------------
 Bitmap::Bitmap(string name, unsigned int w, unsigned int h) :
 	DrawableFrame(name), bitmapWidth(w), bitmapHeight(h),
-	pos(0, 0), width(1), height(1), //pixelWidth(1), pixelHeight(1),
+	pos(0, 0), width(1), height(1),
 	bFilled(true), bDrawFromCenter(false) {
 	clear();
 }
@@ -33,7 +33,7 @@ Bitmap::Bitmap(string name, unsigned int w, unsigned int h) :
 //--------------------------------------------------------------
 Bitmap::Bitmap(unsigned int frameTime, unsigned int w, unsigned int h) :
 	DrawableFrame("", frameTime), bitmapWidth(w), bitmapHeight(h),
-	pos(0, 0), width(1), height(1), //pixelWidth(1), pixelHeight(1),
+	pos(0, 0), width(1), height(1),
 	bFilled(true), bDrawFromCenter(false) {
 	clear();
 }
@@ -147,7 +147,7 @@ void Bitmap::setBitmap(string bitmapString) {
 	// read through all the chars
 	while(!frame.eof()) {
 		frame >> line;
-		ofLogVerbose(PACKAGE) << "       " << line;
+		ofLogVerbose(PACKAGE) << "    " << line;
 
 		stringstream chars(line);
 

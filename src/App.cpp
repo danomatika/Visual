@@ -95,7 +95,6 @@ void App::setup() {
 
 //--------------------------------------------------------------
 void App::update() {
-//	receiver.update();
 	scriptEngine.lua.scriptUpdate();
 }
 

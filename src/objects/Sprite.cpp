@@ -23,7 +23,7 @@
 #include "Sprite.h"
 
 //--------------------------------------------------------------
-Sprite::Sprite(string name) : //, string parentOscAddress) :
+Sprite::Sprite(string name) :
 	DrawableObject(name), pos(0, 0), width(0), height(0),
 	bAnimate(true), bLoop(true), bPingPong(true),
 	bDrawFromCenter(false), bDrawAllLayers(false),

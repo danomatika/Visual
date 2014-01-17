@@ -22,8 +22,6 @@
 ==============================================================================*/
 #pragma once
 
-//#include "Config.h"
-
 #include "DrawableObject.h"
 
 class Pixel : public DrawableObject {

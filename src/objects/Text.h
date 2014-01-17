@@ -122,5 +122,5 @@ class Text : public DrawableObject {
 
 		ofPoint pos;
 		string text;
-		bool bDrawFromCenter;       /// draw from the center using pos
+		bool bDrawFromCenter; ///< draw from the center using pos
 };
