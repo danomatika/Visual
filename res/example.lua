@@ -173,13 +173,31 @@ scene = visual.Scene("scene3")
 		image.visible = true
 	scene:add(image)
 
-	-- draw some text
-	text = visual.Text("text")
-		text.position:set(320, 240)
-		text.center = true
+	-- draw some text, uses default font & size
+	text = visual.Text("text1")
+		text.position:set(10, 340)
+		text.center = false
 		text.color:set(200)
 		text.visible = true
 		text.text = "this is a test"
+	scene:add(text)
+
+	-- default font with size
+	text = visual.Text("text2", 14)
+		text.position:set(10, 380)
+		text.center = false
+		text.color:set(200, 255, 127)
+		text.visible = true
+		text.text = "another test, should be bigger"
+	scene:add(text)
+
+	-- load a local font with size
+	text = visual.Text("text3", "verdana.ttf", 36)
+		text.position:set(320, 460)
+		text.center = true
+		text.color:set(255, 0, 255, 200)
+		text.visible = true
+		text.text = "a different, local font"
 	scene:add(text)
 
 visual.addScene(scene)

@@ -28,47 +28,24 @@ class Text : public DrawableObject {
 
 	public:
 
-		Text(string name) :
-			DrawableObject(name), pos(0, 0), bDrawFromCenter(false) {}
-		
-		Text(string name, string text) :
-			DrawableObject(name), pos(0, 0), bDrawFromCenter(false), text(text) {}
-		
-		Text(string name, string text, int x, int y) :
-			DrawableObject(name), pos(x, y), bDrawFromCenter(false), text(text) {}
+		Text(string name);
+		Text(string name, string filename);
+		Text(string name, unsigned int size);
+		Text(string name, string filename, unsigned int size);
 
-		Text(string name, string text, ofPoint& p) :
-			DrawableObject(name), pos(p), bDrawFromCenter(false), text(text) {}
-
-		void draw() {
-			if(bVisible && !text.empty()) {
-				ofSetColor(color);
-				if(bDrawFromCenter) {
-					int w = Config::instance().font.stringWidth(text);
-					int h = Config::instance().font.stringHeight(text);
-					Config::instance().font.drawString(text, pos.x-w/2, pos.y-h/2);
-				}
-				else {
-					Config::instance().font.drawString(text, pos.x, pos.y);
-				}
-			}
-		}
+		bool loadFont(string filename="", unsigned int size=0);
 		
-		void draw(int x, int y) {
-			if(bVisible && !text.empty()) {
-				ofSetColor(color);
-				if(bDrawFromCenter) {
-					int w = Config::instance().font.stringWidth(text);
-					int h = Config::instance().font.stringHeight(text);
-					Config::instance().font.drawString(text, x-w/2, y-h/2);
-				}
-				else {
-					Config::instance().font.drawString(text, x, y);
-				}
-			}
-		}
+		void setup();
+
+		void draw();
+		void draw(int x, int y);
 		
 		// getters / setters
+		ofTrueTypeFont& getFont() {return *font;}
+		
+		string getFontFilename() {return fontFilename;}
+		unsigned int getFontSize() {return fontSize;}
+		
 		ofPoint& getPos() {return pos;}
 		void setPos(ofPoint &p) {pos = p;}
 		
@@ -83,43 +60,12 @@ class Text : public DrawableObject {
 	protected:
 
 		/// osc callback
-		bool processOscMessage(const ofxOscMessage& message) {
+		bool processOscMessage(const ofxOscMessage& message);
+
+		ofPtr<ofTrueTypeFont> font;
+		string fontFilename;
+		unsigned int fontSize;
 		
-			// call the base class
-			if(DrawableObject::processOscMessage(message)) {
-				return true;
-			}
-
-
-			if(message.getAddress() == oscRootAddress + "/position") {
-				tryNumber(message, pos.x, 0);
-				tryNumber(message, pos.y, 1);
-				return true;
-			}
-			else if(message.getAddress() == oscRootAddress + "/position/x") {
-				tryNumber(message, pos.x, 0);
-				return true;
-			}
-			else if(message.getAddress() == oscRootAddress + "/position/y") {
-				tryNumber(message, pos.y, 0);
-				return true;
-			}
-
-
-			else if(message.getAddress() == oscRootAddress + "/text") {
-				tryString(message, text, 0);
-				return true;
-			}
-			
-			else if(message.getAddress() == oscRootAddress + "/center") {
-				tryBool(message, bDrawFromCenter, 0);
-				return true;
-			}
-
-
-			return false;
-		}
-
 		ofPoint pos;
 		string text;
 		bool bDrawFromCenter; ///< draw from the center using pos

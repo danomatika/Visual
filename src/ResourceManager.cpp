@@ -35,49 +35,92 @@ void ResourceManager::clear() {
 
 // FONT
 //--------------------------------------------------------------
-bool ResourceManager::addFont(const string& name, const string& file, unsigned int size) {
-	ofPtr<ofTrueTypeFont> f = ofPtr<ofTrueTypeFont>(new ofTrueTypeFont);
-	if(!f->loadFont(ofToDataPath(file), size)) {
-		return false;
+bool ResourceManager::addFont(const string& name, unsigned int size, string file) {
+	
+	map<string,FontSet>::iterator nameIter = fonts.find(name);
+	if(nameIter != fonts.end()) {
+		
+		// existing font
+		FontSet &fontSet = (nameIter->second);
+		map<unsigned int,ofPtr<ofTrueTypeFont> >::iterator sizeIter = fontSet.fonts.find(size);
+		if(sizeIter != fontSet.fonts.end()) { // already exists at this size
+			return true;
+		}
+		else {
+			
+			// add new size
+			if(file == "") { // reuse filename
+				file = fontSet.filename;
+			}
+			ofPtr<ofTrueTypeFont> f = ofPtr<ofTrueTypeFont>(new ofTrueTypeFont);
+			if(!f->loadFont(ofToDataPath(file), size)) {
+				return false;
+			}
+			fontSet.fonts.insert(pair<unsigned int,ofPtr<ofTrueTypeFont> >(size, f));
+		}
 	}
-	fonts.insert(pair<string,ofPtr<ofTrueTypeFont> >(name, f));
+	else { // new font
+		ofPtr<ofTrueTypeFont> f = ofPtr<ofTrueTypeFont>(new ofTrueTypeFont);
+		if(!f->loadFont(ofToDataPath(file), size)) {
+			return false;
+		}
+		FontSet fontSet;
+		fontSet.fonts.insert(pair<unsigned int,ofPtr<ofTrueTypeFont> >(size, f));
+		fonts.insert(pair<string,FontSet>(name, fontSet));
+	}
+	
 	return true;
 }
 
 //--------------------------------------------------------------
-void ResourceManager::removeFont(const string& name) {
-	map<string,ofPtr<ofTrueTypeFont> >::iterator iter = fonts.find(name);
-	if(iter != fonts.end()) {
-		(iter->second).reset();
-		fonts.erase(iter);
+void ResourceManager::removeFont(const string& name, unsigned int size) {
+	map<string,FontSet>::iterator nameIter = fonts.find(name);
+	if(nameIter != fonts.end()) {
+		FontMap &fontMap = (nameIter->second).fonts;
+		map<unsigned int,ofPtr<ofTrueTypeFont> >::iterator sizeIter = fontMap.find(size);
+		if(sizeIter != fontMap.end()) {
+			(sizeIter->second).reset();
+			fontMap.erase(sizeIter);
+		}
 	}
 }
 
 //--------------------------------------------------------------
-bool ResourceManager::fontExists(const string& name) {
-	map<string,ofPtr<ofTrueTypeFont> >::iterator iter = fonts.find(name);
-	if(iter != fonts.end()) {
-		return true;
+bool ResourceManager::fontExists(const string& name, unsigned int size) {
+	map<string,FontSet>::iterator nameIter = fonts.find(name);
+	if(nameIter != fonts.end()) {
+		FontMap &fontMap = (nameIter->second).fonts;
+		map<unsigned int,ofPtr<ofTrueTypeFont> >::iterator sizeIter = fontMap.find(size);
+		if(sizeIter != fontMap.end()) {
+			return true;
+		}
 	}
 	return false;
 }
 
 //--------------------------------------------------------------
-ofPtr<ofTrueTypeFont> ResourceManager::getFont(const string& name) {
-	map<string,ofPtr<ofTrueTypeFont> >::iterator iter = fonts.find(name);
-	if(iter != fonts.end()) {
-		return iter->second;
+ofPtr<ofTrueTypeFont> ResourceManager::getFont(const string& name, unsigned int size) {
+	map<string,FontSet>::iterator nameIter = fonts.find(name);
+	if(nameIter != fonts.end()) {
+		FontMap &fontMap = (nameIter->second).fonts;
+		map<unsigned int,ofPtr<ofTrueTypeFont> >::iterator sizeIter = fontMap.find(size);
+		if(sizeIter != fontMap.end()) {
+			return sizeIter->second;
+		}
 	}
-	else {
-		return ofPtr<ofTrueTypeFont>(); // NULL
-	}
+	return ofPtr<ofTrueTypeFont>(); // NULL
 }
 
 //--------------------------------------------------------------
 void ResourceManager::clearFonts() {
-	map<string,ofPtr<ofTrueTypeFont> >::iterator iter;
-	for(iter = fonts.begin(); iter != fonts.end(); iter++) {
-		(iter->second).reset();
+	map<string,FontSet>::iterator nameIter;
+	for(nameIter = fonts.begin(); nameIter != fonts.end(); nameIter++) {
+		FontMap &fontMap = (nameIter->second).fonts;
+		map<unsigned int,ofPtr<ofTrueTypeFont> >::iterator sizeIter;
+		for(sizeIter = fontMap.begin(); sizeIter != fontMap.end(); sizeIter++) {
+			(sizeIter->second).reset();
+		}
+		fontMap.clear();
 	}
 	fonts.clear();
 }

@@ -30,6 +30,7 @@
 		302E99B318838D7C00AF7621 /* Bindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99B218838D7C00AF7621 /* Bindings.cpp */; };
 		302E99B81884AE1A00AF7621 /* ScriptEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99B61884AE1A00AF7621 /* ScriptEngine.cpp */; };
 		3084985F18870B42005785B6 /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3084985E18870B42005785B6 /* Osc.cpp */; };
+		308B6F71188996D1003449F2 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 308B6F70188996D1003449F2 /* Text.cpp */; };
 		3099FD261880E2B300175228 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD241880E2B300175228 /* Scene.cpp */; };
 		3099FD3818822C1E00175228 /* OscObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3418822C1E00175228 /* OscObject.cpp */; };
 		3099FD3918822C1E00175228 /* OscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3618822C1E00175228 /* OscReceiver.cpp */; };
@@ -192,6 +193,7 @@
 		302E99B61884AE1A00AF7621 /* ScriptEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptEngine.cpp; sourceTree = "<group>"; };
 		302E99B71884AE1A00AF7621 /* ScriptEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptEngine.h; sourceTree = "<group>"; };
 		3084985E18870B42005785B6 /* Osc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Osc.cpp; sourceTree = "<group>"; };
+		308B6F70188996D1003449F2 /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		3099FD23187FC2DA00175228 /* ofxLuaTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxLuaTouchEvent.h; path = ../../../addons/ofxLua/src/ofxLuaTouchEvent.h; sourceTree = "<group>"; };
 		3099FD241880E2B300175228 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		3099FD251880E2B300175228 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				302E999A18824DF300AF7621 /* Rectangle.h */,
 				302E999B18824DF300AF7621 /* Sprite.cpp */,
 				302E999C18824DF300AF7621 /* Sprite.h */,
+				308B6F70188996D1003449F2 /* Text.cpp */,
 				302E999D18824DF300AF7621 /* Text.h */,
 			);
 			path = objects;
@@ -912,6 +915,7 @@
 				30134420187EFE5E00CA92B7 /* ofxApp.cpp in Sources */,
 				A29D8C96AE042ECEAA1BD4F3 /* NetworkingUtilsWin.cpp in Sources */,
 				28090DEB5109115003E8F1C5 /* UdpSocketWin.cpp in Sources */,
+				308B6F71188996D1003449F2 /* Text.cpp in Sources */,
 				62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */,
 				C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */,
 				0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */,

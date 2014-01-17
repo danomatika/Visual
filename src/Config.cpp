@@ -96,7 +96,6 @@ bool Config::parseCommandLine(int argc, char **argv) {
 void Config::setup() {
 	ofTrueTypeFont::setGlobalDpi(96);
 	fontFilename = ofToDataPath(CONFIG_FONT, true);
-	font.loadFont(fontFilename, CONFIG_FONT_SIZE, false);
 }
 
 //--------------------------------------------------------------

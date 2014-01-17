@@ -24,6 +24,8 @@
 
 #include "ofMain.h"
 
+#define DEFAULT_FONT_SIZE	12
+
 class ResourceManager {
 
 	public:
@@ -33,10 +35,10 @@ class ResourceManager {
 		void clear();
 
 		/// fonts
-		bool addFont(const string& name, const string& file, unsigned int size);
-		void removeFont(const string& name);
-		bool fontExists(const string& name);
-		ofPtr<ofTrueTypeFont> getFont(const string& name);
+		bool addFont(const string& name, unsigned int size=DEFAULT_FONT_SIZE, string file="");
+		void removeFont(const string& name, unsigned int size=DEFAULT_FONT_SIZE);
+		bool fontExists(const string& name, unsigned int size=DEFAULT_FONT_SIZE);
+		ofPtr<ofTrueTypeFont> getFont(const string& name, unsigned int size=DEFAULT_FONT_SIZE);
 		void clearFonts();
 		
 		/// images
@@ -47,7 +49,14 @@ class ResourceManager {
 		void clearImages();
 
 	protected:
-
-		map<string,ofPtr<ofTrueTypeFont> > fonts;
+	
+		// fonts can have multiple sizes, so each name is mapped to map of sizes
+		typedef map<unsigned int,ofPtr<ofTrueTypeFont> > FontMap;
+		struct FontSet {
+			FontMap fonts;
+			string filename;
+		};
+		map<string,FontSet> fonts;
+		
 		map<string,ofPtr<ofImage> > images;
 };

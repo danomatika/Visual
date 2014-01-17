@@ -29,7 +29,6 @@
 #define	VERSION	"0.1.0"
 
 #define CONFIG_FONT	"fonts/ATARCC__.TTF"
-#define CONFIG_FONT_SIZE	24
 
 class App;
 
@@ -83,8 +82,6 @@ class Config {
 		
 		ofxOscSender oscSender;       	///< global osc sender
 		OscReceiver oscReceiver;		///< global osc receiver
-		
-		ofTrueTypeFont font;			///< global font
 		
 		ResourceManager resourceManager; ///< global resources
 

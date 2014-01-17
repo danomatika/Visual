@@ -56,6 +56,7 @@ bool Image::loadFile(string filename) {
 			return false;
 		}
 		loaded = true;
+		this->filename = filename;
 	}
 	image = Config::instance().resourceManager.getImage(filename);
 
