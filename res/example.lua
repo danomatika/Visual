@@ -22,7 +22,7 @@ config.connectionId = 0
 -- this file is divided up into multiple scenes which can be switched between
 
 -- graphics primitives
-scene = visual.Scene("scene1")
+scene = visual.Scene("primitives")
 
 	-- set the background
 	scene.background:set(0)
@@ -54,7 +54,7 @@ scene = visual.Scene("scene1")
 visual.addScene(scene)
 
 -- bitmaps and sprites
-scene = visual.Scene("scene2")
+scene = visual.Scene("bitmaps & sprites")
 
 	scene.background:set(64, 64, 64)
 	
@@ -146,7 +146,7 @@ scene = visual.Scene("scene2")
 visual.addScene(scene)
 
 -- images and text
-scene = visual.Scene("scene3")
+scene = visual.Scene("images & text")
 	scene.background:set(64)
 
 	-- an image, rescaled when loaded to fit given size
@@ -199,5 +199,26 @@ scene = visual.Scene("scene3")
 		text.visible = true
 		text.text = "a different, local font"
 	scene:add(text)
+
+visual.addScene(scene)
+
+-- video
+scene = visual.Scene("videos")
+	scene.background:set(0)
+
+	video = visual.Video("video1", "test_clip.mov")
+		video.position:set(320, 240)
+		video.center = true
+		video.play = true
+		video.volume = 0
+		video.speed = 0.5
+		--video.video.speed = 2
+	scene:add(video)
+
+	-- reuse the frist movie
+	video2 = visual.Video("video1 clone", "test_clip.mov")
+		video2:setSize(160, 90) -- make it smaller
+		-- play, volume, & speed have already been set
+	scene:add(video2)
 
 visual.addScene(scene)

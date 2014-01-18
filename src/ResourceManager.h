@@ -32,6 +32,7 @@ class ResourceManager {
 
 		~ResourceManager();
 
+		void update();
 		void clear();
 
 		/// fonts
@@ -47,6 +48,13 @@ class ResourceManager {
 		bool imageExists(const string& name);
 		ofPtr<ofImage> getImage(const string& name);
 		void clearImages();
+		
+		/// videos
+		bool addVideo(const string& name, const string& file);
+		void removeVideo(const string& name);
+		bool videoExists(const string& name);
+		ofPtr<ofVideoPlayer> getVideo(const string& name);
+		void clearVideos();
 
 	protected:
 	
@@ -59,4 +67,5 @@ class ResourceManager {
 		map<string,FontSet> fonts;
 		
 		map<string,ofPtr<ofImage> > images;
+		map<string,ofPtr<ofVideoPlayer> > videos;
 };

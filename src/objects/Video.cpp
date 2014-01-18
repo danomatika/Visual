@@ -20,62 +20,74 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
-#include "Image.h"
+#include "Video.h"
 
 //--------------------------------------------------------------
-Image::Image(string name) : DrawableFrame(name),
+Video::Video(string name) : DrawableFrame(name), bPlay(false), volume(0),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
 	clear();
 }
 
 //--------------------------------------------------------------
-Image::Image(string name, string filename) : DrawableFrame(name),
+Video::Video(string name, string filename) : DrawableFrame(name),
+	bPlay(false), volume(0),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
 	clear();
 }
 
 //--------------------------------------------------------------
-Image::Image(unsigned int frameTime, string filename) : DrawableFrame("", frameTime),
-	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
-	clear();
-}
+//Video::Video(string name, Video &src) : DrawableFrame(name),
+//	bPlay(false), volume(0),
+//	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
+//	clear();
+//	video->setPlayer(src.getVideo().getPlayer());
+//	filename = src.filename;
+//}
 
 //--------------------------------------------------------------
-bool Image::loadFile(string filename) {
+bool Video::loadFile(string filename) {
 	if(filename == "") {
 		filename = this->filename;
 	}
 	
 	bool loaded = false;
 	string baseName = ofFilePath::getBaseName(filename);
-	if(!Config::instance().resourceManager.imageExists(baseName)) {
-		if(!Config::instance().resourceManager.addImage(baseName, filename)) {
-			ofLogWarning() << "Image: \"" << name << "\" couldn't load \""
+	if(!Config::instance().resourceManager.videoExists(baseName)) {
+		if(!Config::instance().resourceManager.addVideo(baseName, filename)) {
+			ofLogWarning() << "Video: \"" << name << "\" couldn't load \""
 				<< filename << "\"";
 			return false;
 		}
 		loaded = true;
 		this->filename = filename;
 	}
-	image = Config::instance().resourceManager.getImage(baseName);
+	video = Config::instance().resourceManager.getVideo(baseName);
 
 	if(loaded) {
-		ofLogVerbose(PACKAGE) << "Image: loaded \"" << baseName << "\" "
-				<< image->getWidth() << "x" << image->getHeight();
+		ofLogVerbose(PACKAGE) << "Video: loaded \"" << baseName << "\" "
+				<< video->getWidth() << "x" << video->getHeight();
 	}
 	
-	// get dimen from image if not set
-	if(width == 0)	width = image->getWidth();
-	if(height == 0) height = image->getHeight();
+	// get dimen from video if not set
+	if(width == 0)	width = video->getWidth();
+	if(height == 0) height = video->getHeight();
+	
+	// apply settings
+	if(bPlay) {
+		video->play();
+	}
+	video->setVolume(volume);
+	video->setSpeed(speed);
 
 	return true;
 }
 
 //--------------------------------------------------------------
-void Image::setup() {
+void Video::setup() {
+
 	string baseName = ofFilePath::getBaseName(filename);
-	if(Config::instance().resourceManager.imageExists(baseName)) {
-		image = Config::instance().resourceManager.getImage(baseName);
+	if(Config::instance().resourceManager.videoExists(baseName)) {
+		video = Config::instance().resourceManager.getVideo(baseName);
 	}
 	else {
 		loadFile();
@@ -83,50 +95,106 @@ void Image::setup() {
 }
 
 //--------------------------------------------------------------
-void Image::draw() {
+void Video::draw() {
 	draw(pos.x, pos.y, width, height);
 }
 
 //--------------------------------------------------------------
-void Image::draw(int x, int y) {
+void Video::draw(int x, int y) {
 	draw(x, y, width, height);
 }
 
 //--------------------------------------------------------------
-void Image::draw(int x, int y, unsigned int w, unsigned int h) {
-	if(!image->isAllocated() || !bVisible) {
+void Video::draw(int x, int y, unsigned int w, unsigned int h) {
+	if(!video->isLoaded() || !bVisible) {
 		return;
 	}
 
 	ofSetColor(color);
 	if(bDrawFromCenter) {
-		image->draw(x-w/2, y-h/2, w, h);
+		video->draw(x-w/2, y-h/2, w, h);
 	}
 	else {
-		image->draw(x, y, w, h);
+		video->draw(x, y, w, h);
 	}
 }
 
 //--------------------------------------------------------------
-void Image::clear() {
-	image = ofPtr<ofImage>(new ofImage); // empty image
+void Video::clear() {
+	if(video.get() != NULL) {
+		video->stop();
+		video->closeMovie();
+	}
+	video = ofPtr<ofVideoPlayer>(new ofVideoPlayer); // empty player
 	color.set(255);
 }
 
 //--------------------------------------------------------------
-void Image::setSize(unsigned int w, unsigned int h) {
+void Video::setPlay(bool b) {
+	if(bPlay == b) {
+		return;
+	}
+	bPlay = b;
+	if(bPlay) {
+		video->play();
+	}
+	else {
+		video->stop();
+	}
+}
+
+//--------------------------------------------------------------
+void Video::setVolume(float v) {
+	volume = ofClamp(v, 0, 1);
+	video->setVolume(volume);
+}
+
+//--------------------------------------------------------------
+float Video::getSpeed() {
+	return video->getSpeed();
+}
+
+//--------------------------------------------------------------
+void Video::setSpeed(float s) {
+	speed = s;
+	video->setSpeed(speed);
+}
+
+//--------------------------------------------------------------
+void Video::setSize(unsigned int w, unsigned int h) {
 	width = w;
 	height = h;
 }
 
 //--------------------------------------------------------------
-bool Image::processOscMessage(const ofxOscMessage& message) {
+bool Video::processOscMessage(const ofxOscMessage& message) {
 
 	// call the base class
 	if(DrawableObject::processOscMessage(message)) {
 		return true;
 	}
 
+	else if(message.getAddress() == oscRootAddress + "/play") {
+		bool b = bPlay;
+		if(tryBool(message, b, 0)) {
+			setPlay(b);
+		}
+		return true;
+	}
+	else if(message.getAddress() == oscRootAddress + "/volume") {
+		float v = 0;
+		if(tryNumber(message, v, 0)) {
+			setVolume(v);
+		}
+		return true;
+	}
+	else if(message.getAddress() == oscRootAddress + "/speed") {
+		float s = 0;
+		if(tryNumber(message, s, 0)) {
+			setSpeed(s);
+		}
+		return true;
+	}
 
 	if(message.getAddress() == oscRootAddress + "/position") {
 		tryNumber(message, pos.x, 0);

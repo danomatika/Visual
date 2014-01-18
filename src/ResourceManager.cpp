@@ -28,9 +28,18 @@ ResourceManager::~ResourceManager() {
 }
 
 //--------------------------------------------------------------
+void ResourceManager::update() {
+	map<string,ofPtr<ofVideoPlayer> >::iterator iter;
+	for(iter = videos.begin(); iter != videos.end(); iter++) {
+		(iter->second)->update();
+	}
+}
+
+//--------------------------------------------------------------
 void ResourceManager::clear() {
 	clearFonts();
 	clearImages();
+	clearVideos();
 }
 
 // FONT
@@ -172,4 +181,52 @@ void ResourceManager::clearImages() {
 		(iter->second).reset();
 	}
 	images.clear();
+}
+
+//--------------------------------------------------------------
+bool ResourceManager::addVideo(const string& name, const string& file) {
+	ofPtr<ofVideoPlayer> v = ofPtr<ofVideoPlayer>(new ofVideoPlayer);
+	if(!v->loadMovie(ofToDataPath(file))) {
+		return false;
+	}
+	videos.insert(pair<string,ofPtr<ofVideoPlayer> >(name, v));
+	return true;
+}
+
+//--------------------------------------------------------------
+void ResourceManager::removeVideo(const string& name) {
+	map<string,ofPtr<ofVideoPlayer> >::iterator iter = videos.find(name);
+	if(iter != videos.end()) {
+		(iter->second).reset();
+		videos.erase(iter);
+	}
+}
+
+//--------------------------------------------------------------
+bool ResourceManager::videoExists(const string& name) {
+	map<string,ofPtr<ofVideoPlayer> >::iterator iter = videos.find(name);
+	if(iter != videos.end()) {
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+ofPtr<ofVideoPlayer> ResourceManager::getVideo(const string& name) {
+	map<string,ofPtr<ofVideoPlayer> >::iterator iter = videos.find(name);
+	if(iter != videos.end()) {
+		return iter->second;
+	}
+	else {
+		return ofPtr<ofVideoPlayer>(); // NULL
+	}
+}
+
+//--------------------------------------------------------------
+void ResourceManager::clearVideos() {
+	map<string,ofPtr<ofVideoPlayer> >::iterator iter;
+	for(iter = videos.begin(); iter != videos.end(); iter++) {
+		(iter->second).reset();
+	}
+	videos.clear();
 }

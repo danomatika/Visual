@@ -36,12 +36,14 @@ class Text : public DrawableObject {
 		bool loadFont(string filename="", unsigned int size=0);
 		
 		void setup();
+		void clear();
 
 		void draw();
 		void draw(int x, int y);
 		
 		// getters / setters
 		ofTrueTypeFont& getFont() {return *font;}
+		bool isFontLoaded() {return font->isLoaded();}
 		
 		string getFontFilename() {return fontFilename;}
 		unsigned int getFontSize() {return fontSize;}

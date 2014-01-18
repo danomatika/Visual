@@ -95,6 +95,7 @@ void App::setup() {
 
 //--------------------------------------------------------------
 void App::update() {
+	config.resourceManager.update();
 	scriptEngine.lua.scriptUpdate();
 }
 

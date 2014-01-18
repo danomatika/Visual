@@ -24,13 +24,13 @@
 
 #include "DrawableObject.h"
 
-class Image : public DrawableFrame {
+class Video : public DrawableFrame {
 
 	public:
 
-		Image(string name);
-		Image(string name, string filename);
-		Image(unsigned int frameTime, string filename);
+		Video(string name);
+		Video(string name, string filename);
+		//Video(string name, Video &src);
 
 		bool loadFile(string filename="");
 
@@ -43,8 +43,15 @@ class Image : public DrawableFrame {
 		void clear();
 		
 		// getters / setters
-		ofImage& getImage() {return *image;}
-		bool isLoaded() {return image->isAllocated();}
+		ofVideoPlayer& getVideo() {return *video;}
+		bool isLoaded() {return video->isLoaded();}
+		
+		bool getPlay() {return bPlay;}
+		void setPlay(bool b);
+		float getVolume() {return volume;}
+		void setVolume(float v);
+		float getSpeed();
+		void setSpeed(float s);
 		
 		string getFilename() {return filename;}
 		
@@ -60,14 +67,18 @@ class Image : public DrawableFrame {
 		bool getDrawFromCenter() {return bDrawFromCenter;}
 		void setDrawFromCenter(bool c) {bDrawFromCenter = c;}
 		
-		string getType() {return "image";}
+		string getType() {return "video";}
 
 	protected:
 
 		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message);
 		
-		ofPtr<ofImage> image;
+		ofPtr<ofVideoPlayer> video;
+
+		bool bPlay;
+		float volume;
+		float speed;
 
 		string filename;
 		ofPoint pos;

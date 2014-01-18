@@ -25,12 +25,14 @@
 //--------------------------------------------------------------
 Text::Text(string name) : DrawableObject(name),
 	fontSize(DEFAULT_FONT_SIZE), bDrawFromCenter(false) {
+	clear();
 	fontFilename = Config::instance().fontFilename;
 }
 
 //--------------------------------------------------------------
 Text::Text(string name, string filename) : DrawableObject(name),
 	fontFilename(filename), fontSize(DEFAULT_FONT_SIZE), bDrawFromCenter(false) {
+	clear();
 	if(this->fontFilename == "") {
 		this->fontFilename = Config::instance().fontFilename;
 	}
@@ -39,12 +41,14 @@ Text::Text(string name, string filename) : DrawableObject(name),
 //--------------------------------------------------------------
 Text::Text(string name, unsigned int size) :
 	DrawableObject(name), fontSize(size), bDrawFromCenter(false) {
+	clear();
 	fontFilename = Config::instance().fontFilename;
 }
 
 //--------------------------------------------------------------
 Text::Text(string name, string filename, unsigned int size) :
 	DrawableObject(name), fontFilename(filename), fontSize(size), bDrawFromCenter(false) {
+	clear();
 	if(fontFilename == "") {
 		fontFilename = Config::instance().fontFilename;
 	}
@@ -57,19 +61,19 @@ bool Text::loadFont(string filename, unsigned int size) {
 	}
 	
 	bool loaded = false;
-	string name = ofFilePath::getBaseName(filename);
-	if(!Config::instance().resourceManager.fontExists(name, fontSize)) {
-		if(!Config::instance().resourceManager.addFont(name, fontSize, ofToDataPath(filename))) {
+	string baseName = ofFilePath::getBaseName(filename);
+	if(!Config::instance().resourceManager.fontExists(baseName, fontSize)) {
+		if(!Config::instance().resourceManager.addFont(baseName, fontSize, ofToDataPath(filename))) {
 			ofLogWarning() << "Text: \"" << name << "\" couldn't load \"" << filename << "\"";
 			return false;
 		}
 		fontFilename = filename;
 		loaded = true;
 	}
-	font = Config::instance().resourceManager.getFont(name, fontSize);
+	font = Config::instance().resourceManager.getFont(baseName, fontSize);
 
 	if(loaded) {
-		ofLogVerbose(PACKAGE) << "Text: loaded \"" << name << "\" " << fontSize;
+		ofLogVerbose(PACKAGE) << "Text: loaded \"" << baseName << "\" " << fontSize;
 	}
 
 	return true;
@@ -77,13 +81,19 @@ bool Text::loadFont(string filename, unsigned int size) {
 
 //--------------------------------------------------------------
 void Text::setup() {
-	string name = ofFilePath::getBaseName(fontFilename);
-	if(Config::instance().resourceManager.fontExists(name, fontSize)) {
-		font = Config::instance().resourceManager.getFont(name, fontSize);
+	string baseName = ofFilePath::getBaseName(fontFilename);
+	if(Config::instance().resourceManager.fontExists(baseName, fontSize)) {
+		font = Config::instance().resourceManager.getFont(baseName, fontSize);
 	}
 	else {
 		loadFont("", fontSize);
 	}
+}
+
+//--------------------------------------------------------------
+void Text::clear() {
+	font = ofPtr<ofTrueTypeFont>(new ofTrueTypeFont); // empty font
+	color.set(255);
 }
 
 //--------------------------------------------------------------

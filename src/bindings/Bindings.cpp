@@ -85,8 +85,6 @@ luabind::scope Bindings::registerBindings() {
 			.def(constructor<string>())
 			
 			.def("add", &Scene::addObject, adopt(_2)) // transfer to C++
-			//.def("add", &sceneAddPixel, adopt(_2))
-			//.def("add", &sceneAddBitmap, adopt(_2))
 			.def("remove", (void(Scene::*)(DrawableObject*)) &Scene::removeObject)
 			.def("clear", &Scene::clearObjects)
 			.def("setup", &Scene::setup)
@@ -168,6 +166,8 @@ luabind::scope Bindings::registerBindings() {
 			
 			.def("getImage", &Image::getImage)
 			.property("image", &Image::getImage)
+			.def("isLoaded", &Image::isLoaded)
+			.property("loaded", &Image::isLoaded)
 			.def("getFilename", &Image::getFilename)
 			.property("filename", &Image::getFilename)
 			.property("color", &Image::getColor, &Image::setColor)
@@ -282,6 +282,8 @@ luabind::scope Bindings::registerBindings() {
 			
 			.def("getFont", &Text::getFont)
 			.property("font", &Text::getFont)
+			.def("isFontLoaded", &Text::isFontLoaded)
+			.property("fontLoaded", &Text::isFontLoaded)
 			.def("getFontFilename", &Text::getFontFilename)
 			.property("fontFilename", &Text::getFontFilename)
 			.def("getFontSize", &Text::getFontSize)
@@ -292,6 +294,39 @@ luabind::scope Bindings::registerBindings() {
 			.property("text", &Text::getText, &Text::setText)
 			.property("center", &Text::getDrawFromCenter, &Text::setDrawFromCenter)
 			.property("name", &Text::getName)
-			.property("type", &Text::getType)
+			.property("type", &Text::getType),
+			
+		///////////////////////////////
+		/// \section Video.h
+		
+		class_<Video, DrawableObject>("Video")
+			.def(constructor<string>())
+			.def(constructor<string,string>())
+			//.def(constructor<string,Video&>())
+			.def("loadFile", &Video::loadFile)
+			
+			.def("draw", (void(Video::*)(void)) &Video::draw)
+			.def("draw", (void(Video::*)(int,int)) &Video::draw)
+			.def("draw", (void(Video::*)(int,int,unsigned int,unsigned int)) &Video::draw)
+			.def("clear", &Video::clear)
+			
+			.def("getVideo", &Video::getVideo)
+			.def("isLoaded", &Video::isLoaded)
+			.property("loaded", &Video::isLoaded)
+			.property("video", &Video::getVideo)
+			.property("play", &Video::getPlay, &Video::setPlay)
+			.property("volume", &Video::getVolume, &Video::setVolume)
+			.property("speed", &Video::getSpeed, &Video::setSpeed)
+			.def("getFilename", &Video::getFilename)
+			.property("filename", &Video::getFilename)
+			.property("color", &Video::getColor, &Video::setColor)
+			.property("visible", &Video::getVisible, &Video::setVisible)
+			.property("position", &Video::getPos, &Video::setPos)
+			.def("setSize", &Video::setSize)
+			.property("width", &Video::getWidth, &Video::setWidth)
+			.property("height", &Video::getHeight, &Video::setHeight)
+			.property("center", &Video::getDrawFromCenter, &Video::setDrawFromCenter)
+			.property("name", &Video::getName)
+			.property("type", &Video::getType)
 	;
 }

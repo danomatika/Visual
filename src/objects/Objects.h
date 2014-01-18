@@ -29,3 +29,4 @@
 #include "Sprite.h"
 #include "Image.h"
 #include "Text.h"
+#include "Video.h"
