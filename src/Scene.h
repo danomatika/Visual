@@ -41,8 +41,9 @@ class Scene : public OscObject {
 		/// clears (deletes) all the objects in the list
 		void clearObjects();
 
-		/// setup resources
-		void setup();
+		/// setup resources, set earlySetup = true if objects are being
+		/// setup before the scene is active
+		void setup(bool earlySetup=false);
 		
 		/// update objects
 		void update();
@@ -50,8 +51,8 @@ class Scene : public OscObject {
 		/// draw objects
 		void draw();
 		
-		/// clear resources
-		//void exit();
+		/// tell objects to exit, does not delete
+		void exit();
 		
 		/// Util
 		string getName() {return name;}

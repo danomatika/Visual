@@ -38,6 +38,9 @@ class SceneManager : public OscObject {
 
 		/// remove a scene
 		void removeScene(Scene* scene);
+		
+		/// get the current scene, returns NULL if none
+		Scene* getCurrentScene();
 
 		/// clears (deletes) all scenes,
 		/// set keepCurScene = true to keep the current scene index if reloading
@@ -58,8 +61,8 @@ class SceneManager : public OscObject {
 		/// draw current scene
 		void draw();
 		
-		/// exit current scene/scenes, clear resources
-		//void exit(bool exitAll=false);
+		/// exit current scene/scenes
+		void exit(bool exitAll=false);
 		
 		/// show the scene name when changing?
 		void showSceneName(bool show) {bShowSceneName = show;}

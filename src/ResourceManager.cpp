@@ -28,12 +28,12 @@ ResourceManager::~ResourceManager() {
 }
 
 //--------------------------------------------------------------
-void ResourceManager::update() {
-	map<string,ofPtr<ofVideoPlayer> >::iterator iter;
-	for(iter = videos.begin(); iter != videos.end(); iter++) {
-		(iter->second)->update();
-	}
-}
+//void ResourceManager::update() {
+//	map<string,ofPtr<ofVideoPlayer> >::iterator iter;
+//	for(iter = videos.begin(); iter != videos.end(); iter++) {
+//		(iter->second)->update();
+//	}
+//}
 
 //--------------------------------------------------------------
 void ResourceManager::clear() {

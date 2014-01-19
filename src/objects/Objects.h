@@ -26,6 +26,7 @@
 #include "Line.h"
 #include "Rectangle.h"
 #include "Bitmap.h"
+#include "Script.h"
 #include "Sprite.h"
 #include "Image.h"
 #include "Text.h"

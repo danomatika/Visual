@@ -55,6 +55,15 @@ class DrawableObject : public OscObject {
 		string getName() {return name;}
 		
 		virtual string getType() {return "Object";}// = 0;
+		
+		/// can this object be setup before it's parent scene is active?
+		virtual bool allowsEarlySetup() {return true;}
+		
+		/// should this object always be setup when it's parent scene becomes active?
+		virtual bool shouldAlwaysBeSetup() {return false;}
+		
+		/// should this object be cleared when it's parent scene is exiting?
+		virtual bool shouldClearOnExit() {return false;}
 
 	protected:
 

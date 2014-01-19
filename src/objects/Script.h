@@ -22,41 +22,35 @@
 ==============================================================================*/
 #pragma once
 
-#include "ofxLua.h"
+#include "DrawableObject.h"
 
-class ofxOscMessage;
-
-class ScriptEngine : private ofxLuaListener {
+class Script : public DrawableObject {
 
 	public:
-	
-		ScriptEngine();
-	
-		bool setup();
+
+		Script(string name);
+		Script(string name, string filename);
+
+		bool loadFile(string filename="");
+
+		void setup();
 		void clear();
 		
-		/// clears the current lua state
-		void clearScript();
+		// getters / setters
+		string getFilename() {return filename;}
+		bool isLoaded() {return bLoaded;}
 		
-		/// load a new script
-		/// clears the current lua state
-		bool loadScript(string script);
+		string getType() {return "script";}
 		
-		/// exit, reinit the lua state, and reload the current script
-		bool reloadScript();
-		
-		/// send an osc message to the lua script
-		/// calls the oscReceived lua function
-		void sendOsc(const ofxOscMessage& msg);
-		
-		ofxLua lua;
-		
-		string getCurrentScript() {return currentScript;}
-		
-	private:
-	
-		/// lua error callback
-		void errorReceived(string& msg);
+		bool allowsEarlySetup() {return false;}
+		bool shouldAlwaysBeSetup() {return true;}
+		bool shouldClearOnExit() {return true;}
 
-		string currentScript; ///< absolute path to current script
+	protected:
+
+		/// osc callback
+		bool processOscMessage(const ofxOscMessage& message) {return false;}
+
+		string filename;
+		bool bLoaded;
 };

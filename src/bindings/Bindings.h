@@ -38,10 +38,15 @@ class Bindings {
 			luabind::module(lua, "osc") [
 				registerOsc()
 			];
+			
+			overrideSize(lua);
 		}
 		
 	private:
 		
 		static luabind::scope registerBindings();
 		static luabind::scope registerOsc();
+		
+		/// override the of getWidth & getHeight bindings with the render size
+		static void overrideSize(lua_State *L);
 };

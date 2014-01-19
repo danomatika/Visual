@@ -76,6 +76,9 @@ bool ScriptEngine::loadScript(string script) {
 
 //--------------------------------------------------------------
 bool ScriptEngine::reloadScript() {
+	if(currentScript == "") {
+		return false;
+	}
 	ofLogVerbose(PACKAGE) << "ScriptEngine: reloading \""
 		<< ofFilePath::getFileName(currentScript) << "\"";
 	lua.clear();

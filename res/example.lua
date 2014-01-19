@@ -58,7 +58,7 @@ scene = visual.Scene("primitives")
 visual.addScene(scene)
 
 -- bitmaps and sprites
-scene = visual.Scene("bitmaps & sprites")
+scene = visual.Scene("bitmap&sprite")
 
 	scene.background:set(64, 64, 64)
 	
@@ -150,7 +150,7 @@ scene = visual.Scene("bitmaps & sprites")
 visual.addScene(scene)
 
 -- images and text
-scene = visual.Scene("images & text")
+scene = visual.Scene("image&text")
 	scene.background:set(64)
 
 	-- an image, rescaled when loaded to fit given size
@@ -207,7 +207,7 @@ scene = visual.Scene("images & text")
 visual.addScene(scene)
 
 -- video
-scene = visual.Scene("videos")
+scene = visual.Scene("video")
 	scene.background:set(0)
 
 	video = visual.Video("video1", "test_clip.mov")
@@ -217,13 +217,22 @@ scene = visual.Scene("videos")
 		video.volume = 0
 		video.speed = 2
 		video.loop = of.LOOP.PALINDROME
-		--video.video.speed = 2
 	scene:add(video)
 
-	-- reuse the frist movie
+	-- reuse the first movie
 	video2 = visual.Video("video1 clone", "test_clip.mov")
 		video2:setSize(160, 90) -- make it smaller
 		-- play, volume, & speed have already been set
 	scene:add(video2)
+
+visual.addScene(scene)
+
+-- script
+scene = visual.Scene("script")
+	
+	-- scripts have no options, only use 1 per scene as proceeding scripts will
+	-- overwrite preceeding ones
+	script = visual.Script("script1", "test.lua")
+	scene:add(script)
 
 visual.addScene(scene)

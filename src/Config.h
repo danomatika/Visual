@@ -23,6 +23,7 @@
 #pragma once
 
 #include "OscReceiver.h"
+#include "ScriptEngine.h"
 #include "ResourceManager.h"
 
 #define PACKAGE	"visual"
@@ -82,9 +83,10 @@ class Config {
 		
 		ofPtr<App> app; ///< global app pointer
 		
-		ofxOscSender oscSender;       	///< global osc sender
-		OscReceiver oscReceiver;		///< global osc receiver
+		ofxOscSender oscSender; ///< global osc sender
+		OscReceiver oscReceiver; ///< global osc receiver
 		
+		ScriptEngine scriptEngine; ///< global lua scripting engine
 		ResourceManager resourceManager; ///< global resources
 
 	private:

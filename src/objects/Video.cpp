@@ -23,27 +23,18 @@
 #include "Video.h"
 
 //--------------------------------------------------------------
-Video::Video(string name) : DrawableFrame(name),
+Video::Video(string name) : DrawableObject(name),
 	bPlay(false), volume(0), loopType(OF_LOOP_NORMAL),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
 	clear();
 }
 
 //--------------------------------------------------------------
-Video::Video(string name, string filename) : DrawableFrame(name),
+Video::Video(string name, string filename) : DrawableObject(name),
 	bPlay(false), volume(0), loopType(OF_LOOP_NORMAL),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
 	clear();
 }
-
-//--------------------------------------------------------------
-//Video::Video(string name, Video &src) : DrawableFrame(name),
-//	bPlay(false), volume(0),
-//	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
-//	clear();
-//	video->setPlayer(src.getVideo().getPlayer());
-//	filename = src.filename;
-//}
 
 //--------------------------------------------------------------
 bool Video::loadFile(string filename) {
@@ -86,12 +77,14 @@ bool Video::loadFile(string filename) {
 
 //--------------------------------------------------------------
 void Video::setup() {
-	string baseName = ofFilePath::getBaseName(filename);
-	if(Config::instance().resourceManager.videoExists(baseName)) {
-		video = Config::instance().resourceManager.getVideo(baseName);
-	}
-	else {
-		loadFile();
+	if(!video->isLoaded()) {
+		string baseName = ofFilePath::getBaseName(filename);
+		if(Config::instance().resourceManager.videoExists(baseName)) {
+			video = Config::instance().resourceManager.getVideo(baseName);
+		}
+		else {
+			loadFile();
+		}
 	}
 }
 

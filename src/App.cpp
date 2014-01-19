@@ -27,13 +27,15 @@
 //--------------------------------------------------------------
 App::App() : config(Config::instance()),
 	receiver(Config::instance().oscReceiver),
-	sender(Config::instance().oscSender) {
+	sender(Config::instance().oscSender),
+	scriptEngine(Config::instance().scriptEngine) {
 	
 	shiftPressed = false;
 	bDebug = false;
 	bRunning = true;
 	reloadTimestamp = 0;
 	saveTimestamp = 0;
+	bConfigScript = false;
 	
 	// set osc addresses
 	setOscRootAddress(config.baseAddress);
@@ -112,7 +114,7 @@ void App::draw() {
 	
 	if(bDebug) {
 		ofSetColor(255);
-		ofDrawBitmapString(ofToString(ofGetFrameRate()), 12, 12);
+		ofDrawBitmapStringHighlight(ofToString((int) ofGetFrameRate()), 0, 12);
 	}
 }
 
@@ -201,7 +203,12 @@ void App::keyPressed(int key) {
 
 		case 'R':
 			if(ofGetElapsedTimeMillis() - reloadTimestamp > 5000) {
-				reloadConfigScript();
+				if(bConfigScript) {
+					reloadConfigScript();
+				}
+				else {
+					reloadScript();
+				}
 				reloadTimestamp = ofGetElapsedTimeMillis();
 				return;
 			}
@@ -275,6 +282,7 @@ void App::loadConfigScript() {
 		ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(config.file));
 		
 		scriptEngine.loadScript(config.file);
+		bConfigScript = true;
 	}
 }
 
@@ -287,6 +295,14 @@ void App::reloadConfigScript() {
 		config.resourceManager.clear();
 		scriptEngine.reloadScript();
 		sceneManager.setup(config.setupAllScenes);
+	}
+}
+
+//--------------------------------------------------------------
+void App::reloadScript() {
+	if(scriptEngine.getCurrentScript() != "") {
+		scriptEngine.lua.scriptExit();
+		scriptEngine.reloadScript();
 	}
 }
 

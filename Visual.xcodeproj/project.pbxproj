@@ -25,13 +25,14 @@
 		30134425187EFE5E00CA92B7 /* ofxTransformer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3013441E187EFE5E00CA92B7 /* ofxTransformer.cpp */; };
 		302E999E18824DF300AF7621 /* Bitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E998F18824DF300AF7621 /* Bitmap.cpp */; };
 		302E999F18824DF300AF7621 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E999218824DF300AF7621 /* Image.cpp */; };
-		302E99A318824DF300AF7621 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E999B18824DF300AF7621 /* Sprite.cpp */; };
 		302E99AC188324EE00AF7621 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99AA188324EE00AF7621 /* SceneManager.cpp */; };
 		302E99B318838D7C00AF7621 /* Bindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99B218838D7C00AF7621 /* Bindings.cpp */; };
 		302E99B81884AE1A00AF7621 /* ScriptEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 302E99B61884AE1A00AF7621 /* ScriptEngine.cpp */; };
 		3084985F18870B42005785B6 /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3084985E18870B42005785B6 /* Osc.cpp */; };
 		308B6F71188996D1003449F2 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 308B6F70188996D1003449F2 /* Text.cpp */; };
 		308B6F76188A466C003449F2 /* Video.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 308B6F74188A466C003449F2 /* Video.cpp */; };
+		308B6F79188C1A45003449F2 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 308B6F78188C1A45003449F2 /* Sprite.cpp */; };
+		308B6F7C188C1A85003449F2 /* Script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 308B6F7A188C1A85003449F2 /* Script.cpp */; };
 		3099FD261880E2B300175228 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD241880E2B300175228 /* Scene.cpp */; };
 		3099FD3818822C1E00175228 /* OscObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3418822C1E00175228 /* OscObject.cpp */; };
 		3099FD3918822C1E00175228 /* OscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3618822C1E00175228 /* OscReceiver.cpp */; };
@@ -184,7 +185,6 @@
 		302E999518824DF300AF7621 /* Objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Objects.h; sourceTree = "<group>"; };
 		302E999618824DF300AF7621 /* Pixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pixel.h; sourceTree = "<group>"; };
 		302E999A18824DF300AF7621 /* Rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rectangle.h; sourceTree = "<group>"; };
-		302E999B18824DF300AF7621 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
 		302E999C18824DF300AF7621 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
 		302E999D18824DF300AF7621 /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		302E99AA188324EE00AF7621 /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
@@ -197,6 +197,9 @@
 		308B6F70188996D1003449F2 /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		308B6F74188A466C003449F2 /* Video.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Video.cpp; sourceTree = "<group>"; };
 		308B6F75188A466C003449F2 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
+		308B6F77188C1936003449F2 /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
+		308B6F78188C1A45003449F2 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
+		308B6F7A188C1A85003449F2 /* Script.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Script.cpp; sourceTree = "<group>"; };
 		3099FD23187FC2DA00175228 /* ofxLuaTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxLuaTouchEvent.h; path = ../../../addons/ofxLua/src/ofxLuaTouchEvent.h; sourceTree = "<group>"; };
 		3099FD241880E2B300175228 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		3099FD251880E2B300175228 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
@@ -462,7 +465,9 @@
 				302E999518824DF300AF7621 /* Objects.h */,
 				302E999618824DF300AF7621 /* Pixel.h */,
 				302E999A18824DF300AF7621 /* Rectangle.h */,
-				302E999B18824DF300AF7621 /* Sprite.cpp */,
+				308B6F7A188C1A85003449F2 /* Script.cpp */,
+				308B6F77188C1936003449F2 /* Script.h */,
+				308B6F78188C1A45003449F2 /* Sprite.cpp */,
 				302E999C18824DF300AF7621 /* Sprite.h */,
 				308B6F70188996D1003449F2 /* Text.cpp */,
 				302E999D18824DF300AF7621 /* Text.h */,
@@ -914,7 +919,6 @@
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				302E99B81884AE1A00AF7621 /* ScriptEngine.cpp in Sources */,
-				302E99A318824DF300AF7621 /* Sprite.cpp in Sources */,
 				3099FD3918822C1E00175228 /* OscReceiver.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				30134420187EFE5E00CA92B7 /* ofxApp.cpp in Sources */,
@@ -943,6 +947,7 @@
 				B7C317235DA05CB0C10A3B1A /* Sound.cpp in Sources */,
 				060E59AAD43D8F98360A91E6 /* Types.cpp in Sources */,
 				302E99AC188324EE00AF7621 /* SceneManager.cpp in Sources */,
+				308B6F7C188C1A85003449F2 /* Script.cpp in Sources */,
 				563398533BF7E949AF45FDAA /* Utils.cpp in Sources */,
 				43EB4BFB96881F87219C43EE /* Video.cpp in Sources */,
 				CB6DAEA8EE562CFFA503375D /* ofxLua.cpp in Sources */,
@@ -954,6 +959,7 @@
 				27765D1BFF26BD9A6186915F /* ofxEasingCirc.cpp in Sources */,
 				E816D7D242D315FB53E23F54 /* ofxEasingCubic.cpp in Sources */,
 				6E062274743F6716A9AD4395 /* ofxEasingElastic.cpp in Sources */,
+				308B6F79188C1A45003449F2 /* Sprite.cpp in Sources */,
 				302E999F18824DF300AF7621 /* Image.cpp in Sources */,
 				59EEACB88F062457FF86492C /* ofxEasingExpo.cpp in Sources */,
 				152EAECABD008D84AF7F27F8 /* ofxEasingLinear.cpp in Sources */,

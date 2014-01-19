@@ -24,13 +24,12 @@
 
 #include "DrawableObject.h"
 
-class Video : public DrawableFrame {
+class Video : public DrawableObject {
 
 	public:
 
 		Video(string name);
 		Video(string name, string filename);
-		//Video(string name, Video &src);
 
 		bool loadFile(string filename="");
 
@@ -71,6 +70,8 @@ class Video : public DrawableFrame {
 		void setDrawFromCenter(bool c) {bDrawFromCenter = c;}
 		
 		string getType() {return "video";}
+		
+		bool shouldAlwaysBeSetup() {return true;}
 
 	protected:
 

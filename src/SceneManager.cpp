@@ -62,6 +62,14 @@ void SceneManager::removeScene(Scene* scene) {
 }
 
 //--------------------------------------------------------------
+Scene* SceneManager::getCurrentScene() {
+	if(currentScene < 0) {
+		return NULL;
+	}
+	return scenes[currentScene];
+}
+
+//--------------------------------------------------------------
 void SceneManager::clear(bool keepCurScene) {
 
 	/// delete all the objects
@@ -82,7 +90,7 @@ void SceneManager::nextScene() {
 		return;
 	}
 
-	//exit();
+	exit();
 	currentScene++;
 	if(currentScene >= (int) scenes.size()) {
 		currentScene = 0;
@@ -100,7 +108,7 @@ void SceneManager::prevScene() {
 		return;
 	}
 
-	//exit();
+	exit();
 	currentScene--;
 	if(currentScene < 0) {
 		currentScene = scenes.size()-1;
@@ -124,7 +132,7 @@ void SceneManager::gotoScene(unsigned int num) {
 		return;
 	}
 
-	//exit();
+	exit();
 	currentScene = num;
 
 	ofLogVerbose("visual") << "SceneManager: changed scene to \""
@@ -159,7 +167,7 @@ void SceneManager::setup(bool loadAll) {
 	// setup all scenes
 	if(loadAll) {
 		for(unsigned int i = 0; i < scenes.size(); ++i) {
-			scenes.at(i)->setup();
+			scenes.at(i)->setup(true);
 		}
 	}
 	else {
@@ -218,18 +226,18 @@ void SceneManager::draw() {
 }
 
 //--------------------------------------------------------------
-//void SceneManager::exit(bool exitAll) {
-//	if(exitAll) {
-//		for(unsigned int i = 0; i < scenes.size(); ++i) {
-//			scenes.at(i)->exit();
-//		}
-//	}
-//	else {
-//		if(currentScene > 0) {
-//			scenes.at(currentScene)->exit();
-//		}
-//	}
-//}
+void SceneManager::exit(bool exitAll) {
+	if(exitAll) {
+		for(unsigned int i = 0; i < scenes.size(); ++i) {
+			scenes.at(i)->exit();
+		}
+	}
+	else {
+		if(currentScene > 0) {
+			scenes.at(currentScene)->exit();
+		}
+	}
+}
 
 //--------------------------------------------------------------
 void SceneManager::setFrameRate(unsigned int rate) {
@@ -242,7 +250,6 @@ void SceneManager::setFrameRate(unsigned int rate) {
 // PROTECTED
 //--------------------------------------------------------------
 void SceneManager::setupScene(Scene* s) {
-	//Config::instance().resourceManager.clear();
 	bSetupScene = true;
 	bSetBackground = true;
 	setFrameRate(s->getFps());

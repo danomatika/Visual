@@ -32,7 +32,7 @@ class ResourceManager {
 
 		~ResourceManager();
 
-		void update();
+		//void update();
 		void clear();
 
 		/// fonts

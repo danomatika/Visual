@@ -50,8 +50,12 @@ class App : public ofBaseApp, public OscObject {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+		/// load/reload the config/playlist
 		void loadConfigScript();
 		void reloadConfigScript();
+		
+		/// reload current lua script in a Script object (if there is one)
+		void reloadScript();
 		
 		bool shiftPressed; //< shift key modifier
 		
@@ -61,14 +65,16 @@ class App : public ofBaseApp, public OscObject {
 		Config &config;
 		OscReceiver &receiver;
 		ofxOscSender &sender;
+		ScriptEngine &scriptEngine;
 		
 		SceneManager sceneManager;
-		ScriptEngine scriptEngine;
 		
 		unsigned int reloadTimestamp;
 		unsigned int saveTimestamp;
 		
 		ofxTransformer transformer; ///< for screen scaling
+		
+		bool bConfigScript; ///< is the current script the config/playlist?
 		
 	protected:
 	

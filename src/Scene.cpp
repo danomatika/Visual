@@ -78,12 +78,21 @@ void Scene::clearObjects() {
 }
 
 //--------------------------------------------------------------
-void Scene::setup() {
+void Scene::setup(bool earlySetup) {
 	if(!bSetup) {
 		for(unsigned int i = 0; i < objects.size(); ++i) {
-			objects.at(i)->setup();
+			if(!earlySetup || objects[i]->allowsEarlySetup()) {
+				objects[i]->setup();
+			}
 		}
 		bSetup = true;
+	}
+	else {
+		for(unsigned int i = 0; i < objects.size(); ++i) {
+			if(objects[i]->shouldAlwaysBeSetup()) {
+				objects[i]->setup();
+			}
+		}
 	}
 }
 
@@ -111,9 +120,11 @@ void Scene::draw() {
 }
 
 ////--------------------------------------------------------------
-//void Scene::exit() {
+void Scene::exit() {
 //	bSetup = false;
-//	for(unsigned int i = 0; i < objects.size(); ++i) {
-//		objects.at(i)->clear();
-//	}
-//}
+	for(unsigned int i = 0; i < objects.size(); ++i) {
+		if(objects[i]->shouldClearOnExit()) {
+			objects.at(i)->clear();
+		}
+	}
+}

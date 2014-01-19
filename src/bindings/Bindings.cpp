@@ -42,8 +42,23 @@ void configSetBaseAddress(Config *config, string base) {
 }
 
 //--------------------------------------------------------------
+float getRenderWidth() {
+	return Config::instance().renderWidth;
+}
+
+//--------------------------------------------------------------
+float getRenderHeight() {
+	return Config::instance().renderHeight;
+}
+
+//--------------------------------------------------------------
 void addScene(Scene *scene) {
 	Config::instance().app->sceneManager.addScene(scene);
+}
+
+//--------------------------------------------------------------
+Scene* getCurrentScene() {
+	return Config::instance().app->sceneManager.getCurrentScene();
 }
 
 //--------------------------------------------------------------
@@ -76,11 +91,15 @@ luabind::scope Bindings::registerBindings() {
 			.def_readonly("renderWidth", &Config::renderWidth)
 			.def_readonly("renderHeight", &Config::renderHeight)
 			.def_readwrite("setupAllScenes", &Config::setupAllScenes),
+			
+		def("getRenderWidth", &getRenderWidth),
+		def("getRenderHeight", &getRenderHeight),
 		
 		///////////////////////////////
 		/// \section Scene.h
 		
 		def("addScene", &addScene, adopt(_1)), // transfer ownership to C++
+		def("getCurrentScene", &getCurrentScene),
 		
 		class_<Scene>("Scene")
 			.def(constructor<string>())
@@ -233,7 +252,21 @@ luabind::scope Bindings::registerBindings() {
 			.property("center", &Rectangle::getDrawFromCenter, &Rectangle::setDrawFromCenter)
 			.property("name", &Rectangle::getName)
 			.property("type", &Rectangle::getType),
+		
+		///////////////////////////////
+		/// \section Script.h
+		
+		class_<Script, DrawableObject>("Script")
+			.def(constructor<string>())
+			.def(constructor<string,string>())
 			
+			.def("isLoaded", &Script::isLoaded)
+			.property("loaded", &Script::isLoaded)
+			.def("getFilename", &Script::getFilename)
+			.property("filename", &Script::getFilename)
+			.property("name", &Script::getName)
+			.property("type", &Script::getType),
+		
 		///////////////////////////////
 		/// \section Sprite.h
 		
@@ -331,4 +364,15 @@ luabind::scope Bindings::registerBindings() {
 			.property("name", &Video::getName)
 			.property("type", &Video::getType)
 	;
+}
+
+// override of size with render size
+static string overrides =
+"of.getWidth = visual.getRenderWidth\n" \
+"of.getHeight = visual.getRenderHeight"
+;
+
+void Bindings::overrideSize(lua_State *L) {
+	luaL_loadstring(L, overrides.c_str());
+	lua_pcall(L, 0, LUA_MULTRET, 0);
 }
