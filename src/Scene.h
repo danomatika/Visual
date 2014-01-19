@@ -43,21 +43,29 @@ class Scene : public OscObject {
 
 		/// setup resources
 		void setup();
+		
+		/// update objects
+		void update();
 
-		/// draw all the objects in the list
+		/// draw objects
 		void draw();
 		
+		/// clear resources
+		//void exit();
+		
 		/// Util
-		string getName() {return _name;}
-		ofColor& getBackground() {return _background;}
-		void setBackground(ofColor &c) {_background = c;}
-		int getFps() {return _fps;} // returns -1 if not set
-		void setFps(unsigned int fps) {_fps = fps;}
+		string getName() {return name;}
+		ofColor& getBackground() {return background;}
+		void setBackground(ofColor &c) {background = c;}
+		int getFps() {return fps;} // returns -1 if not set
+		void setFps(unsigned int fps) {this->fps = fps;}
 
 	private:
 
-		string _name;
-		vector<DrawableObject*> _objectList;
-		ofColor _background;
-		int _fps;
+		bool bSetup; ///< make sure setup is only called once
+
+		string name;
+		vector<DrawableObject*> objects;
+		ofColor background;
+		int fps;
 };

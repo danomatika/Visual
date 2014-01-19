@@ -86,13 +86,19 @@ bool Video::loadFile(string filename) {
 
 //--------------------------------------------------------------
 void Video::setup() {
-
 	string baseName = ofFilePath::getBaseName(filename);
 	if(Config::instance().resourceManager.videoExists(baseName)) {
 		video = Config::instance().resourceManager.getVideo(baseName);
 	}
 	else {
 		loadFile();
+	}
+}
+
+//--------------------------------------------------------------
+void Video::update() {
+	if(video->isLoaded()) {
+		video->update();
 	}
 }
 

@@ -29,9 +29,8 @@
 
 //--------------------------------------------------------------
 SceneManager::SceneManager() : OscObject(""),
-	_currentScene(-1), _bShowSceneName(true) {
-	_bSetBackground = false;
-}
+	currentScene(-1), bShowSceneName(true),
+	bSetBackground(false), bSetupScene(false) {}
 
 //--------------------------------------------------------------
 SceneManager::~SceneManager() {
@@ -45,7 +44,7 @@ void SceneManager::addScene(Scene* scene) {
 		return;
 	}
 	scene->setOscRootAddress(oscRootAddress+"/"+scene->getName());
-	_sceneList.push_back(scene);
+	scenes.push_back(scene);
 }
 
 //--------------------------------------------------------------
@@ -56,9 +55,9 @@ void SceneManager::removeScene(Scene* scene) {
 	}
 
 	vector<Scene*>::iterator iter;
-	iter = find(_sceneList.begin(), _sceneList.end(), scene);
-	if(iter != _sceneList.end()) {
-		_sceneList.erase(iter);
+	iter = find(scenes.begin(), scenes.end(), scene);
+	if(iter != scenes.end()) {
+		scenes.erase(iter);
 	}
 }
 
@@ -66,155 +65,194 @@ void SceneManager::removeScene(Scene* scene) {
 void SceneManager::clear(bool keepCurScene) {
 
 	/// delete all the objects
-	for(unsigned int i = 0; i < _sceneList.size(); ++i) {
-		Scene* o = _sceneList.at(i);
+	for(unsigned int i = 0; i < scenes.size(); ++i) {
+		Scene* o = scenes.at(i);
 		delete o;
 	}
-	_sceneList.clear();
+	scenes.clear();
 	
 	if(!keepCurScene) {
-		_currentScene = 0;
+		currentScene = 0;
 	}
 }
 
 //--------------------------------------------------------------
 void SceneManager::nextScene() {
-	if(_sceneList.empty()) {
+	if(scenes.empty()) {
 		return;
 	}
 
-	_currentScene++;
-	if(_currentScene >= (int) _sceneList.size()) {
-		_currentScene = 0;
+	//exit();
+	currentScene++;
+	if(currentScene >= (int) scenes.size()) {
+		currentScene = 0;
 	}
 
 	ofLogVerbose("visual") << "SceneManager: changed to scene \""
-		<< _sceneList.at(_currentScene)->getName() << "\"";
+		<< scenes.at(currentScene)->getName() << "\"";
 
-	setupScene(_sceneList.at(_currentScene));
+	setupScene(scenes.at(currentScene));
 }
 
 //--------------------------------------------------------------
 void SceneManager::prevScene() {
-	if(_sceneList.empty()) {
+	if(scenes.empty()) {
 		return;
 	}
 
-	_currentScene--;
-	if(_currentScene < 0) {
-		_currentScene = _sceneList.size()-1;
+	//exit();
+	currentScene--;
+	if(currentScene < 0) {
+		currentScene = scenes.size()-1;
 	}
 
 	ofLogVerbose("visual") << "SceneManager: changed to scene \""
-		<< _sceneList.at(_currentScene)->getName() << "\"";
+		<< scenes.at(currentScene)->getName() << "\"";
 
-	setupScene(_sceneList.at(_currentScene));
+	setupScene(scenes.at(currentScene));
 }
 
 //--------------------------------------------------------------
 void SceneManager::gotoScene(unsigned int num) {
-	if(_sceneList.empty()) {
+	if(scenes.empty()) {
 		return;
 	}
 
-	if(_currentScene >= (int) _sceneList.size()) {
+	if(currentScene >= (int) scenes.size()) {
 		ofLogWarning() << "SceneManager: cannot goto scene num " << num
 			<< ", index out of range";
 		return;
 	}
 
-	_currentScene = num;
+	//exit();
+	currentScene = num;
 
 	ofLogVerbose("visual") << "SceneManager: changed scene to \""
-			  << _sceneList.at(_currentScene)->getName() << "\"";
+			  << scenes.at(currentScene)->getName() << "\"";
 
-	setupScene(_sceneList.at(_currentScene));
+	setupScene(scenes.at(currentScene));
 }
 
 //--------------------------------------------------------------
 void SceneManager::gotoScene(string name) {
 
-	for(unsigned int i = 0; i < _sceneList.size(); ++i) {
+	for(unsigned int i = 0; i < scenes.size(); ++i) {
 	
-		if(name == _sceneList.at(i)->getName()) {
-			_currentScene = i;
+		if(name == scenes.at(i)->getName()) {
+			currentScene = i;
 			ofLogVerbose("visual") << "SceneManager: changed scene to \""
-					  << _sceneList.at(_currentScene)->getName() << "\"";
-			setupScene(_sceneList.at(_currentScene));
+					  << scenes.at(currentScene)->getName() << "\"";
+			setupScene(scenes.at(currentScene));
 			return;
 		}
 	}
 }
 
 //--------------------------------------------------------------
-void SceneManager::setup() {
+void SceneManager::setup(bool loadAll) {
 	
 	// load scene change font
-	if(!_sceneNameFont.isLoaded()) {
-		_sceneNameFont.loadFont(Config::instance().fontFilename, SCENE_NAME_FONT_SIZE, false);
+	if(!sceneNameFont.isLoaded()) {
+		sceneNameFont.loadFont(Config::instance().fontFilename, SCENE_NAME_FONT_SIZE, false);
 	}
 	
 	// setup all scenes
-	for(unsigned int i = 0; i < _sceneList.size(); ++i) {
-		_sceneList.at(i)->setup();
+	if(loadAll) {
+		for(unsigned int i = 0; i < scenes.size(); ++i) {
+			scenes.at(i)->setup();
+		}
+	}
+	else {
+		if(currentScene > 0) {
+			scenes.at(currentScene)->setup();
+		}
 	}
 
 	// try to load the first scene
-	if(_currentScene < 0) {
+	if(currentScene < 0) {
 		gotoScene(0);
 	}
 }
 
 //--------------------------------------------------------------
+void SceneManager::update() {
+	if(currentScene > 0) {
+		scenes[currentScene]->update();
+	}
+}
+
+//--------------------------------------------------------------
 void SceneManager::draw() {
-	if(_currentScene >= 0 && _currentScene < (int) _sceneList.size()) {
-		Scene* s = _sceneList.at(_currentScene);
+	if(currentScene >= 0 && currentScene < (int) scenes.size()) {
+		Scene* s = scenes.at(currentScene);
+		
+		if(bSetupScene) {
+			s->setup();
+			bSetupScene = false;
+		}
 		
 		// only set background in gl state since scene changes may happen
 		// in osc receiver thread
-		if(_bSetBackground) {
+		if(bSetBackground) {
 			ofBackground(s->getBackground());
-			_bSetBackground = false;
+			bSetBackground = false;
 		}
 		
 		// artificial frame rate timing
 		if(s->getFps() > 0) {
-		if(_frameRateTimer.alarm()) {
+		if(frameRateTimer.alarm()) {
 			s->draw();
-			_frameRateTimer.setAlarm(1000/s->getFps());
+			frameRateTimer.setAlarm(1000/s->getFps());
 		}
 		}
 		else {
 			s->draw();
 		}
 		
-		if(_bShowSceneName && !_sceneNameTimer.alarm()) {
+		if(bShowSceneName && !sceneNameTimer.alarm()) {
 			ofSetHexColor(0xFF00FF);
-			_sceneNameFont.drawString(s->getName(),
-				0, (int) Config::instance().renderHeight-_sceneNameFont.stringHeight(s->getName())*0.25);
+			sceneNameFont.drawString(s->getName(),
+				0, (int) Config::instance().renderHeight - sceneNameFont.stringHeight(s->getName())*0.25);
 		}
 	}
 }
 
+//--------------------------------------------------------------
+//void SceneManager::exit(bool exitAll) {
+//	if(exitAll) {
+//		for(unsigned int i = 0; i < scenes.size(); ++i) {
+//			scenes.at(i)->exit();
+//		}
+//	}
+//	else {
+//		if(currentScene > 0) {
+//			scenes.at(currentScene)->exit();
+//		}
+//	}
+//}
+
+//--------------------------------------------------------------
 void SceneManager::setFrameRate(unsigned int rate) {
-	_frameRate = rate;
-	if(_frameRate > 0) {
-		_frameRateTimer.setAlarm(0);
+	frameRate = rate;
+	if(frameRate > 0) {
+		frameRateTimer.setAlarm(0);
 	}
 }
 
 // PROTECTED
 //--------------------------------------------------------------
 void SceneManager::setupScene(Scene* s) {
-	_bSetBackground = true;
+	//Config::instance().resourceManager.clear();
+	bSetupScene = true;
+	bSetBackground = true;
 	setFrameRate(s->getFps());
-	_sceneNameTimer.setAlarm(SCENE_NAME_MS);
+	sceneNameTimer.setAlarm(SCENE_NAME_MS);
 }
 
 //--------------------------------------------------------------
 bool SceneManager::processOscMessage(const ofxOscMessage& message) {
-	if(_currentScene >= 0 && _currentScene < (int) _sceneList.size()) {
-		return _sceneList.at(_currentScene)->processOsc(message);
+	if(currentScene >= 0 && currentScene < (int) scenes.size()) {
+		return scenes.at(currentScene)->processOsc(message);
 	}
 	return false;
 }

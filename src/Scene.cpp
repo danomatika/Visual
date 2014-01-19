@@ -25,7 +25,7 @@
 #include "objects/Objects.h"
 
 //--------------------------------------------------------------
-Scene::Scene(string name) : _name(name), _background(0), _fps(-1) {
+Scene::Scene(string name) : bSetup(false), name(name), background(0), fps(-1) {
 	// set address here as the baseAddress might have been changed in lua
 	oscRootAddress = Config::instance().baseAddress+"/"+name;
 }
@@ -38,30 +38,30 @@ Scene::~Scene() {
 //--------------------------------------------------------------
 void Scene::addObject(DrawableObject* object) {
 	if(object == NULL) {
-		ofLogError() << "Scene \"" << _name << "\": cannot add NULL object";
+		ofLogError() << "Scene \"" << name << "\": cannot add NULL object";
 		return;
 	}
 
 	object->setOscRootAddress(oscRootAddress+"/"+object->getName());
 	addOscObject(object);
-	_objectList.push_back(object);
+	objects.push_back(object);
 	
-	ofLogVerbose(PACKAGE) << "Scene \"" << _name << "\": added " << object->getType()
-		<< " \"" << object->getName() << "\"";
+	ofLogVerbose(PACKAGE) << "Scene \"" << name << "\": added "
+		<< object->getType() << " \"" << object->getName() << "\"";
 }
 
 //--------------------------------------------------------------
 void Scene::removeObject(DrawableObject* object) {
 	if(object == NULL) {
-		ofLogError() << "Scene \"" << _name << "\": cannot remove NULL object";
+		ofLogError() << "Scene \"" << name << "\": cannot remove NULL object";
 		return;
 	}
 
 	vector<DrawableObject*>::iterator iter;
-	iter = find(_objectList.begin(), _objectList.end(), object);
-	if(iter != _objectList.end()) {
+	iter = find(objects.begin(), objects.end(), object);
+	if(iter != objects.end()) {
 		removeOscObject((*iter));
-		_objectList.erase(iter);
+		objects.erase(iter);
 	}
 }
 
@@ -69,33 +69,51 @@ void Scene::removeObject(DrawableObject* object) {
 void Scene::clearObjects() {
 
 	/// delete all the objects
-	for(unsigned int i = 0; i < _objectList.size(); ++i) {
-		DrawableObject* o = _objectList.at(i);
+	for(unsigned int i = 0; i < objects.size(); ++i) {
+		DrawableObject* o = objects.at(i);
 		removeOscObject(o);
 		delete o;
 	}
-	_objectList.clear();
+	objects.clear();
 }
 
 //--------------------------------------------------------------
 void Scene::setup() {
-	for(unsigned int i = 0; i < _objectList.size(); ++i) {
-		_objectList.at(i)->setup();
+	if(!bSetup) {
+		for(unsigned int i = 0; i < objects.size(); ++i) {
+			objects.at(i)->setup();
+		}
+		bSetup = true;
+	}
+}
+
+//--------------------------------------------------------------
+void Scene::update() {
+	for(unsigned int i = 0; i < objects.size(); ++i) {
+		objects[i]->update();
 	}
 }
 
 //--------------------------------------------------------------
 void Scene::draw() {
 	vector<DrawableObject*>::iterator iter;
-	for(iter = _objectList.begin(); iter != _objectList.end(); ++iter) {
+	for(iter = objects.begin(); iter != objects.end(); ++iter) {
 		
 		// remove any NULL objects
 		if((*iter) == NULL) {
-			_objectList.erase(iter);
-			ofLogError() << "Scene \"" << _name << "\": removed NULL object";
+			objects.erase(iter);
+			ofLogError() << "Scene \"" << name << "\": removed NULL object";
 		}
 		else {
 			(*iter)->draw();
 		}
 	}
 }
+
+////--------------------------------------------------------------
+//void Scene::exit() {
+//	bSetup = false;
+//	for(unsigned int i = 0; i < objects.size(); ++i) {
+//		objects.at(i)->clear();
+//	}
+//}

@@ -39,7 +39,8 @@ class SceneManager : public OscObject {
 		/// remove a scene
 		void removeScene(Scene* scene);
 
-		/// clears (deletes) all the objects in the list
+		/// clears (deletes) all scenes,
+		/// set keepCurScene = true to keep the current scene index if reloading
 		void clear(bool keepCurScene=false);
 
 		// scene transport
@@ -48,15 +49,21 @@ class SceneManager : public OscObject {
 		void gotoScene(unsigned int num);
 		void gotoScene(string name);
 
-		/// loads graphics resources
-		void setup();
+		/// setup current scene/scenes, load resources
+		void setup(bool loadAll=false);
+		
+		/// update current scene
+		void update();
 
-		/// draw all the objects in the list
+		/// draw current scene
 		void draw();
 		
+		/// exit current scene/scenes, clear resources
+		//void exit(bool exitAll=false);
+		
 		/// show the scene name when changing?
-		void showSceneName(bool yesno) {_bShowSceneName = yesno;}
-		void toggleSceneName() {_bShowSceneName = !_bShowSceneName;}
+		void showSceneName(bool show) {bShowSceneName = show;}
+		void toggleSceneName() {bShowSceneName = !bShowSceneName;}
 		
 		/// set the psuedo frameRate calculated via timer
 		void setFrameRate(unsigned int rate);
@@ -71,15 +78,16 @@ class SceneManager : public OscObject {
 
 	private:
 
-		int _currentScene;
-		vector<Scene*> _sceneList;
+		int currentScene;
+		vector<Scene*> scenes;
 		
-		bool _bShowSceneName;
-		ofxTimer _sceneNameTimer;
-		ofTrueTypeFont _sceneNameFont;
+		bool bShowSceneName;
+		ofxTimer sceneNameTimer;
+		ofTrueTypeFont sceneNameFont;
 		
-		ofxTimer _frameRateTimer;
-		unsigned int _frameRate;
+		ofxTimer frameRateTimer;
+		unsigned int frameRate;
 		
-		bool _bSetBackground;
+		bool bSetBackground; ///< does the background need to be set?
+		bool bSetupScene; ///< does the current scene need to be setup?
 };

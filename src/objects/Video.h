@@ -35,7 +35,8 @@ class Video : public DrawableFrame {
 		bool loadFile(string filename="");
 
 		void setup();
-
+		void update();
+		
 		void draw();
 		void draw(int x, int y);
 		void draw(int x, int y, unsigned int w, unsigned int h);

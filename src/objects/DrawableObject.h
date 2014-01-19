@@ -33,6 +33,7 @@ class DrawableObject : public OscObject {
 		virtual ~DrawableObject() {}
 
 		virtual void setup() {};
+		virtual void update() {};
 		virtual void draw() {} // = 0;
 		virtual void draw(int x, int y) {}
 		virtual void draw(int x, int y, unsigned int w, unsigned h) {}

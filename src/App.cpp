@@ -83,7 +83,7 @@ void App::setup() {
 	sender.setup(config.sendingIp, config.sendingPort);
 	
 	// setup & try to load first scene
-	sceneManager.setup();
+	sceneManager.setup(config.setupAllScenes);
 	
 	// notify of connection
 	ofxOscMessage message;
@@ -95,7 +95,8 @@ void App::setup() {
 
 //--------------------------------------------------------------
 void App::update() {
-	config.resourceManager.update();
+	sceneManager.update();
+//	config.resourceManager.update();
 	scriptEngine.lua.scriptUpdate();
 }
 
@@ -285,7 +286,7 @@ void App::reloadConfigScript() {
 		sceneManager.clear(true);
 		config.resourceManager.clear();
 		scriptEngine.reloadScript();
-		sceneManager.setup();
+		sceneManager.setup(config.setupAllScenes);
 	}
 }
 

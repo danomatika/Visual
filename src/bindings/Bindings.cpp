@@ -74,7 +74,8 @@ luabind::scope Bindings::registerBindings() {
 			.def_readwrite("connectionId", &Config::connectionId)
 			.def("setRenderSize", &Config::setRenderSize)
 			.def_readonly("renderWidth", &Config::renderWidth)
-			.def_readonly("renderHeight", &Config::renderHeight),
+			.def_readonly("renderHeight", &Config::renderHeight)
+			.def_readwrite("setupAllScenes", &Config::setupAllScenes),
 		
 		///////////////////////////////
 		/// \section Scene.h

@@ -19,6 +19,10 @@ config.notificationAddress = "/pd/visual"
 config.deviceAddress = "/pd/devices"
 config.connectionId = 0
 
+-- setup all the scenes after this file is loaded? (default: true)
+-- or setup each scene when it is first run (false)
+config.setupAllScenes = false
+
 -- this file is divided up into multiple scenes which can be switched between
 
 -- graphics primitives
@@ -151,7 +155,7 @@ scene = visual.Scene("images & text")
 
 	-- an image, rescaled when loaded to fit given size
 	image = visual.Image("image1", "icon.png")
-		image.position:set(100, 100)
+		image.position:set(100, 50)
 		image:setSize(50, 50)
 		image.center = false
 		image.visible = true
@@ -160,14 +164,14 @@ scene = visual.Scene("images & text")
 	-- image files can be reused as the filename is used as a unique id
 	-- for reusing currently loaded images
 	image = visual.Image("image2", "icon.png")
-		image.position:set(150, 150)
+		image.position:set(150, 100)
 		image:setSize(50, 50)
 		image.center = false
 		image.visible = true
 	scene:add(image)
 	
 	image = visual.Image("image3", "icon.png")
-		image.position:set(200, 200)
+		image.position:set(200, 150)
 		image:setSize(100, 100)
 		image.center = false
 		image.visible = true
@@ -175,7 +179,7 @@ scene = visual.Scene("images & text")
 
 	-- draw some text, uses default font & size
 	text = visual.Text("text1")
-		text.position:set(10, 340)
+		text.position:set(10, 290)
 		text.center = false
 		text.color:set(200)
 		text.visible = true
@@ -184,7 +188,7 @@ scene = visual.Scene("images & text")
 
 	-- default font with size
 	text = visual.Text("text2", 14)
-		text.position:set(10, 380)
+		text.position:set(10, 330)
 		text.center = false
 		text.color:set(200, 255, 127)
 		text.visible = true
@@ -193,7 +197,7 @@ scene = visual.Scene("images & text")
 
 	-- load a local font with size
 	text = visual.Text("text3", "verdana.ttf", 36)
-		text.position:set(320, 460)
+		text.position:set(320, 410)
 		text.center = true
 		text.color:set(255, 0, 255, 200)
 		text.visible = true

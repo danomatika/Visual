@@ -75,6 +75,8 @@ class Config {
 		
 		unsigned int renderWidth, renderHeight; ///< render dimensions
 		void setRenderSize(unsigned int w, unsigned int h);
+		
+		bool setupAllScenes;			///< setup all scenes on load?
 
 		// \section Objects
 		

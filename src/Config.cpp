@@ -100,14 +100,15 @@ void Config::setup() {
 
 //--------------------------------------------------------------
 void Config::print() {
-	ofLog() << "listening port: " << listeningPort;
-	ofLog() << "sending ip: " << sendingIp;
-	ofLog() << "sending port: " << sendingPort;
-	ofLog() << "base address: " << baseAddress;
-	ofLog() << "sending address for notifications: " << notificationAddress;
-	ofLog() << "sending address for devices: " << deviceAddress;
-	ofLog() << "connection id for notifications: " << connectionId;
-	ofLog() << "render size: " << renderWidth << "x" << renderHeight;
+	ofLogNotice() << "listening port: " << listeningPort;
+	ofLogNotice() << "sending ip: " << sendingIp;
+	ofLogNotice() << "sending port: " << sendingPort;
+	ofLogNotice() << "base address: " << baseAddress;
+	ofLogNotice() << "sending address for notifications: " << notificationAddress;
+	ofLogNotice() << "sending address for devices: " << deviceAddress;
+	ofLogNotice() << "connection id for notifications: " << connectionId;
+	ofLogNotice() << "render size: " << renderWidth << "x" << renderHeight;
+	ofLogNotice() << "setup all scenes: " << (setupAllScenes ? "true" : "false");
 }
 
 void Config::setRenderSize(unsigned int w, unsigned int h) {
@@ -126,4 +127,5 @@ Config::Config() :
 	deviceAddress(baseAddress+"/devices"),
 	connectionId(0),
 	fontFilename(""),
-	renderWidth(0), renderHeight(0) {}
+	renderWidth(0), renderHeight(0),
+	setupAllScenes(true) {}
