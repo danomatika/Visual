@@ -211,7 +211,8 @@ scene = visual.Scene("videos")
 		video.center = true
 		video.play = true
 		video.volume = 0
-		video.speed = 0.5
+		video.speed = 2
+		video.loop = of.LOOP.PALINDROME
 		--video.video.speed = 2
 	scene:add(video)
 

@@ -52,6 +52,8 @@ class Video : public DrawableFrame {
 		void setVolume(float v);
 		float getSpeed();
 		void setSpeed(float s);
+		ofLoopType getLoop();
+		void setLoop(ofLoopType s);
 		
 		string getFilename() {return filename;}
 		
@@ -79,6 +81,8 @@ class Video : public DrawableFrame {
 		bool bPlay;
 		float volume;
 		float speed;
+		bool bLoop;
+		ofLoopType loopType;
 
 		string filename;
 		ofPoint pos;

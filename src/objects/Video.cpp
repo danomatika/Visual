@@ -23,14 +23,15 @@
 #include "Video.h"
 
 //--------------------------------------------------------------
-Video::Video(string name) : DrawableFrame(name), bPlay(false), volume(0),
+Video::Video(string name) : DrawableFrame(name),
+	bPlay(false), volume(0), loopType(OF_LOOP_NORMAL),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
 	clear();
 }
 
 //--------------------------------------------------------------
 Video::Video(string name, string filename) : DrawableFrame(name),
-	bPlay(false), volume(0),
+	bPlay(false), volume(0), loopType(OF_LOOP_NORMAL),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
 	clear();
 }
@@ -78,6 +79,7 @@ bool Video::loadFile(string filename) {
 	}
 	video->setVolume(volume);
 	video->setSpeed(speed);
+	video->setLoopState(loopType);
 
 	return true;
 }
@@ -161,6 +163,17 @@ void Video::setSpeed(float s) {
 }
 
 //--------------------------------------------------------------
+ofLoopType Video::getLoop() {
+	video->getLoopState();
+}
+
+//--------------------------------------------------------------
+void Video::setLoop(ofLoopType t) {
+	loopType = t;
+	video->setLoopState(loopType);
+}
+
+//--------------------------------------------------------------
 void Video::setSize(unsigned int w, unsigned int h) {
 	width = w;
 	height = h;
@@ -192,6 +205,13 @@ bool Video::processOscMessage(const ofxOscMessage& message) {
 		float s = 0;
 		if(tryNumber(message, s, 0)) {
 			setSpeed(s);
+		}
+		return true;
+	}
+	else if(message.getAddress() == oscRootAddress + "/loop") {
+		unsigned int l = (unsigned int) OF_LOOP_NONE;
+		if(tryNumber(message, l, 0)) {
+			setLoop((ofLoopType) l);
 		}
 		return true;
 	}

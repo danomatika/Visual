@@ -317,6 +317,7 @@ luabind::scope Bindings::registerBindings() {
 			.property("play", &Video::getPlay, &Video::setPlay)
 			.property("volume", &Video::getVolume, &Video::setVolume)
 			.property("speed", &Video::getSpeed, &Video::setSpeed)
+			.property("loop", &Video::getLoop, &Video::setLoop)
 			.def("getFilename", &Video::getFilename)
 			.property("filename", &Video::getFilename)
 			.property("color", &Video::getColor, &Video::setColor)
