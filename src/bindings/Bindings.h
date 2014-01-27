@@ -35,12 +35,10 @@ class Bindings {
 				registerBindings()
 			];
 			
-			luabind::module(lua, "osc") [
-				registerOsc()
-			];
-			
 			luabind::module(lua, "ofx") [
-				registerSvg()
+				registerOsc(),
+				registerSvg(),
+				registerTween()
 			];
 			
 			overrideSize(lua);
@@ -51,6 +49,7 @@ class Bindings {
 		static luabind::scope registerBindings();
 		static luabind::scope registerOsc();
 		static luabind::scope registerSvg();
+		static luabind::scope registerTween();
 		
 		/// override the of getWidth & getHeight bindings with the render size
 		static void overrideSize(lua_State *L);

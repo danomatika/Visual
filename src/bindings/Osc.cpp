@@ -78,58 +78,65 @@ luabind::scope Bindings::registerOsc() {
 	return
 				
 		///////////////////////////////
-		/// \section Osc
+		/// \section ofxOsc
 		
-		def("send", &sendBang),
-		def("sendFloat", &sendFloat),
-		def("sendInt", &sendInt),
-		def("sendString", &sendString),
-		def("sendMessage", &sendMessage),
-		def("sendBundle", &sendBundle),
+		namespace_("osc") [
+		
+			// convenience functions
+			def("send", &sendBang),
+			def("sendFloat", &sendFloat),
+			def("sendInt", &sendInt),
+			def("sendString", &sendString),
+			def("sendMessage", &sendMessage),
+			def("sendBundle", &sendBundle),
+				
+			///////////////////////////////
+			/// \section Message
 			
-		///////////////////////////////
-		/// \section Message
-		
-		class_<OscArgType>("TYPE")
-			.enum_("argType") [
-				value("NONE", OFXOSC_TYPE_NONE),
-				value("INT", OFXOSC_TYPE_INT32),
-				value("FLOAT", OFXOSC_TYPE_FLOAT),
-				value("STRING", OFXOSC_TYPE_STRING),
-				value("BLOB", OFXOSC_TYPE_BLOB),
-				value("BUNDLE", OFXOSC_TYPE_BUNDLE),
-				value("OUTOFBOUNDS", OFXOSC_TYPE_INDEXOUTOFBOUNDS)
-			],
-		
-		class_<ofxOscMessage>("Message")
-			.def(constructor<>())
-			.def("clear", &ofxOscMessage::clear)
-			.def("setAddress", &ofxOscMessage::setAddress)
-			.def("getAddress", &ofxOscMessage::getAddress)
-			.def("getRemoteIp", &ofxOscMessage::getRemoteIp)
-			.def("getRemotePort", &ofxOscMessage::getRemotePort)
-			.def("setRemote", &ofxOscMessage::setRemoteEndpoint)
-			.def("getType", &ofxOscMessage::getArgType)
-			.def("getTypeName", &ofxOscMessage::getArgTypeName)
-			.def("getInt", &ofxOscMessage::getArgAsInt32)
-			.def("getFloat", &ofxOscMessage::getArgAsFloat)
-			.def("getString", &ofxOscMessage::getArgAsString)
-			.def("addInt", &ofxOscMessage::addIntArg)
-			.def("addFloat", &ofxOscMessage::addFloatArg)
-			.def("addString", &ofxOscMessage::addStringArg)
-			.property("numArgs", &ofxOscMessage::getNumArgs),
+			class_<OscArgType>("TYPE")
+				.enum_("argType") [
+					value("NONE", OFXOSC_TYPE_NONE),
+					value("INT", OFXOSC_TYPE_INT32),
+					value("FLOAT", OFXOSC_TYPE_FLOAT),
+					value("STRING", OFXOSC_TYPE_STRING),
+					value("BLOB", OFXOSC_TYPE_BLOB),
+					value("BUNDLE", OFXOSC_TYPE_BUNDLE),
+					value("OUTOFBOUNDS", OFXOSC_TYPE_INDEXOUTOFBOUNDS)
+				],
 			
-		///////////////////////////////
-		/// \section Bundle
-		
-		class_<ofxOscBundle>("Bundle")
-			.def(constructor<>())
-			.def("clear", &ofxOscBundle::clear)
-			.def("addMessage", &ofxOscBundle::addMessage)
-			.def("addBundle", &ofxOscBundle::addBundle)
-			.def("getMessage", &ofxOscBundle::getMessageAt)
-			.def("getBundle", &ofxOscBundle::getBundleAt)
-			.property("numMessages", &ofxOscBundle::getMessageCount)
-			.property("numBundles", &ofxOscBundle::getBundleCount)
+			class_<ofxOscMessage>("Message")
+				.def(constructor<>())
+				.def("clear", &ofxOscMessage::clear)
+				.def("setAddress", &ofxOscMessage::setAddress)
+				.def("getAddress", &ofxOscMessage::getAddress)
+				.def("getRemoteIp", &ofxOscMessage::getRemoteIp)
+				.def("getRemotePort", &ofxOscMessage::getRemotePort)
+				.def("setRemoteEndpoint", &ofxOscMessage::setRemoteEndpoint)
+				.def("getArgType", &ofxOscMessage::getArgType)
+				.def("getArgTypeName", &ofxOscMessage::getArgTypeName)
+				.def("getArgAsInt32", &ofxOscMessage::getArgAsInt32)
+				.def("getArgAsFloat", &ofxOscMessage::getArgAsFloat)
+				.def("getArgAsString", &ofxOscMessage::getArgAsString)
+				.def("addIntArg", &ofxOscMessage::addIntArg)
+				.def("addFloatArg", &ofxOscMessage::addFloatArg)
+				.def("addStringArg", &ofxOscMessage::addStringArg)
+				.def("getNumArgs", &ofxOscMessage::getNumArgs)
+				.property("numArgs", &ofxOscMessage::getNumArgs),
+				
+			///////////////////////////////
+			/// \section Bundle
+			
+			class_<ofxOscBundle>("Bundle")
+				.def(constructor<>())
+				.def("clear", &ofxOscBundle::clear)
+				.def("addMessage", &ofxOscBundle::addMessage)
+				.def("addBundle", &ofxOscBundle::addBundle)
+				.def("getMessageAt", &ofxOscBundle::getMessageAt)
+				.def("getBundleAt", &ofxOscBundle::getBundleAt)
+				.def("getMessageCount", &ofxOscBundle::getMessageCount)
+				.property("messageCount", &ofxOscBundle::getMessageCount)
+				.def("getBundleCount", &ofxOscBundle::getBundleCount)
+				.property("bundleCount", &ofxOscBundle::getBundleCount)
+		]
 	;
 }

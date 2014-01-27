@@ -210,5 +210,5 @@ void Scene::gotoObject(string name) {
 	}
 	
 	ofLogWarning() << "Scene \"" << this->name <<  "\": cannot goto object \""
-		<< name		<< "\", name not found";
+		<< name	<< "\", name not found";
 }

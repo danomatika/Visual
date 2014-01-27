@@ -33,7 +33,7 @@ luabind::scope Bindings::registerSvg() {
 	return
 				
 		///////////////////////////////
-		/// \section Svg
+		/// \section ofxSvg
 		
 		class_<ofxSVG>("Svg")
 			.def(constructor<>())
