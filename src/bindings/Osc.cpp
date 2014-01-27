@@ -25,7 +25,7 @@
 #include "Config.h"
 
 //--------------------------------------------------------------
-static void send(string address) {
+static void sendBang(string address) {
 	ofxOscMessage msg;
 	msg.setAddress(address);
 	Config::instance().oscSender.sendMessage(msg);
@@ -80,7 +80,7 @@ luabind::scope Bindings::registerOsc() {
 		///////////////////////////////
 		/// \section Osc
 		
-		def("send", &send),
+		def("send", &sendBang),
 		def("sendFloat", &sendFloat),
 		def("sendInt", &sendInt),
 		def("sendString", &sendString),

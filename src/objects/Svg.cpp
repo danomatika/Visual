@@ -20,64 +20,67 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
-#include "Image.h"
+#include "Svg.h"
 
 //--------------------------------------------------------------
-Image::Image(string name) : DrawableFrame(name),
+Svg::Svg(string name) : DrawableFrame(name), bLoaded(false),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
 	clear();
 }
 
 //--------------------------------------------------------------
-Image::Image(string name, string filename) : DrawableFrame(name),
+Svg::Svg(string name, string filename) : DrawableFrame(name), bLoaded(false),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
 	clear();
 }
 
 //--------------------------------------------------------------
-Image::Image(unsigned int frameTime, string filename) : DrawableFrame("", frameTime),
+Svg::Svg(unsigned int frameTime, string filename) :
+	DrawableFrame("", frameTime), bLoaded(false),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
 	clear();
 }
 
 //--------------------------------------------------------------
-bool Image::loadFile(string filename) {
+bool Svg::loadFile(string filename) {
 	if(filename == "") {
 		filename = this->filename;
 	}
 	
-	bool loaded = false;
+	bLoaded = false;
 	string baseName = ofFilePath::getBaseName(filename);
-	if(!Config::instance().resourceManager.imageExists(baseName)) {
-		if(!Config::instance().resourceManager.addImage(baseName, filename)) {
-			ofLogWarning() << "Image: \"" << name << "\" couldn't load \""
+	if(!Config::instance().resourceManager.svgExists(baseName)) {
+		if(!Config::instance().resourceManager.addSvg(baseName, filename)) {
+			ofLogWarning() << "Svg: \"" << name << "\" couldn't load \""
 				<< filename << "\"";
 			return false;
 		}
-		loaded = true;
+		bLoaded = true;
 		this->filename = filename;
 	}
-	image = Config::instance().resourceManager.getImage(baseName);
+	svg = Config::instance().resourceManager.getSvg(baseName);
 
-	if(loaded) {
-		ofLogVerbose(PACKAGE) << "Image: loaded \"" << baseName << "\" "
-				<< image->getWidth() << "x" << image->getHeight();
+	if(bLoaded) {
+		ofLogVerbose(PACKAGE) << "Svg: loaded \"" << baseName << "\" "
+				<< svg->getWidth() << "x" << svg->getHeight() << " "
+				<< svg->getNumPath() << (svg->getNumPath() > 1 ? " paths" : " path");
 	}
 	
-	// get dimen from image if not set
-	if(width == 0)	width = image->getWidth();
-	if(height == 0) height = image->getHeight();
+	// get dimen from svg if not set
+	if(width == 0)	width = svg->getWidth();
+	if(height == 0) height = svg->getHeight();
 
 	return true;
 }
 
 //--------------------------------------------------------------
-void Image::setup() {
+void Svg::setup() {
 	string baseName = ofFilePath::getBaseName(filename);
-	if(Config::instance().resourceManager.imageExists(baseName)) {
-		image = Config::instance().resourceManager.getImage(baseName);
-		if(width == 0)	width = image->getWidth();
-		if(height == 0) height = image->getHeight();
+	if(Config::instance().resourceManager.svgExists(baseName)) {
+		svg = Config::instance().resourceManager.getSvg(baseName);
+		if(width == 0)	width = svg->getWidth();
+		if(height == 0) height = svg->getHeight();
+		bLoaded = true;
 	}
 	else {
 		loadFile();
@@ -85,44 +88,53 @@ void Image::setup() {
 }
 
 //--------------------------------------------------------------
-void Image::draw() {
+void Svg::draw() {
 	draw(pos.x, pos.y, width, height);
 }
 
 //--------------------------------------------------------------
-void Image::draw(int x, int y) {
+void Svg::draw(int x, int y) {
 	draw(x, y, width, height);
 }
 
 //--------------------------------------------------------------
-void Image::draw(int x, int y, unsigned int w, unsigned int h) {
-	if(!image->isAllocated() || !bVisible) {
+void Svg::draw(int x, int y, unsigned int w, unsigned int h) {
+	if(!bLoaded || !bVisible) {
 		return;
 	}
-
+	
 	ofSetColor(color);
 	if(bDrawFromCenter) {
-		image->draw(x-w/2, y-h/2, w, h);
+		ofPushMatrix();
+			float scaleX = w/svg->getWidth(), scaleY = h/svg->getHeight();
+			ofTranslate(x - (svg->getWidth()/2 * scaleX), y - (svg->getHeight()/2 * scaleY));
+			ofScale(scaleX, scaleY, 1);
+			svg->draw();
+		ofPopMatrix();
 	}
 	else {
-		image->draw(x, y, w, h);
+		ofPushMatrix();
+			ofTranslate(x, y);
+			ofScale(w/svg->getWidth(), h/svg->getHeight(), 1);
+			svg->draw();
+		ofPopMatrix();
 	}
 }
 
 //--------------------------------------------------------------
-void Image::clear() {
-	image = ofPtr<ofImage>(new ofImage); // empty image
+void Svg::clear() {
+	svg = ofPtr<ofxSVG>(new ofxSVG); // empty
 	color.set(255);
 }
 
 //--------------------------------------------------------------
-void Image::setSize(unsigned int w, unsigned int h) {
+void Svg::setSize(unsigned int w, unsigned int h) {
 	width = w;
 	height = h;
 }
 
 //--------------------------------------------------------------
-bool Image::processOscMessage(const ofxOscMessage& message) {
+bool Svg::processOscMessage(const ofxOscMessage& message) {
 
 	// call the base class
 	if(DrawableObject::processOscMessage(message)) {

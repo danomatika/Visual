@@ -55,7 +55,13 @@ void App::setup() {
 	ofSetLogLevel("visual", OF_LOG_VERBOSE);
 	ofSetVerticalSync(true);
 	ofBackground(0);
-	ofHideCursor();
+	//ofHideCursor();
+	
+	// read from the app bundle
+	#ifdef __APPLE__
+		ofSetDataPathRoot("../Resources/data/");
+		ofLogVerbose(PACKAGE) << "Data path is \"" << ofToDataPath("")  << "\"";
+	#endif
 	
 	// set render size
 	if(config.renderWidth == 0 && config.renderHeight == 0) {

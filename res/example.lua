@@ -206,6 +206,23 @@ scene = visual.Scene("image&text")
 
 visual.addScene(scene)
 
+-- scalable vector graphic
+scene = visual.Scene("svg")
+	scene.background:set(200, 120, 140)
+
+	svg = visual.Svg("cow", "cow.svg")
+		svg.position:set(320, 240)
+		svg:setSize(640, 480)
+		svg.center = true
+	scene:add(svg)
+
+	svg = visual.Svg("cow2", "cow.svg")
+		svg.position:set(0, 400)
+		svg:setSize(82.2, 53.6)
+	scene:add(svg)
+
+visual.addScene(scene)
+
 -- video
 scene = visual.Scene("video")
 	scene.background:set(0)
@@ -234,5 +251,13 @@ scene = visual.Scene("script")
 	-- overwrite preceeding ones
 	script = visual.Script("script1", "test.lua")
 	scene:add(script)
+
+	text = visual.Text("text3", "verdana.ttf", 36)
+		text.position:set(320, 410)
+		text.center = true
+		text.color:set(255, 0, 255, 200)
+		text.visible = true
+		text.text = "a different, local font"
+	scene:add(text)
 
 visual.addScene(scene)

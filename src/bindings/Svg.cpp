@@ -20,15 +20,30 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
-#pragma once
+#include "Bindings.h"
 
-#include "Pixel.h"
-#include "Line.h"
-#include "Rectangle.h"
-#include "Bitmap.h"
-#include "Script.h"
-#include "Sprite.h"
-#include "Image.h"
-#include "Svg.h"
-#include "Text.h"
-#include "Video.h"
+#include "ofxSvg.h"
+
+//--------------------------------------------------------------
+// luabind registration
+luabind::scope Bindings::registerSvg() {
+		
+	using namespace luabind;
+	
+	return
+				
+		///////////////////////////////
+		/// \section Svg
+		
+		class_<ofxSVG>("Svg")
+			.def(constructor<>())
+			.def("load", &ofxSVG::load)
+			.def("draw", &ofxSVG::draw)
+			.def("getWidth", &ofxSVG::getWidth)
+			.property("width", &ofxSVG::getWidth)
+			.def("getHeight", &ofxSVG::getHeight)
+			.property("height", &ofxSVG::getHeight)
+			.def("getNumPaths", &ofxSVG::getNumPath)
+			.def("getPath", &ofxSVG::getPathAt)
+	;
+}
