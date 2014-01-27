@@ -24,7 +24,7 @@
 
 #include "Config.h"
 
-#define SCENE_CHANGE_MS			500
+#define SCENE_CHANGE_MS			100
 #define SCENE_NAME_MS			1250
 #define SCENE_NAME_FONT_SIZE	36
 
@@ -162,6 +162,8 @@ void SceneManager::gotoScene(string name) {
 			return;
 		}
 	}
+	
+	ofLogWarning() << "SceneManager: cannot goto scene \"" << name << "\", name not found";
 }
 
 //--------------------------------------------------------------

@@ -78,6 +78,8 @@ class App : public ofBaseApp, public OscObject {
 		
 	protected:
 	
+		ofMutex mutex; ///< mutex between main & osc threads
+	
 		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message);
 };

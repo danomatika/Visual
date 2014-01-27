@@ -103,14 +103,19 @@ void App::setup() {
 
 //--------------------------------------------------------------
 void App::update() {
+	mutex.lock();
+	
 	sceneManager.update();
 //	config.resourceManager.update();
 	scriptEngine.lua.scriptUpdate();
+
+	mutex.unlock();
 }
 
 //--------------------------------------------------------------
 void App::draw() {
-
+	mutex.lock();
+	
 	transformer.pushTransforms();
 
 		sceneManager.draw();
@@ -122,6 +127,8 @@ void App::draw() {
 		ofSetColor(255);
 		ofDrawBitmapStringHighlight(ofToString((int) ofGetFrameRate()), 0, 12);
 	}
+	
+	mutex.unlock();
 }
 
 //--------------------------------------------------------------
@@ -314,6 +321,8 @@ void App::reloadScript() {
 
 // PROTECTED
 //--------------------------------------------------------------
+// lock scene changes with the mutex to make sure the lua state is
+// closed before calling lua functions
 bool App::processOscMessage(const ofxOscMessage& message) {
 
 //	ofLogVerbose(PACKAGE) << "received " << message.getAddress();
@@ -322,23 +331,31 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	
 		if(message.getArgType(0) == OFXOSC_TYPE_STRING) {
 			string scene = message.getArgAsString(0);
-			sceneManager.gotoScene(scene);
+			mutex.lock();
+				sceneManager.gotoScene(scene);
+			mutex.unlock();
 			return true;
 		}
 		else if(message.getArgType(0) == OFXOSC_TYPE_INT32) {
 			int index = message.getArgAsInt32(0);
-			sceneManager.gotoScene(index);
+			mutex.lock();
+				sceneManager.gotoScene(index);
+			mutex.unlock();
 			return true;
 		}
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/scene/prev") {
-		sceneManager.prevScene();
+		mutex.lock();
+			sceneManager.prevScene();
+		mutex.unlock();
 		return true;
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/scene/next") {
-		sceneManager.nextScene();
+		mutex.lock();
+			sceneManager.nextScene();
+		mutex.unlock();
 		return true;
 	}
 
@@ -368,8 +385,12 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 		return true;
 	}
 	
-//	scriptEngine.sendOsc(message);
-	sceneManager.processOsc(message);
+	if(sceneManager.processOsc(message)) {
+		return true;
+	}
+	
+	// forward message to lua
+	scriptEngine.sendOsc(message);
 
 	return true;
 }

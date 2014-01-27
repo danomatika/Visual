@@ -203,9 +203,12 @@ void Scene::gotoObject(string name) {
 	for(unsigned int i = 0; i < objects.size(); ++i) {
 		if(name == objects.at(i)->getName()) {
 			currentObject = i;
-			ofLogVerbose(PACKAGE) << "Scene \"" << name <<  "\": changed scene to \""
+			ofLogVerbose(PACKAGE) << "Scene \"" << this->name <<  "\": changed object to \""
 					  << objects.at(currentObject)->getName() << "\"";
 			return;
 		}
 	}
+	
+	ofLogWarning() << "Scene \"" << this->name <<  "\": cannot goto object \""
+		<< name		<< "\", name not found";
 }
