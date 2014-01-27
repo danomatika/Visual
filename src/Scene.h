@@ -54,6 +54,14 @@ class Scene : public OscObject {
 		/// tell objects to exit, does not delete
 		void exit();
 		
+		/// slideshow mode
+		void setSlideshow(bool s) {bSlideshow = s;}
+		bool getSlideshow() {return bSlideshow;}
+		void nextObject();
+		void prevObject();
+		void gotoObject(unsigned int num);
+		void gotoObject(string name);
+		
 		/// Util
 		string getName() {return name;}
 		ofColor& getBackground() {return background;}
@@ -69,4 +77,7 @@ class Scene : public OscObject {
 		vector<DrawableObject*> objects;
 		ofColor background;
 		int fps;
+		
+		bool bSlideshow;
+		int currentObject;
 };

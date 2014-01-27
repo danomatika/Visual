@@ -110,6 +110,12 @@ luabind::scope Bindings::registerBindings() {
 			.def("setup", &Scene::setup)
 			.def("draw", &Scene::draw)
 			
+			.property("slideshow", &Scene::getSlideshow, &Scene::setSlideshow)
+			.def("nextObject", &Scene::nextObject)
+			.def("prevObject", &Scene::prevObject)
+			.def("gotoObject", (void(Scene::*)(unsigned int)) &Scene::gotoObject)
+			.def("gotoObject", (void(Scene::*)(string)) &Scene::gotoObject)
+			
 			.def("getName", &Scene::getName)
 			.property("name", &Scene::getName)
 			.property("fps", &Scene::getFps, &Scene::setFps)

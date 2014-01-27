@@ -22,7 +22,6 @@
 ==============================================================================*/
 #pragma once
 
-//#include "Config.h"
 #include "Scene.h"
 #include "ofxTimer.h"
 
@@ -83,6 +82,7 @@ class SceneManager : public OscObject {
 
 		int currentScene;
 		vector<Scene*> scenes;
+		ofxTimer sceneChangeTimer;
 		
 		bool bShowSceneName;
 		ofxTimer sceneNameTimer;

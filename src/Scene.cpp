@@ -25,7 +25,8 @@
 #include "objects/Objects.h"
 
 //--------------------------------------------------------------
-Scene::Scene(string name) : bSetup(false), name(name), background(0), fps(-1) {
+Scene::Scene(string name) : bSetup(false), name(name), background(0), fps(-1),
+	bSlideshow(false), currentObject(-1) {
 	// set address here as the baseAddress might have been changed in lua
 	oscRootAddress = Config::instance().baseAddress+"/"+name;
 }
@@ -57,10 +58,14 @@ void Scene::removeObject(DrawableObject* object) {
 		return;
 	}
 
+	int i = 0;
 	vector<DrawableObject*>::iterator iter;
 	iter = find(objects.begin(), objects.end(), object);
 	if(iter != objects.end()) {
 		removeOscObject((*iter));
+		if((iter - objects.begin()) == currentObject) {
+			currentObject = -1; // reset if current object was removed
+		}
 		objects.erase(iter);
 	}
 }
@@ -75,6 +80,7 @@ void Scene::clearObjects() {
 		delete o;
 	}
 	objects.clear();
+	currentObject = -1;
 }
 
 //--------------------------------------------------------------
@@ -98,33 +104,108 @@ void Scene::setup(bool earlySetup) {
 
 //--------------------------------------------------------------
 void Scene::update() {
-	for(unsigned int i = 0; i < objects.size(); ++i) {
-		objects[i]->update();
+	if(bSlideshow) {
+		if(currentObject >= 0) {
+			objects[currentObject]->update();
+		}
+	}
+	else {
+		for(unsigned int i = 0; i < objects.size(); ++i) {
+			objects[i]->update();
+		}
 	}
 }
 
 //--------------------------------------------------------------
 void Scene::draw() {
-	vector<DrawableObject*>::iterator iter;
-	for(iter = objects.begin(); iter != objects.end(); ++iter) {
-		
-		// remove any NULL objects
-		if((*iter) == NULL) {
-			objects.erase(iter);
-			ofLogError() << "Scene \"" << name << "\": removed NULL object";
+
+	if(bSlideshow) {
+		if(currentObject >= 0) {
+			objects[currentObject]->draw();
 		}
-		else {
-			(*iter)->draw();
+	}
+	else {
+		vector<DrawableObject*>::iterator iter;
+		for(iter = objects.begin(); iter != objects.end(); ++iter) {
+			
+			// remove any NULL objects
+			if((*iter) == NULL) {
+				objects.erase(iter);
+				ofLogError() << "Scene \"" << name << "\": removed NULL object";
+			}
+			else {
+				(*iter)->draw();
+			}
 		}
 	}
 }
 
-////--------------------------------------------------------------
+//--------------------------------------------------------------
 void Scene::exit() {
 //	bSetup = false;
 	for(unsigned int i = 0; i < objects.size(); ++i) {
 		if(objects[i]->shouldClearOnExit()) {
 			objects.at(i)->clear();
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void Scene::nextObject() {
+	if(objects.empty()) {
+		return;
+	}
+
+	currentObject++;
+	if(currentObject >= (int) objects.size()) {
+		currentObject = 0;
+	}
+
+	ofLogVerbose(PACKAGE) << "Scene \"" << name <<  "\": changed to object \""
+		<< objects.at(currentObject)->getName() << "\"";
+}
+
+//--------------------------------------------------------------
+void Scene::prevObject() {
+	if(objects.empty()) {
+		return;
+	}
+
+	currentObject--;
+	if(currentObject < 0) {
+		currentObject = objects.size()-1;
+	}
+
+	ofLogVerbose(PACKAGE) << "Scene \"" << name <<  "\": changed to object \""
+		<< objects.at(currentObject)->getName() << "\"";
+}
+
+//--------------------------------------------------------------
+void Scene::gotoObject(unsigned int num) {
+	if(objects.empty()) {
+		return;
+	}
+
+	if(num >= (int) objects.size()) {
+		ofLogWarning() << "Scene \"" << name <<  "\": cannot goto object num " << num
+			<< ", index out of range";
+		return;
+	}
+
+	currentObject = num;
+
+	ofLogVerbose(PACKAGE) << "Scene \"" << name <<  "\": changed object to \""
+			  << objects.at(currentObject)->getName() << "\"";
+}
+
+//--------------------------------------------------------------
+void Scene::gotoObject(string name) {
+	for(unsigned int i = 0; i < objects.size(); ++i) {
+		if(name == objects.at(i)->getName()) {
+			currentObject = i;
+			ofLogVerbose(PACKAGE) << "Scene \"" << name <<  "\": changed scene to \""
+					  << objects.at(currentObject)->getName() << "\"";
+			return;
 		}
 	}
 }

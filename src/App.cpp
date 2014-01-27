@@ -52,7 +52,7 @@ App::App() : config(Config::instance()),
 //--------------------------------------------------------------
 void App::setup() {
 	
-	ofSetLogLevel("visual", OF_LOG_VERBOSE);
+	ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
 	ofSetVerticalSync(true);
 	ofBackground(0);
 	//ofHideCursor();
@@ -316,7 +316,7 @@ void App::reloadScript() {
 //--------------------------------------------------------------
 bool App::processOscMessage(const ofxOscMessage& message) {
 
-//	ofLogVerbose("visual") << "received " << message.getAddress();
+//	ofLogVerbose(PACKAGE) << "received " << message.getAddress();
 	
 	if(message.getAddress() == getOscRootAddress() + "/scene") {
 	

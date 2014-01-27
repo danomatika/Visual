@@ -152,6 +152,7 @@ visual.addScene(scene)
 -- images and text
 scene = visual.Scene("image&text")
 	scene.background:set(64)
+	scene.slideshow = true
 
 	-- an image, rescaled when loaded to fit given size
 	image = visual.Image("image1", "icon.png")

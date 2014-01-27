@@ -24,6 +24,7 @@
 
 #include "Config.h"
 
+#define SCENE_CHANGE_MS			500
 #define SCENE_NAME_MS			1250
 #define SCENE_NAME_FONT_SIZE	36
 
@@ -86,7 +87,7 @@ void SceneManager::clear(bool keepCurScene) {
 
 //--------------------------------------------------------------
 void SceneManager::nextScene() {
-	if(scenes.empty()) {
+	if(scenes.empty() || !sceneChangeTimer.alarm()) {
 		return;
 	}
 
@@ -96,15 +97,16 @@ void SceneManager::nextScene() {
 		currentScene = 0;
 	}
 
-	ofLogVerbose("visual") << "SceneManager: changed to scene \""
+	ofLogVerbose(PACKAGE) << "SceneManager: changed to scene \""
 		<< scenes.at(currentScene)->getName() << "\"";
 
 	setupScene(scenes.at(currentScene));
+	sceneChangeTimer.setAlarm(SCENE_CHANGE_MS);
 }
 
 //--------------------------------------------------------------
 void SceneManager::prevScene() {
-	if(scenes.empty()) {
+	if(scenes.empty() || !sceneChangeTimer.alarm()) {
 		return;
 	}
 
@@ -114,19 +116,20 @@ void SceneManager::prevScene() {
 		currentScene = scenes.size()-1;
 	}
 
-	ofLogVerbose("visual") << "SceneManager: changed to scene \""
+	ofLogVerbose(PACKAGE) << "SceneManager: changed to scene \""
 		<< scenes.at(currentScene)->getName() << "\"";
 
 	setupScene(scenes.at(currentScene));
+	sceneChangeTimer.setAlarm(SCENE_CHANGE_MS);
 }
 
 //--------------------------------------------------------------
 void SceneManager::gotoScene(unsigned int num) {
-	if(scenes.empty()) {
+	if(scenes.empty() || !sceneChangeTimer.alarm()) {
 		return;
 	}
 
-	if(currentScene >= (int) scenes.size()) {
+	if(num >= (int) scenes.size()) {
 		ofLogWarning() << "SceneManager: cannot goto scene num " << num
 			<< ", index out of range";
 		return;
@@ -135,22 +138,27 @@ void SceneManager::gotoScene(unsigned int num) {
 	exit();
 	currentScene = num;
 
-	ofLogVerbose("visual") << "SceneManager: changed scene to \""
+	ofLogVerbose(PACKAGE) << "SceneManager: changed scene to \""
 			  << scenes.at(currentScene)->getName() << "\"";
 
 	setupScene(scenes.at(currentScene));
+	sceneChangeTimer.setAlarm(SCENE_CHANGE_MS);
 }
 
 //--------------------------------------------------------------
 void SceneManager::gotoScene(string name) {
-
-	for(unsigned int i = 0; i < scenes.size(); ++i) {
+	if(!sceneChangeTimer.alarm()) {
+		return;
+	}
 	
+	for(unsigned int i = 0; i < scenes.size(); ++i) {
 		if(name == scenes.at(i)->getName()) {
+			exit();
 			currentScene = i;
-			ofLogVerbose("visual") << "SceneManager: changed scene to \""
+			ofLogVerbose(PACKAGE) << "SceneManager: changed scene to \""
 					  << scenes.at(currentScene)->getName() << "\"";
 			setupScene(scenes.at(currentScene));
+			sceneChangeTimer.setAlarm(SCENE_CHANGE_MS);
 			return;
 		}
 	}
@@ -258,8 +266,45 @@ void SceneManager::setupScene(Scene* s) {
 
 //--------------------------------------------------------------
 bool SceneManager::processOscMessage(const ofxOscMessage& message) {
+
 	if(currentScene >= 0 && currentScene < (int) scenes.size()) {
-		return scenes.at(currentScene)->processOsc(message);
+
+		Scene *scene = scenes.at(currentScene);
+
+		if(message.getAddress() == getOscRootAddress() + "/scene/slideshow") {
+			bool b;
+			if(OscObject::tryBool(message, b, 0)) {
+				scene->setSlideshow(b);
+			}
+			return true;
+		}
+		
+		if(message.getAddress() == getOscRootAddress() + "/scene/object") {
+		
+			if(message.getArgType(0) == OFXOSC_TYPE_STRING) {
+				string object = message.getArgAsString(0);
+				scene->gotoObject(object);
+				return true;
+			}
+			else if(message.getArgType(0) == OFXOSC_TYPE_INT32) {
+				int index = message.getArgAsInt32(0);
+				scene->gotoObject(index);
+				return true;
+			}
+		}
+		
+		else if(message.getAddress() == getOscRootAddress() + "/scene/object/prev") {
+			scene->prevObject();
+			return true;
+		}
+		
+		else if(message.getAddress() == getOscRootAddress() + "/scene/object/next") {
+			scene->nextObject();
+			return true;
+		}
+
+		return scene->processOsc(message);
 	}
+
 	return false;
 }
