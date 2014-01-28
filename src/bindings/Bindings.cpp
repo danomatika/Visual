@@ -188,6 +188,7 @@ luabind::scope Bindings::registerBindings() {
 			.def(constructor<unsigned int,string>())
 			.def("loadFile", &Image::loadFile)
 			
+			.def("setup", &Image::setup)
 			.def("draw", (void(Image::*)(void)) &Image::draw)
 			.def("draw", (void(Image::*)(int,int)) &Image::draw)
 			.def("draw", (void(Image::*)(int,int,unsigned int,unsigned int)) &Image::draw)
@@ -269,6 +270,7 @@ luabind::scope Bindings::registerBindings() {
 			.def(constructor<string>())
 			.def(constructor<string,string>())
 			
+			.def("setup", &Script::setup)
 			.def("isLoaded", &Script::isLoaded)
 			.property("loaded", &Script::isLoaded)
 			.def("getFilename", &Script::getFilename)
@@ -319,6 +321,7 @@ luabind::scope Bindings::registerBindings() {
 			.def(constructor<unsigned int,string>())
 			.def("loadFile", &Svg::loadFile)
 			
+			.def("setup", &Svg::setup)
 			.def("draw", (void(Svg::*)(void)) &Svg::draw)
 			.def("draw", (void(Svg::*)(int,int)) &Svg::draw)
 			.def("draw", (void(Svg::*)(int,int,unsigned int,unsigned int)) &Svg::draw)
@@ -378,6 +381,7 @@ luabind::scope Bindings::registerBindings() {
 			//.def(constructor<string,Video&>())
 			.def("loadFile", &Video::loadFile)
 			
+			.def("setup", &Video::setup)
 			.def("draw", (void(Video::*)(void)) &Video::draw)
 			.def("draw", (void(Video::*)(int,int)) &Video::draw)
 			.def("draw", (void(Video::*)(int,int,unsigned int,unsigned int)) &Video::draw)

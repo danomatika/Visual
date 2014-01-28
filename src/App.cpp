@@ -38,6 +38,8 @@ App::App() : config(Config::instance()),
 	reloadTimestamp = 0;
 	saveTimestamp = 0;
 	bUpdateCursor = false;
+	bUpdateWindowShape = false;
+	bGoFullscreen = false;
 	
 	// set osc addresses
 	setOscRootAddress(config.baseAddress);
@@ -64,14 +66,7 @@ void App::setup() {
 		ofLogVerbose(PACKAGE) << "Data path is \"" << ofToDataPath("")  << "\"";
 	#endif
 	
-	// set render size
-	if(config.renderWidth == 0 && config.renderHeight == 0) {
-		config.renderWidth = ofGetWidth();
-		config.renderHeight = ofGetHeight();
-	}
-	transformer.setRenderSize(config.renderWidth, config.renderHeight);
-	
-	// load fonts
+	// load fonts, set default render size
 	config.setup();
 	sceneManager.setup();
 	
@@ -79,9 +74,15 @@ void App::setup() {
 	loadScript(config.script);
 	config.print();
 	
+	// new render size?
+	if(config.renderWidth != ofGetWidth() || config.renderHeight != ofGetHeight()) {
+		bUpdateWindowShape = true;
+	}
+	transformer.setRenderSize(config.renderWidth, config.renderHeight);
+	
 	// go fullscreen & hide cursor
 	if(config.fullscreen) {
-		ofSetFullscreen(true);
+		bGoFullscreen = true;
 		bUpdateCursor = true;
 	}
 	
@@ -106,6 +107,19 @@ void App::setup() {
 
 //--------------------------------------------------------------
 void App::update() {
+
+	// update the window shape if we're using a different rendering size,
+	// this dosent seem to work in setup() so do it here
+	if(bUpdateWindowShape) {// && ofGetFrameNum() > 1) {
+		ofSetWindowShape(config.renderWidth, config.renderHeight);
+		bUpdateWindowShape = false;
+	}
+	
+	// again, do this here or it won't work with reshaping in setup()
+	if(bGoFullscreen) {
+		ofSetFullscreen(true);
+		bGoFullscreen = false;
+	}
 
 	// show/hide the cursor here once the window has been setup
 	if(bUpdateCursor && ofGetFrameNum() > 1) {

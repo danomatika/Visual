@@ -98,6 +98,14 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 //--------------------------------------------------------------
 void Config::setup() {
+
+	if(renderWidth == 0) {
+		renderWidth = ofGetWidth();
+	}
+	if(renderHeight == 0) {
+		renderHeight = ofGetHeight();
+	}
+
 	ofTrueTypeFont::setGlobalDpi(96);
 	fontFilename = ofToDataPath(CONFIG_FONT, true);
 }

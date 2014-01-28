@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// setup graphics
-	ofSetupOpenGL(640, 480, OF_WINDOW);
+	ofSetupOpenGL(1024, 576, OF_WINDOW);
 
 	// main app loop
 	ofRunApp(Config::instance().app);

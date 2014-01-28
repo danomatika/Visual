@@ -73,6 +73,8 @@ class App : public ofBaseApp, public OscObject {
 		ofxTransformer transformer; ///< for screen scaling
 		
 		bool bUpdateCursor; ///< should we show/hide the cursor?
+		bool bUpdateWindowShape; ///< should we change the window size?
+		bool bGoFullscreen; ///< should the app be fullscreen on start?
 		
 	protected:
 	
