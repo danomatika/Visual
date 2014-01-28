@@ -181,6 +181,9 @@ void SceneManager::setup(bool loadAll) {
 		}
 	}
 	else {
+		if(currentScene > scenes.size()) {
+			currentScene = -1;
+		}
 		if(currentScene > 0) {
 			scenes.at(currentScene)->setup();
 		}

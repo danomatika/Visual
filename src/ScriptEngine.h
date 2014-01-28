@@ -35,8 +35,8 @@ class ScriptEngine : private ofxLuaListener {
 		bool setup();
 		void clear();
 		
-		/// clears the current lua state
-		void clearScript();
+		/// clears the current lua state, calls scriptExit
+		void unloadScript();
 		
 		/// load a new script
 		/// clears the current lua state
@@ -51,6 +51,7 @@ class ScriptEngine : private ofxLuaListener {
 		
 		ofxLua lua;
 		
+		void setCurrentScript(string script) {currentScript = script;}
 		string getCurrentScript() {return currentScript;}
 		
 	private:

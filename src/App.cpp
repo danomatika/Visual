@@ -24,13 +24,15 @@
 
 #include "Scene.h"
 
+#define RELOAD_TIMEOUT_MS 1000
+
 //--------------------------------------------------------------
 App::App() : config(Config::instance()),
 	receiver(Config::instance().oscReceiver),
 	sender(Config::instance().oscSender),
 	scriptEngine(Config::instance().scriptEngine) {
 	
-	shiftPressed = false;
+	modifierPressed = false;
 	bDebug = false;
 	bRunning = true;
 	reloadTimestamp = 0;
@@ -55,7 +57,6 @@ void App::setup() {
 	ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
 	ofSetVerticalSync(true);
 	ofBackground(0);
-	//ofHideCursor();
 	
 	// read from the app bundle
 	#ifdef __APPLE__
@@ -75,12 +76,13 @@ void App::setup() {
 	sceneManager.setup();
 	
 	// load lua config / playlist
-	loadConfigScript();
+	loadScript(config.script);
 	config.print();
 	
-	// don't show the cursor if not debugging
-	if(bDebug) {
-		ofShowCursor();
+	// go fullscreen & hide cursor
+	if(config.fullscreen) {
+		ofHideCursor();
+		ofSetFullscreen(true);
 	}
 	
 	// setup the osc receiver
@@ -91,6 +93,7 @@ void App::setup() {
 	sender.setup(config.sendingIp, config.sendingPort);
 	
 	// setup & try to load first scene
+	sceneManager.showSceneName(config.showSceneNames);
 	sceneManager.setup(config.setupAllScenes);
 	
 	// notify of connection
@@ -102,33 +105,35 @@ void App::setup() {
 }
 
 //--------------------------------------------------------------
-void App::update() {
-	mutex.lock();
-	
-	sceneManager.update();
-//	config.resourceManager.update();
-	scriptEngine.lua.scriptUpdate();
-
-	mutex.unlock();
+void App::update() {	
+	if(bRunning) {
+		mutex.lock();
+			sceneManager.update();
+//			config.resourceManager.update();
+			scriptEngine.lua.scriptUpdate();
+		mutex.unlock();
+	}
 }
 
 //--------------------------------------------------------------
 void App::draw() {
-	mutex.lock();
 	
 	transformer.pushTransforms();
-
-		sceneManager.draw();
-		scriptEngine.lua.scriptDraw();
-	
+		mutex.lock();
+			sceneManager.draw();
+			scriptEngine.lua.scriptDraw();
+		mutex.unlock();
 	transformer.popTransforms();
 	
 	if(bDebug) {
 		ofSetColor(255);
 		ofDrawBitmapStringHighlight(ofToString((int) ofGetFrameRate()), 0, 12);
+		
+		Scene *s = sceneManager.getCurrentScene();
+		if(s) {
+			ofDrawBitmapStringHighlight(s->getName(), 0, ofGetHeight()-8);
+		}
 	}
-	
-	mutex.unlock();
 }
 
 //--------------------------------------------------------------
@@ -153,9 +158,9 @@ void App::keyPressed(int key) {
 	
 	switch(key) {
 	
-		case OF_KEY_SHIFT:
-			shiftPressed = true;
-			break;
+		case OF_KEY_SUPER:
+			modifierPressed = true;
+			return;
 	
 		case OF_KEY_UP: {
 			ofxOscMessage message;
@@ -174,7 +179,7 @@ void App::keyPressed(int key) {
 		}
 	
 		case OF_KEY_LEFT: {
-			if(shiftPressed) {
+			if(modifierPressed) {
 				sceneManager.prevScene();
 				return;
 			}
@@ -186,7 +191,7 @@ void App::keyPressed(int key) {
 		}
 
 		case OF_KEY_RIGHT: {
-			if(shiftPressed) {
+			if(modifierPressed) {
 				sceneManager.nextScene();
 				return;
 			}
@@ -197,38 +202,52 @@ void App::keyPressed(int key) {
 			return;
 		}
 		
-		case 'P':
-			bRunning = !bRunning;
-			receiver.ignoreMessages(!bRunning);
-			ofLogVerbose(PACKAGE) << "Running: " << bRunning;
-			return;
-
-		case 'D':
-			bDebug = !bDebug;
-			if(bDebug) {
-				ofShowCursor();
-			}
-			else {
-				ofHideCursor();
-			}
-			ofLogVerbose(PACKAGE) << "Debug: " << bDebug;
-			return;
-
-		case 'R':
-			if(ofGetElapsedTimeMillis() - reloadTimestamp > 5000) {
-				if(bConfigScript) {
-					reloadConfigScript();
-				}
-				else {
-					reloadScript();
-				}
-				reloadTimestamp = ofGetElapsedTimeMillis();
+		case 'p':
+			if(modifierPressed) {
+				bRunning = !bRunning;
+				receiver.ignoreMessages(!bRunning);
+				ofLogVerbose(PACKAGE) << "Running: " << bRunning;
 				return;
 			}
 			break;
+
+		case 'd':
+			if(modifierPressed) {
+				bDebug = !bDebug;
+				if(bDebug) {
+					ofShowCursor();
+				}
+				else if(ofGetWindowMode() != OF_WINDOW) {
+					ofHideCursor();
+				}
+				ofLogVerbose(PACKAGE) << "Debug: " << bDebug;
+				return;
+			}
+			break;
+
+		case 'r':
+			if(modifierPressed) {
+				if(ofGetElapsedTimeMillis() - reloadTimestamp > RELOAD_TIMEOUT_MS) {
+					reloadScript();
+					reloadTimestamp = ofGetElapsedTimeMillis();
+					return;
+				}
+			}
+			break;
 		
-		case 'F':
-			ofToggleFullscreen();
+		case 'f':
+			if(modifierPressed) {
+				ofToggleFullscreen();
+				if(bDebug) {
+					if(ofGetWindowMode() == OF_WINDOW) {
+						ofShowCursor();
+					}
+					else {
+						ofHideCursor();
+					}
+				}
+				return;
+			}
 			break;
 	}
 	
@@ -246,8 +265,8 @@ void App::keyReleased(int key) {
 	
 	switch(key) {
 	
-		case OF_KEY_SHIFT:
-			shiftPressed = false;
+		case OF_KEY_SUPER:
+			modifierPressed = false;
 			break;
 	}
 	
@@ -287,35 +306,66 @@ void App::gotMessage(ofMessage msg) {}
 void App::dragEvent(ofDragInfo dragInfo) {}
 
 //--------------------------------------------------------------
-void App::loadConfigScript() {
-	if(!config.file.empty()) {
-		ofLogNotice() << "loading \"" << config.file << "\"";
-		
-		// set data path to config file folder
-		ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(config.file));
-		
-		scriptEngine.loadScript(config.file);
-		bConfigScript = true;
-	}
-}
+bool App::loadScript(string script) {
 
-//--------------------------------------------------------------
-void App::reloadConfigScript() {
-	if(!config.file.empty()) {
-		ofLogNotice() << "reloading  \"" << config.file << "\"";
-		
-		sceneManager.clear(true);
-		config.resourceManager.clear();
-		scriptEngine.reloadScript();
-		sceneManager.setup(config.setupAllScenes);
+	ofLogNotice() << "loading \"" << script << "\"";
+	
+	// set data path to config file folder
+	ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(script));
+	
+	config.isPlaylist = false;
+	if(!scriptEngine.loadScript(script)) {
+		config.script = "";
+		return false;
 	}
+	config.script = script;
+	
+	// load settings
+	if(config.isPlaylist) {
+		sceneManager.showSceneName(config.showSceneNames);
+		config.playlist = script;
+	}
+	
+	return true;
 }
 
 //--------------------------------------------------------------
 void App::reloadScript() {
-	if(scriptEngine.getCurrentScript() != "") {
-		scriptEngine.lua.scriptExit();
+	if(config.script.empty()) return;
+	
+	ofLogNotice() << "reloading \"" << config.script << "\"";
+	
+	if(config.isPlaylist) {
+		sceneManager.clear(true);
+		config.resourceManager.clear();
 		scriptEngine.reloadScript();
+		sceneManager.setup(config.setupAllScenes);
+		config.playlist = config.script;
+	}
+	else {
+		scriptEngine.reloadScript(); // calls scriptExit
+	}
+}
+
+//--------------------------------------------------------------
+void App::unloadScript() {
+	if(config.script.empty()) return;
+	
+	ofLogNotice() << "unloading \"" << config.script << "\"";
+	
+	if(config.isPlaylist) {
+		scriptEngine.unloadScript();
+		sceneManager.clear(true);
+		config.resourceManager.clear();
+	}
+	else {
+		scriptEngine.unloadScript(); // calls scriptExit
+	}
+	config.script = "";
+	
+	if(!config.playlist.empty()) {
+		config.script = config.playlist;
+		scriptEngine.setCurrentScript(config.playlist);
 	}
 }
 
@@ -361,14 +411,14 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 
 	else if(message.getAddress() == getOscRootAddress() + "/file"
 		&& message.getArgType(0) == OFXOSC_TYPE_STRING) {
-		if(tryString(message, config.file, 0)) {
-			loadConfigScript();
+		if(tryString(message, config.script, 0)) {
+			loadScript(config.script);
 		}
 		return true;
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/reload") {
-		reloadConfigScript();
+		reloadScript();
 		return true;
 	}
 	

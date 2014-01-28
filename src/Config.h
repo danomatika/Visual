@@ -29,7 +29,7 @@
 #define PACKAGE	"visual"
 #define	VERSION	"0.1.0"
 
-#define CONFIG_FONT	"fonts/ATARCC__.TTF"
+#define CONFIG_FONT	"fonts/PrintChar21.ttf"
 
 class App;
 
@@ -59,25 +59,30 @@ class Config {
 		
 		/// \section Variables
 		
-		string file;					///< initial lua config/playlist file
+		string script; ///< current lua script (playlist or lua run script)
+		bool isPlaylist; ///< is the script a playlist?
 		
-		unsigned int listeningPort;		///< the listening port
+		string playlist; ///< current playlist, maybe the same as script
 		
-		string sendingIp;				///< ip to send to
-		unsigned int sendingPort;		///< port to send to
+		unsigned int listeningPort; ///< the listening port
 		
-		string baseAddress;				///< base osc listening/sending address
-		string notificationAddress;		///< base osc sending address for notifications
-		string deviceAddress;			///< base osc sending addess for devices
+		string sendingIp; ///< ip to send to
+		unsigned int sendingPort; ///< port to send to
+		
+		string baseAddress; ///< base osc listening/sending address
+		string notificationAddress; ///< base osc sending address for notifications
+		string deviceAddress; ///< base osc sending addess for devices
 	
-		unsigned int connectionId;		///< our connection id when sending notifications
+		unsigned int connectionId; ///< our connection id when sending notifications
 		
-		string fontFilename;			///< font filename
+		string fontFilename; ///< font filename
 		
 		unsigned int renderWidth, renderHeight; ///< render dimensions
 		void setRenderSize(unsigned int w, unsigned int h);
+		bool fullscreen; ///< start in fullscreen mode?
 		
-		bool setupAllScenes;			///< setup all scenes on load?
+		bool setupAllScenes; ///< setup all scenes on load?
+		bool showSceneNames; ///< show the scene names?
 
 		// \section Objects
 		
@@ -92,7 +97,7 @@ class Config {
 	private:
 		
 		// hide all the constructors, copy functions here
-		Config();                       // cannot create
-		virtual ~Config() {}           	// cannot destroy
-		void operator =(Config& from) {}// not copyable
+		Config(); // cannot create
+		virtual ~Config() {} // cannot destroy
+		void operator =(Config& from) {} // not copyable
 };

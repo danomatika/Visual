@@ -70,10 +70,10 @@ bool Config::parseCommandLine(int argc, char **argv) {
 
 		// set the config/playlist file path (if one exists)
 		if(fileCmd.getValue() != "") {
-			file = ofFilePath::getAbsolutePath(fileCmd.getValue(), false);
-			if(ofFilePath::getFileExt(file) != "lua") {
-				ofLogError(PACKAGE) << "given config/playlist, << \"" << file << " is not a lua file";
-				file = "";
+			script = ofFilePath::getAbsolutePath(fileCmd.getValue(), false);
+			if(ofFilePath::getFileExt(script) != "lua") {
+				ofLogError(PACKAGE) << "given script, << \"" << script << " is not a lua file";
+				script = "";
 				return false;
 			}
 		}
@@ -119,7 +119,7 @@ void Config::setRenderSize(unsigned int w, unsigned int h) {
 // PRIVATE
 //--------------------------------------------------------------
 Config::Config() :
-	file(""),
+	script(""), isPlaylist(false), playlist(""),
 	listeningPort(9990),
 	sendingIp("127.0.0.1"), sendingPort(8880),
 	baseAddress((string) "/"+PACKAGE),
@@ -127,5 +127,5 @@ Config::Config() :
 	deviceAddress(baseAddress+"/devices"),
 	connectionId(0),
 	fontFilename(""),
-	renderWidth(0), renderHeight(0),
-	setupAllScenes(true) {}
+	renderWidth(0), renderHeight(0), fullscreen(false),
+	setupAllScenes(true), showSceneNames(true) {}

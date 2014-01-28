@@ -1,3 +1,4 @@
+require 'Hello'
 
 -- global vars
 time = 0.0

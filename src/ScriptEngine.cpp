@@ -51,22 +51,44 @@ void ScriptEngine::clear() {
 }
 
 //--------------------------------------------------------------
-void ScriptEngine::clearScript() {
+void ScriptEngine::unloadScript() {
 	lua.scriptExit();
-	clear();
+	if(lua.isValid()) {
+		lua.clear();
+	}
 }
 
 //--------------------------------------------------------------
 bool ScriptEngine::loadScript(string script) {
 	ofLogVerbose(PACKAGE) << "ScriptEngine: loading \""
 		<< ofFilePath::getFileName(script) << "\"";
-	clearScript();
+	unloadScript();
 	if(!setup()) {
 		return false;
 	}
 	lua.bind<ofxLuaBindings>();
 	lua.bind<Bindings>();
 	currentScript = script;
+	
+	// change the current dir to the scene directory,
+	// this allows the lua state to find local files
+	string path = ofFilePath::getEnclosingDirectory(script);
+	if(!ofDirectory::doesDirectoryExist(path)) {
+		ofLogError() << "ScriptEngine: script dir \"" << path << "\" does not exist";
+		return;
+	}
+	else {
+		if(chdir(path.c_str()) != 0) {
+			ofLogError() << "ScriptEngine: couldn't change directory to \"" << path << "\"";
+			return;
+		}
+	}
+	if(ofGetLogLevel() == OF_LOG_VERBOSE) {
+		char currentDir[1024];
+		getcwd(currentDir, 1024);
+		ofLogVerbose(PACKAGE) << "ScriptEngine: current dir: \"" << currentDir << "\"";
+	}
+	
 	bool ret = lua.doScript(currentScript);
 	if(ret) {
 		lua.scriptSetup();
@@ -81,7 +103,7 @@ bool ScriptEngine::reloadScript() {
 	}
 	ofLogVerbose(PACKAGE) << "ScriptEngine: reloading \""
 		<< ofFilePath::getFileName(currentScript) << "\"";
-	lua.clear();
+	unloadScript();
 	if(!setup()) {
 		return false;
 	}

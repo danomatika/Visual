@@ -39,15 +39,10 @@ bool Script::loadFile(string filename) {
 	}
 	
 	string baseName = ofFilePath::getBaseName(filename);
-	if(!Config::instance().scriptEngine.loadScript(ofToDataPath(filename))) {
+	if(!Config::instance().app->loadScript(ofToDataPath(filename))) {
 		ofLogWarning() << "Script: \"" << name << "\" couldn't load \""
 			<< filename << "\"";
 		return false;
-	}
-	
-	// no longer running the config/playlist script
-	if(Config::instance().app->bConfigScript) {
-		Config::instance().app->bConfigScript = false;
 	}
 	
 	bLoaded = true;
@@ -68,7 +63,7 @@ void Script::setup() {
 void Script::clear() {
 //	filename = "";
 	if(bLoaded) {
-		Config::instance().scriptEngine.clearScript();
+		Config::instance().app->unloadScript();
 	}
 	bLoaded = false;
 }

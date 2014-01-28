@@ -80,6 +80,7 @@ luabind::scope Bindings::registerBindings() {
 		// this is a dummy class, you shouldn't be able to create it directly,
 		// it's only for access to the config variables
 		class_<Config>("Config")
+			.def_readwrite("isPlaylist", &Config::isPlaylist)
 			.def_readwrite("listeningPort", &Config::listeningPort)
 			.def_readwrite("sendingIp", &Config::sendingIp)
 			.def_readwrite("sendingPort", &Config::sendingPort)
@@ -90,7 +91,9 @@ luabind::scope Bindings::registerBindings() {
 			.def("setRenderSize", &Config::setRenderSize)
 			.def_readonly("renderWidth", &Config::renderWidth)
 			.def_readonly("renderHeight", &Config::renderHeight)
-			.def_readwrite("setupAllScenes", &Config::setupAllScenes),
+			.def_readwrite("fullscreen", &Config::fullscreen)
+			.def_readwrite("setupAllScenes", &Config::setupAllScenes)
+			.def_readwrite("showSceneNames", &Config::showSceneNames),
 			
 		def("getRenderWidth", &getRenderWidth),
 		def("getRenderHeight", &getRenderHeight),

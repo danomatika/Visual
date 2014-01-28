@@ -1,5 +1,8 @@
--- settings
+-- get global settings
 config = visual.getConfig()
+
+-- tell Visual this is a playlist file (important!)
+config.isPlaylist = true
 
 -- OSC receive settings
 config.listeningPort = 9999
@@ -19,9 +22,18 @@ config.notificationAddress = "/pd/visual"
 config.deviceAddress = "/pd/devices"
 config.connectionId = 0
 
+-- specify render (& window) size
+config:setRenderSize(640, 480)
+
+-- start in fullscreen?
+config.fullscreen = true
+
 -- setup all the scenes after this file is loaded? (default: true)
 -- or setup each scene when it is first run (false)
 config.setupAllScenes = false
+
+-- show the scene name when switching (default: false)
+config.showSceneNames = true
 
 -- this file is divided up into multiple scenes which can be switched between
 

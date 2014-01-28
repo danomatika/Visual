@@ -50,14 +50,12 @@ class App : public ofBaseApp, public OscObject {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-		/// load/reload the config/playlist
-		void loadConfigScript();
-		void reloadConfigScript();
-		
-		/// reload current lua script in a Script object (if there is one)
+		/// load/reload lua scripts
+		bool loadScript(string script);
 		void reloadScript();
+		void unloadScript();
 		
-		bool shiftPressed; //< shift key modifier
+		bool modifierPressed; //< super/command key modifier
 		
 		bool bDebug;
 		bool bRunning;  //< running or paused?
