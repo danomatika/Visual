@@ -188,7 +188,7 @@ scene = visual.Scene("image&text")
 	scene:add(text)
 
 	-- default font with size
-	text = visual.Text("text2", 14)
+	text = visual.Text("text2", 18)
 		text.position:set(10, 330)
 		text.center = false
 		text.color:set(200, 255, 127)
