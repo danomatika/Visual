@@ -39,19 +39,22 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		
 		// options to parse
 		// short id, long id, description, required?, default value, short usage type description
-		TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to; default is '"+sendingIp+"'", false, sendingIp, "string");
+		TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to, default: "+sendingIp, false, sendingIp, "string");
 		
-		TCLAP::ValueArg<int> portOpt("p","port", (string) "Port to send to; default is '"+ofToString(sendingPort)+"'", false, sendingPort, "int");
+		TCLAP::ValueArg<int> portOpt("p","port", (string) "Port to send to, default: "+ofToString(sendingPort), false, sendingPort, "int");
 	 
-		TCLAP::ValueArg<int> inputPortOpt("", "listeningPort", "Listening port; default is '"+ofToString(listeningPort)+"'", false, listeningPort, "int");
+		TCLAP::ValueArg<int> inputPortOpt("", "listeningPort", "Listening port, default: "+ofToString(listeningPort), false, listeningPort, "int");
 		
-		TCLAP::ValueArg<int> connectionIdOpt("", "connectionId", "Connection id for notifications; default is '"+ofToString(connectionId)+"'", false, connectionId, "int");
+		TCLAP::ValueArg<int> connectionIdOpt("", "connectionId", "Connection id for notifications, default: "+ofToString(connectionId), false, connectionId, "int");
+		
+		TCLAP::SwitchArg fullscreenOpt("f", "fullscreen", "Start in fullscreen?", false);
 		
 		// commands to parse
 		// name, description, required?, default value, short usage type description
 		TCLAP::UnlabeledValueArg<string> fileCmd("xml", "visual xml file to load", false, "", "file");
 
 		// add args to parser (in reverse order)
+		cmd.add(fullscreenOpt);
 		cmd.add(connectionIdOpt);
 		cmd.add(inputPortOpt);
 		cmd.add(portOpt);
@@ -83,6 +86,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		if(portOpt.isSet())			sendingPort = portOpt.getValue();
 		if(inputPortOpt.isSet())	listeningPort = inputPortOpt.getValue();
 		if(connectionIdOpt.isSet())	connectionId = connectionIdOpt.getValue();
+		if(fullscreenOpt.isSet())	fullscreen = fullscreenOpt.getValue();
 	}
 	catch(TCLAP::ArgException &e) {	// catch any exceptions
 		ofLogError(PACKAGE) << "CommandLine: " << e.error() << " for arg " << e.argId();
@@ -109,6 +113,7 @@ void Config::print() {
 	ofLogNotice() << "connection id for notifications: " << connectionId;
 	ofLogNotice() << "render size: " << renderWidth << "x" << renderHeight;
 	ofLogNotice() << "setup all scenes: " << (setupAllScenes ? "true" : "false");
+	ofLogNotice() << "show scene names: " << (showSceneNames ? "true" : "false");
 }
 
 void Config::setRenderSize(unsigned int w, unsigned int h) {

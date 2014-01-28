@@ -22,11 +22,11 @@ config.notificationAddress = "/pd/visual"
 config.deviceAddress = "/pd/devices"
 config.connectionId = 0
 
--- specify render (& window) size
+-- specify render (& window) size (default: 640 480)
 config:setRenderSize(640, 480)
 
--- start in fullscreen?
-config.fullscreen = true
+-- start in fullscreen? (default: false)
+config.fullscreen = false
 
 -- setup all the scenes after this file is loaded? (default: true)
 -- or setup each scene when it is first run (false)

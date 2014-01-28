@@ -81,7 +81,7 @@ void SceneManager::clear(bool keepCurScene) {
 	scenes.clear();
 	
 	if(!keepCurScene) {
-		currentScene = 0;
+		currentScene = -1;
 	}
 }
 

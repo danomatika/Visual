@@ -72,7 +72,7 @@ class App : public ofBaseApp, public OscObject {
 		
 		ofxTransformer transformer; ///< for screen scaling
 		
-		bool bConfigScript; ///< is the current script the config/playlist?
+		bool bUpdateCursor; ///< should we show/hide the cursor?
 		
 	protected:
 	

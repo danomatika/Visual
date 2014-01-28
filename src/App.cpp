@@ -37,7 +37,7 @@ App::App() : config(Config::instance()),
 	bRunning = true;
 	reloadTimestamp = 0;
 	saveTimestamp = 0;
-	bConfigScript = false;
+	bUpdateCursor = false;
 	
 	// set osc addresses
 	setOscRootAddress(config.baseAddress);
@@ -75,14 +75,14 @@ void App::setup() {
 	config.setup();
 	sceneManager.setup();
 	
-	// load lua config / playlist
+	// load lua script (if one was given)
 	loadScript(config.script);
 	config.print();
 	
 	// go fullscreen & hide cursor
 	if(config.fullscreen) {
-		ofHideCursor();
 		ofSetFullscreen(true);
+		bUpdateCursor = true;
 	}
 	
 	// setup the osc receiver
@@ -105,7 +105,19 @@ void App::setup() {
 }
 
 //--------------------------------------------------------------
-void App::update() {	
+void App::update() {
+
+	// show/hide the cursor here once the window has been setup
+	if(bUpdateCursor && ofGetFrameNum() > 1) {
+		if(ofGetWindowMode() != OF_WINDOW && !bDebug) {
+			ofHideCursor();
+		}
+		else {
+			ofShowCursor();
+		}
+		bUpdateCursor = false;
+	}
+
 	if(bRunning) {
 		mutex.lock();
 			sceneManager.update();
@@ -214,12 +226,7 @@ void App::keyPressed(int key) {
 		case 'd':
 			if(modifierPressed) {
 				bDebug = !bDebug;
-				if(bDebug) {
-					ofShowCursor();
-				}
-				else if(ofGetWindowMode() != OF_WINDOW) {
-					ofHideCursor();
-				}
+				bUpdateCursor = true;
 				ofLogVerbose(PACKAGE) << "Debug: " << bDebug;
 				return;
 			}
@@ -238,14 +245,7 @@ void App::keyPressed(int key) {
 		case 'f':
 			if(modifierPressed) {
 				ofToggleFullscreen();
-				if(bDebug) {
-					if(ofGetWindowMode() == OF_WINDOW) {
-						ofShowCursor();
-					}
-					else {
-						ofHideCursor();
-					}
-				}
+				bUpdateCursor = true;
 				return;
 			}
 			break;
@@ -303,7 +303,18 @@ void App::windowResized(int w, int h) {
 void App::gotMessage(ofMessage msg) {}
 
 //--------------------------------------------------------------
-void App::dragEvent(ofDragInfo dragInfo) {}
+void App::dragEvent(ofDragInfo dragInfo) {
+	if(dragInfo.files.empty()) return;
+
+	string script = ofFilePath::getAbsolutePath(dragInfo.files[0], false);
+	if(ofFilePath::getFileExt(script) != "lua") {
+		ofLogError(PACKAGE) << "given script, << \"" << script << " is not a lua file";
+		return;
+	}
+	
+	unloadScript();
+	loadScript(script);
+}
 
 //--------------------------------------------------------------
 bool App::loadScript(string script) {
@@ -323,6 +334,7 @@ bool App::loadScript(string script) {
 	// load settings
 	if(config.isPlaylist) {
 		sceneManager.showSceneName(config.showSceneNames);
+		sceneManager.gotoScene(0);
 		config.playlist = script;
 	}
 	
@@ -355,7 +367,7 @@ void App::unloadScript() {
 	
 	if(config.isPlaylist) {
 		scriptEngine.unloadScript();
-		sceneManager.clear(true);
+		sceneManager.clear();
 		config.resourceManager.clear();
 	}
 	else {
