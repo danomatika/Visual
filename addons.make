@@ -1,5 +1,5 @@
 ofxOsc
-ofxGLEditor
+ofxAppUtils
+ofxSvg
 ofxLua
-ofxMidi
 ofxTween
