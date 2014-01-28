@@ -1274,6 +1274,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
+					"-DDEBUG",
 					"-D__MACOSX_CORE__",
 					"-lpthread",
 					"-mtune=native",

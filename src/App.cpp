@@ -56,7 +56,9 @@ App::App() : config(Config::instance()),
 //--------------------------------------------------------------
 void App::setup() {
 	
-	ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
+	#ifdef DEBUG
+		ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
+	#endif
 	ofSetVerticalSync(true);
 	ofBackground(0);
 	
