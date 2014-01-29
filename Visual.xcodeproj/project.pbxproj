@@ -58,6 +58,7 @@
 		30E6F35F18966E3800B9D454 /* ofxEasingSine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30E6F35018966E3800B9D454 /* ofxEasingSine.cpp */; };
 		30E6F36018966E3800B9D454 /* ofxTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30E6F35218966E3800B9D454 /* ofxTween.cpp */; };
 		30E6F36218966F5A00B9D454 /* Tween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30E6F36118966F5A00B9D454 /* Tween.cpp */; };
+		30E6F37A18987AC900B9D454 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30E6F37818987AC900B9D454 /* Console.cpp */; };
 		36F9998BE9E63764A97FDD35 /* Events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18B7836C7981ABD5DBAFA5D9 /* Events.cpp */; };
 		43EB4BFB96881F87219C43EE /* Video.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5077B53CD9EC2CF6E8282D5 /* Video.cpp */; };
 		4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0AED834CE4DEC5260AF302A2 /* ofxOscParameterSync.cpp */; };
@@ -269,6 +270,8 @@
 		30E6F35218966E3800B9D454 /* ofxTween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTween.cpp; sourceTree = "<group>"; };
 		30E6F35318966E3800B9D454 /* ofxTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTween.h; sourceTree = "<group>"; };
 		30E6F36118966F5A00B9D454 /* Tween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tween.cpp; sourceTree = "<group>"; };
+		30E6F37818987AC900B9D454 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
+		30E6F37918987AC900B9D454 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		322182BFE7CEEE93073C559A /* boost.framework */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = wrapper.framework; name = boost.framework; path = ../../../addons/ofxLua/libs/boost/ios/boost.framework; sourceTree = "<group>"; };
 		3B361208CD4107E479F04E7B /* NetworkingUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = NetworkingUtils.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp; sourceTree = SOURCE_ROOT; };
 		444657A12E59D0ED86981498 /* TimerListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimerListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/TimerListener.h; sourceTree = SOURCE_ROOT; };
@@ -772,6 +775,8 @@
 				302E99AF18837E4500AF7621 /* bindings */,
 				3099FD3A18823D0000175228 /* Config.cpp */,
 				3099FD3B18823D0000175228 /* Config.h */,
+				30E6F37818987AC900B9D454 /* Console.cpp */,
+				30E6F37918987AC900B9D454 /* Console.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				302E998818824DF300AF7621 /* objects */,
 				3099FD3318822C1E00175228 /* osc */,
@@ -991,6 +996,7 @@
 				B7C317235DA05CB0C10A3B1A /* Sound.cpp in Sources */,
 				060E59AAD43D8F98360A91E6 /* Types.cpp in Sources */,
 				302E99AC188324EE00AF7621 /* SceneManager.cpp in Sources */,
+				30E6F37A18987AC900B9D454 /* Console.cpp in Sources */,
 				30E6F35D18966E3800B9D454 /* ofxEasingQuart.cpp in Sources */,
 				30E6F35C18966E3800B9D454 /* ofxEasingQuad.cpp in Sources */,
 				308B6F7C188C1A85003449F2 /* Script.cpp in Sources */,

@@ -40,6 +40,7 @@ App::App() : config(Config::instance()),
 	bUpdateCursor = false;
 	bUpdateWindowShape = false;
 	bGoFullscreen = false;
+	bShowError = false;
 	
 	// set osc addresses
 	setOscRootAddress(config.baseAddress);
@@ -71,6 +72,9 @@ void App::setup() {
 	// load fonts, set default render size
 	config.setup();
 	sceneManager.setup();
+	
+	// set console char & line size
+	console.setup();
 	
 	// load lua script (if one was given)
 	loadScript(config.script);
@@ -152,6 +156,10 @@ void App::draw() {
 			scriptEngine.lua.scriptDraw();
 		mutex.unlock();
 	transformer.popTransforms();
+	
+	if(bShowError) {
+		console.draw();
+	}
 	
 	if(bDebug) {
 		ofSetColor(255);
@@ -311,8 +319,11 @@ void App::mouseReleased(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void App::windowResized(int w, int h) {
+	
 	// set up transforms with new screen size
 	transformer.setNewScreenSize(w, h);
+	
+	console.resizeToScreen();
 }
 
 //--------------------------------------------------------------
@@ -335,17 +346,18 @@ void App::dragEvent(ofDragInfo dragInfo) {
 //--------------------------------------------------------------
 bool App::loadScript(string script) {
 
+	clearScriptError();
+
 	ofLogNotice() << "loading \"" << script << "\"";
 	
 	// set data path to config file folder
 	ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(script));
 	
+	config.script = script;
 	config.isPlaylist = false;
 	if(!scriptEngine.loadScript(script)) {
-		config.script = "";
 		return false;
 	}
-	config.script = script;
 	
 	// load settings
 	if(config.isPlaylist) {
@@ -360,6 +372,8 @@ bool App::loadScript(string script) {
 //--------------------------------------------------------------
 void App::reloadScript() {
 	if(config.script.empty()) return;
+	
+	clearScriptError();
 	
 	ofLogNotice() << "reloading \"" << config.script << "\"";
 	
@@ -394,6 +408,22 @@ void App::unloadScript() {
 	if(!config.playlist.empty()) {
 		config.script = config.playlist;
 		scriptEngine.setCurrentScript(config.playlist);
+	}
+	
+	clearScriptError();
+}
+
+//--------------------------------------------------------------
+void App::scriptErrorOccurred(string &errorMessage) {
+	console.addLine(errorMessage);
+	bShowError = true;
+}
+
+//--------------------------------------------------------------
+void App::clearScriptError() {
+	if(bShowError) {
+		console.clear();
+		bShowError = false;
 	}
 }
 

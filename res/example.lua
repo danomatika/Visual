@@ -164,7 +164,10 @@ visual.addScene(scene)
 -- images and text
 scene = visual.Scene("image&text")
 	scene.background:set(64)
-	scene.slideshow = true
+
+	-- slideshow mode only shows one drawable object at a time,
+	-- cycle through them using OSC commands
+	--scene.slideshow = true
 
 	-- an image, rescaled when loaded to fit given size
 	image = visual.Image("image1", "icon.png")

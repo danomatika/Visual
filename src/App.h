@@ -25,6 +25,7 @@
 #include "ofxTransformer.h"
 
 #include "Config.h"
+#include "Console.h"
 #include "OscReceiver.h"
 #include "SceneManager.h"
 #include "ScriptEngine.h"
@@ -55,6 +56,10 @@ class App : public ofBaseApp, public OscObject {
 		void reloadScript();
 		void unloadScript();
 		
+		/// display the error console on a script error
+		void scriptErrorOccurred(string &errorMessage);
+		void clearScriptError();
+		
 		bool modifierPressed; //< super/command key modifier
 		
 		bool bDebug;
@@ -75,6 +80,9 @@ class App : public ofBaseApp, public OscObject {
 		bool bUpdateCursor; ///< should we show/hide the cursor?
 		bool bUpdateWindowShape; ///< should we change the window size?
 		bool bGoFullscreen; ///< should the app be fullscreen on start?
+		
+		Console console; ///< for showing scripting errors
+		bool bShowError; ///< show the error console?
 		
 	protected:
 	

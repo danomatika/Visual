@@ -22,6 +22,7 @@
 ==============================================================================*/
 #include "ScriptEngine.h"
 
+#include "App.h"
 #include "Config.h"
 #include "ofxOsc.h"
 #include "ofxLuaBindings.h"
@@ -132,5 +133,6 @@ void ScriptEngine::sendOsc(const ofxOscMessage& msg) {
 // PRIVATE
 //--------------------------------------------------------------
 void ScriptEngine::errorReceived(string& msg) {
+	Config::instance().app->scriptErrorOccurred(msg);
 	ofLogError(PACKAGE) << msg;
 }
