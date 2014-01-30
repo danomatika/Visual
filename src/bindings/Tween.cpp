@@ -84,37 +84,39 @@ luabind::scope Bindings::registerTween() {
 		///////////////////////////////
 		/// \section ofxEasings
 		
-		class_<ofxEasingBack>("EasingBack")
+		class_<ofxEasing>("Easing"),
+
+		class_<ofxEasingBack, ofxEasing>("EasingBack")
 			.def(constructor<>()),
 			
-		class_<ofxEasingBounce>("EasingBounce")
+		class_<ofxEasingBounce, ofxEasing>("EasingBounce")
 			.def(constructor<>()),
 
-		class_<ofxEasingCubic>("EasingCubic")
+		class_<ofxEasingCubic, ofxEasing>("EasingCubic")
 			.def(constructor<>()),
 			
-		class_<ofxEasingElastic>("EasingElastic")
+		class_<ofxEasingElastic, ofxEasing>("EasingElastic")
 			.def(constructor<>()),
 			
-		class_<ofxEasingLinear>("EasingLinear")
+		class_<ofxEasingLinear, ofxEasing>("EasingLinear")
 			.def(constructor<>()),
 			
-		class_<ofxEasingQuart>("EasingQuart")
+		class_<ofxEasingQuart, ofxEasing>("EasingQuart")
 			.def(constructor<>()),
 			
-		class_<ofxEasingCirc>("EasingCirc")
+		class_<ofxEasingCirc, ofxEasing>("EasingCirc")
 			.def(constructor<>()),
 			
-		class_<ofxEasingExpo>("EasingExpo")
+		class_<ofxEasingExpo, ofxEasing>("EasingExpo")
 			.def(constructor<>()),
 			
-		class_<ofxEasingQuad>("EasingQuad")
+		class_<ofxEasingQuad, ofxEasing>("EasingQuad")
 			.def(constructor<>()),
 			
-		class_<ofxEasingQuint>("EasingQuint")
+		class_<ofxEasingQuint, ofxEasing>("EasingQuint")
 			.def(constructor<>()),
 			
-		class_<ofxEasingSine>("EasingSine")
+		class_<ofxEasingSine, ofxEasing>("EasingSine")
 			.def(constructor<>())
 	;
 }

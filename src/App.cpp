@@ -165,9 +165,16 @@ void App::draw() {
 		ofSetColor(255);
 		ofDrawBitmapStringHighlight(ofToString((int) ofGetFrameRate()), 0, 12);
 		
+		if(!bRunning) {
+			ofDrawBitmapStringHighlight("Paused", 0, ofGetHeight()-22);
+		}
+		
 		Scene *s = sceneManager.getCurrentScene();
 		if(s) {
 			ofDrawBitmapStringHighlight(s->getName(), 0, ofGetHeight()-8);
+		}
+		else if(!config.script.empty()) {
+			ofDrawBitmapStringHighlight(ofFilePath::getFileName(config.script), 0, ofGetHeight()-8);
 		}
 	}
 }
@@ -304,17 +311,17 @@ void App::mouseMoved(int x, int y ) {
 
 //--------------------------------------------------------------
 void App::mouseDragged(int x, int y, int button) {
-	scriptEngine.lua.scriptMousePressed(x, y, button);
+	scriptEngine.lua.scriptMouseDragged(x, y, button);
 }
 
 //--------------------------------------------------------------
 void App::mousePressed(int x, int y, int button) {
-	scriptEngine.lua.scriptMouseReleased(x, y, button);
+	scriptEngine.lua.scriptMousePressed(x, y, button);
 }
 
 //--------------------------------------------------------------
 void App::mouseReleased(int x, int y, int button) {
-	scriptEngine.lua.scriptMouseDragged(x, y, button);
+	scriptEngine.lua.scriptMouseReleased(x, y, button);
 }
 
 //--------------------------------------------------------------
