@@ -24,14 +24,14 @@
 
 //--------------------------------------------------------------
 Video::Video(string name) : DrawableObject(name),
-	bPlay(false), volume(0), loopType(OF_LOOP_NORMAL),
+	bPlay(false), volume(0), speed(1), loopType(OF_LOOP_NORMAL),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false) {
 	clear();
 }
 
 //--------------------------------------------------------------
 Video::Video(string name, string filename) : DrawableObject(name),
-	bPlay(false), volume(0), loopType(OF_LOOP_NORMAL),
+	bPlay(false), volume(0), speed(1), loopType(OF_LOOP_NORMAL),
 	pos(0, 0), width(0), height(0), bDrawFromCenter(false), filename(filename) {
 	clear();
 }

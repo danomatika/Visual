@@ -118,8 +118,8 @@ void Console::draw() {
 void Console::drawString(string text, int x, int y) {
 	ofSetColor(0);
 	//font.drawString(text, x+1, y+1);
-	ofDrawBitmapStringHighlight(text, x+1, y+1);
+	ofDrawBitmapString(text, x+1, y+1);
 	ofSetColor(255);
 	//font.drawString(text, x, y);
-	ofDrawBitmapStringHighlight(text, x, y);
+	ofDrawBitmapString(text, x, y);
 }

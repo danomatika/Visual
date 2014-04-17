@@ -77,7 +77,9 @@ void App::setup() {
 	console.setup();
 	
 	// load lua script (if one was given)
-	loadScript(config.script);
+	if(!config.script.empty()) {
+		loadScript(config.script);
+	}
 	config.print();
 	
 	// new render size?
@@ -339,8 +341,8 @@ void App::gotMessage(ofMessage msg) {}
 //--------------------------------------------------------------
 void App::dragEvent(ofDragInfo dragInfo) {
 	if(dragInfo.files.empty()) return;
-
-	string script = ofFilePath::getAbsolutePath(dragInfo.files[0], false);
+	
+	string script = dragInfo.files[0];
 	if(ofFilePath::getFileExt(script) != "lua") {
 		ofLogError(PACKAGE) << "given script, << \"" << script << " is not a lua file";
 		return;
@@ -348,10 +350,23 @@ void App::dragEvent(ofDragInfo dragInfo) {
 	
 	unloadScript();
 	loadScript(script);
+	
+	// new render size?
+	if(config.renderWidth != ofGetWidth() || config.renderHeight != ofGetHeight()) {
+		bUpdateWindowShape = true;
+	}
+	transformer.setRenderSize(config.renderWidth, config.renderHeight);
+	
+	// go fullscreen & hide cursor
+	if(config.fullscreen) {
+		bGoFullscreen = true;
+		bUpdateCursor = true;
+	}
 }
 
 //--------------------------------------------------------------
 bool App::loadScript(string script) {
+	if(script == "") return;
 
 	clearScriptError();
 
@@ -378,7 +393,7 @@ bool App::loadScript(string script) {
 
 //--------------------------------------------------------------
 void App::reloadScript() {
-	if(config.script.empty()) return;
+	if(config.script == "") return;
 	
 	clearScriptError();
 	
@@ -398,7 +413,7 @@ void App::reloadScript() {
 
 //--------------------------------------------------------------
 void App::unloadScript() {
-	if(config.script.empty()) return;
+	if(config.script == "") return;
 	
 	ofLogNotice() << "unloading \"" << config.script << "\"";
 	
@@ -461,6 +476,9 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/scene/prev") {
+		if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
+			return true;
+		}
 		mutex.lock();
 			sceneManager.prevScene();
 		mutex.unlock();
@@ -468,7 +486,11 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/scene/next") {
+		if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
+			return true;
+		}
 		mutex.lock();
+			
 			sceneManager.nextScene();
 		mutex.unlock();
 		return true;

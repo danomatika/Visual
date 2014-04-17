@@ -100,6 +100,11 @@ void Scene::setup(bool earlySetup) {
 			}
 		}
 	}
+	
+	// make sure to show first object in slide show
+	if(bSlideshow) {
+		gotoObject(0);
+	}
 }
 
 //--------------------------------------------------------------

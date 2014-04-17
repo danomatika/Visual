@@ -83,6 +83,7 @@ class SceneManager : public OscObject {
 		int currentScene;
 		vector<Scene*> scenes;
 		ofxTimer sceneChangeTimer;
+		ofxTimer objectChangeTimer;
 		
 		bool bShowSceneName;
 		ofxTimer sceneNameTimer;

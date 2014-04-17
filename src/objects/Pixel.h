@@ -24,6 +24,7 @@
 
 #include "DrawableObject.h"
 
+// yeah, kind of pointless
 class Pixel : public DrawableObject {
 
 	public:

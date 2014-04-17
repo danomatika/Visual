@@ -24,6 +24,8 @@
 
 #include "ofMain.h"
 
+// simple console of lines of text,
+// using bitmap string for now ...
 class Console {
 
 	public:

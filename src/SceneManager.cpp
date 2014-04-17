@@ -25,6 +25,8 @@
 #include "Config.h"
 
 #define SCENE_CHANGE_MS			100
+#define OBJECT_CHANGE_MS		100
+
 #define SCENE_NAME_MS			1250
 #define SCENE_NAME_FONT_SIZE	36
 
@@ -137,10 +139,8 @@ void SceneManager::gotoScene(unsigned int num) {
 
 	exit();
 	currentScene = num;
-
 	ofLogVerbose(PACKAGE) << "SceneManager: changed scene to \""
 			  << scenes.at(currentScene)->getName() << "\"";
-
 	setupScene(scenes.at(currentScene));
 	sceneChangeTimer.setAlarm(SCENE_CHANGE_MS);
 }
@@ -285,7 +285,10 @@ bool SceneManager::processOscMessage(const ofxOscMessage& message) {
 		}
 		
 		if(message.getAddress() == getOscRootAddress() + "/scene/object") {
-		
+			if(!objectChangeTimer.alarm()) {
+				return true;
+			}
+			
 			if(message.getArgType(0) == OFXOSC_TYPE_STRING) {
 				string object = message.getArgAsString(0);
 				scene->gotoObject(object);
@@ -296,15 +299,31 @@ bool SceneManager::processOscMessage(const ofxOscMessage& message) {
 				scene->gotoObject(index);
 				return true;
 			}
+			
+			sceneChangeTimer.setAlarm(OBJECT_CHANGE_MS);
 		}
 		
 		else if(message.getAddress() == getOscRootAddress() + "/scene/object/prev") {
+			if(!objectChangeTimer.alarm()) {
+				return true;
+			}
+			if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
+				return true;
+			}
 			scene->prevObject();
+			sceneChangeTimer.setAlarm(OBJECT_CHANGE_MS);
 			return true;
 		}
 		
 		else if(message.getAddress() == getOscRootAddress() + "/scene/object/next") {
+			if(!objectChangeTimer.alarm()) {
+				return true;
+			}
+			if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
+				return true;
+			}
 			scene->nextObject();
+			sceneChangeTimer.setAlarm(OBJECT_CHANGE_MS);
 			return true;
 		}
 

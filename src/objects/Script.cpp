@@ -65,5 +65,9 @@ void Script::clear() {
 	if(bLoaded) {
 		Config::instance().app->unloadScript();
 	}
+	else {
+		// clear script error if file wasn't found
+		Config::instance().app->clearScriptError();
+	}
 	bLoaded = false;
 }
