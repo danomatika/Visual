@@ -3,6 +3,9 @@ Visual
 
 a simple scene manager and general purpose OF + Lua interpreter controllable over Open Sound Control
 
+directly inspired by [Love2d](http://www.love2d.org/), [Fluxus](http://www.pawfal.org//fluxus), etc 
+
+GPL v3  
 Copyright (c) [Dan Wilcox](danomatika.com) 2014
 
 DESCRIPTION
@@ -24,7 +27,7 @@ See the ofxLua example scripts for now on how the callback functions are laid ou
 
 There is a built in OSX server, scene manager, scene types, etc but I don't have time to document all of that right now. Will get to that later ... 
 
-See the example scripts & media in the `/res` folder.
+See the example scripts & media in the `/res` folder. `example.lua` demonstrates a scene manager playlist, adding scenes and scene objects. `test.lua` is a simple lua script using the OF Lua bindings.
 
 BUILD REQUIREMENTS
 ------------------
