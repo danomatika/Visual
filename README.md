@@ -13,7 +13,7 @@ DESCRIPTION
 
 This is basically a more advanced version of [rc-visual](https://github.com/danomatika/rc-visual) built for the [robotcowboy: Onward to Mars](http://robotcowboy.com/onwardtomars) project.
 
-A current OSX build can be found at: <http://docs.danomatika.com/Visual.app.zip>
+A current OSC build can be found at: <http://docs.danomatika.com/Visual.app.zip>
 
 Simply create lua scripts using the [ofxLua api bindings](https://github.com/danomatika/ofxLua/tree/master/src/bindings) and run them in Visual by either dragging and dropping the script, setting it as a command line argument, or a script within a playlist/scene lua script.
 
