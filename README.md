@@ -24,6 +24,8 @@ See the ofxLua example scripts for now on how the callback functions are laid ou
 
 There is a built in OSX server, scene manager, scene types, etc but I don't have time to document all of that right now. Will get to that later ... 
 
+See the example scripts & media in the `/res` folder.
+
 BUILD REQUIREMENTS
 ------------------
 
