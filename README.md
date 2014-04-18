@@ -13,7 +13,7 @@ DESCRIPTION
 
 This is basically a more advanced version of [rc-visual](https://github.com/danomatika/rc-visual) built for the [robotcowboy: Onward to Mars](http://robotcowboy.com/onwardtomars) project.
 
-A current OSC build can be found at: <http://docs.danomatika.com/Visual.app.zip>
+A current OSX build can be found at: <http://docs.danomatika.com/Visual.app.zip>
 
 Simply create lua scripts using the [ofxLua api bindings](https://github.com/danomatika/ofxLua/tree/master/src/bindings) and run them in Visual by either dragging and dropping the script, setting it as a command line argument, or a script within a playlist/scene lua script.
 
@@ -25,7 +25,7 @@ Basically: 
 
 See the ofxLua example scripts for now on how the callback functions are laid out: <https://github.com/danomatika/ofxLua/tree/master/example/bin/data/scripts>
 
-There is a built in OSX server, scene manager, scene types, etc but I don't have time to document all of that right now. Will get to that later ... 
+There is a built in OSC server, scene manager, scene types, etc but I don't have time to document all of that right now. Will get to that later ... 
 
 See the example scripts & media in the `/res` folder. `example.lua` demonstrates a scene manager playlist, adding scenes and scene objects. `test.lua` is a simple lua script using the OF Lua bindings.
 
