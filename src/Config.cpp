@@ -51,7 +51,7 @@ bool Config::parseCommandLine(int argc, char **argv) {
 		
 		// commands to parse
 		// name, description, required?, default value, short usage type description
-		TCLAP::UnlabeledValueArg<string> fileCmd("lua", "visual lua script to load", false, "", "file");
+		TCLAP::UnlabeledValueArg<string> fileCmd("lua", "Visual lua script to load", false, "", "file");
 
 		// add args to parser (in reverse order)
 		cmd.add(fullscreenOpt);
