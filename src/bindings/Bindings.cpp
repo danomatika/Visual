@@ -29,6 +29,11 @@
 #include <luabind/adopt_policy.hpp>
 
 //--------------------------------------------------------------
+void print(const string& message) {
+	ofLogNotice() << message;
+}
+
+//--------------------------------------------------------------
 Config* getConfig() {
 	return &Config::instance();
 }
@@ -62,6 +67,29 @@ Scene* getCurrentScene() {
 }
 
 //--------------------------------------------------------------
+void setListeningPort(unsigned int port) {
+	if(Config::instance().listeningPort == port) {
+		// silently ignore
+		return;
+	}
+	if(port < 1024) {
+		ofLogWarning() << "port should be > 1024";
+		return;
+	}
+	Config::instance().listeningPort = port;
+	OscReceiver &receiver = Config::instance().oscReceiver;
+	if(receiver.isListening()) {
+		receiver.stop();
+		receiver.setup(port);
+		receiver.start();
+	}
+	else {
+		receiver.setup(port);
+	}
+	ofLogNotice() << "listening port: " << port;
+}
+
+//--------------------------------------------------------------
 // luabind registration
 //
 // transferring ownership reference:
@@ -71,6 +99,15 @@ luabind::scope Bindings::registerBindings() {
 	using namespace luabind;
 	
 	return
+		
+		///////////////////////////////
+		/// \section Utils
+		def("print", &print), // print override
+		def("clear", &clear), // clear Repl
+		
+		///////////////////////////////
+		/// \section Config live functions
+		def("setListeningPort", &setListeningPort),
 		
 		///////////////////////////////
 		/// \section Config.h
@@ -409,13 +446,14 @@ luabind::scope Bindings::registerBindings() {
 	;
 }
 
-// override of size with render size
-static string overrides =
+// override of size with render size & print function
+static string overrideString =
 "of.getWidth = visual.getRenderWidth\n" \
-"of.getHeight = visual.getRenderHeight"
+"of.getHeight = visual.getRenderHeight\n" \
+"print = function (m) visual.print(tostring(m)) end"
 ;
 
-void Bindings::overrideSize(lua_State *L) {
-	luaL_loadstring(L, overrides.c_str());
+void Bindings::overrides(lua_State *L) {
+	luaL_loadstring(L, overrideString.c_str());
 	lua_pcall(L, 0, LUA_MULTRET, 0);
 }

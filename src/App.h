@@ -23,9 +23,9 @@
 #pragma once
 
 #include "ofxTransformer.h"
+#include "ofxGLEditor.h"
 
 #include "Config.h"
-#include "Console.h"
 #include "OscReceiver.h"
 #include "SceneManager.h"
 #include "ScriptEngine.h"
@@ -49,18 +49,17 @@ class App : public ofBaseApp, public OscObject {
 		void mouseReleased(int x, int y, int button);
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
 		
 		/// load/reload lua scripts
 		bool loadScript(string script);
 		void reloadScript();
 		void unloadScript();
 		
-		/// display the error console on a script error
-		void scriptErrorOccurred(string &errorMessage);
-		void clearScriptError();
-		
-		bool modifierPressed; //< super/command key modifier
+		/// editor events
+		void saveFileEvent(int &whichEditor);
+		void openFileEvent(int &whichEditor);
+		void executeScriptEvent(int &whichEditor);
+		void evalReplEvent(string &text);
 		
 		bool bDebug;
 		bool bRunning;  //< running or paused?
@@ -81,8 +80,7 @@ class App : public ofBaseApp, public OscObject {
 		bool bUpdateWindowShape; ///< should we change the window size?
 		bool bGoFullscreen; ///< should the app be fullscreen on start?
 		
-		Console console; ///< for showing scripting errors
-		bool bShowError; ///< show the error console?
+		ofxGLEditor editor; ///< on screen text editor
 		
 	protected:
 	

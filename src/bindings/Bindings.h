@@ -41,7 +41,7 @@ class Bindings {
 				registerTween()
 			];
 			
-			overrideSize(lua);
+			overrides(lua);
 		}
 		
 	private:
@@ -52,5 +52,6 @@ class Bindings {
 		static luabind::scope registerTween();
 		
 		/// override the of getWidth & getHeight bindings with the render size
-		static void overrideSize(lua_State *L);
+		/// and the print() function
+		static void overrides(lua_State *L);
 };

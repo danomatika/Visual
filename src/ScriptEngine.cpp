@@ -22,7 +22,6 @@
 ==============================================================================*/
 #include "ScriptEngine.h"
 
-#include "App.h"
 #include "Config.h"
 #include "ofxOsc.h"
 #include "ofxLuaBindings.h"
@@ -40,6 +39,8 @@ bool ScriptEngine::setup() {
 		ofLogError() << "ScriptEngine: could not init lua";
 		return false;
 	}
+	lua.bind<ofxLuaBindings>();
+	lua.bind<Bindings>();
 	return true;
 }
 
@@ -67,8 +68,6 @@ bool ScriptEngine::loadScript(string script) {
 	if(!setup()) {
 		return false;
 	}
-	lua.bind<ofxLuaBindings>();
-	lua.bind<Bindings>();
 	currentScript = script;
 	
 	// change the current dir to the scene directory,
@@ -108,13 +107,20 @@ bool ScriptEngine::reloadScript() {
 	if(!setup()) {
 		return false;
 	}
-	lua.bind<ofxLuaBindings>();
-	lua.bind<Bindings>();
 	bool ret = lua.doScript(currentScript);
 	if(ret) {
 		lua.scriptSetup();
 	}
 	return ret;
+}
+
+//--------------------------------------------------------------
+bool ScriptEngine::evalString(const string &text) {
+	if(!lua.doString(text)) {
+		setup(); // reset
+		return false;
+	}
+	return true;
 }
 
 //--------------------------------------------------------------
@@ -133,6 +139,5 @@ void ScriptEngine::sendOsc(const ofxOscMessage& msg) {
 // PRIVATE
 //--------------------------------------------------------------
 void ScriptEngine::errorReceived(string& msg) {
-	Config::instance().app->scriptErrorOccurred(msg);
 	ofLogError(PACKAGE) << msg;
 }

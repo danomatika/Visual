@@ -32,7 +32,6 @@ App::App() : config(Config::instance()),
 	sender(Config::instance().oscSender),
 	scriptEngine(Config::instance().scriptEngine) {
 	
-	modifierPressed = false;
 	bDebug = false;
 	bRunning = true;
 	reloadTimestamp = 0;
@@ -40,7 +39,6 @@ App::App() : config(Config::instance()),
 	bUpdateCursor = false;
 	bUpdateWindowShape = false;
 	bGoFullscreen = false;
-	bShowError = false;
 	
 	// set osc addresses
 	setOscRootAddress(config.baseAddress);
@@ -60,11 +58,11 @@ void App::setup() {
 	#ifdef DEBUG
 		ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
 	#endif
-	ofSetVerticalSync(true);
+	ofSetFrameRate(30);
 	ofBackground(0);
 	
 	// read from the app bundle
-	#ifdef __APPLE__
+	#ifdef TARGET_OSX
 		ofSetDataPathRoot("../Resources/data/");
 		ofLogVerbose(PACKAGE) << "Data path is \"" << ofToDataPath("")  << "\"";
 	#endif
@@ -73,13 +71,29 @@ void App::setup() {
 	config.setup();
 	sceneManager.setup();
 	
-	// set console char & line size
-	console.setup();
+	// setup editor & add editor event listening
+	#ifdef TARGET_OSX
+		bool useSuperKey = true;
+	#else
+		bool useSuperKey = false;
+	#endif
+	//ofxGLEditor::setReplWidth(40);
+	editor.setup(CONFIG_FONT, true, useSuperKey);
+	ofAddListener(editor.openFileEvent, this, &App::openFileEvent);
+	ofAddListener(editor.saveFileEvent, this, &App::saveFileEvent);
+	ofAddListener(editor.executeScriptEvent, this, &App::executeScriptEvent);
+	ofAddListener(editor.evalReplEvent, this, &App::evalReplEvent);
 	
 	// load lua script (if one was given)
 	if(!config.script.empty()) {
 		loadScript(config.script);
 	}
+	else {
+		scriptEngine.setup();
+		ofSetDataPathRoot(ofFilePath::addTrailingSlash(ofFilePath::getUserHomeDir()));
+		editor.setCurrentEditor(0); // start with Repl
+	}
+	editor.setPath(ofToDataPath(""));
 	config.print();
 	
 	// new render size?
@@ -159,9 +173,7 @@ void App::draw() {
 		mutex.unlock();
 	transformer.popTransforms();
 	
-	if(bShowError) {
-		console.draw();
-	}
+	editor.draw();
 	
 	if(bDebug) {
 		ofSetColor(255);
@@ -201,54 +213,69 @@ void App::exit() {
 //--------------------------------------------------------------
 void App::keyPressed(int key) {
 	
+	bool shiftPressed = ofGetKeyPressed(OF_KEY_SHIFT);
+	#ifdef TARGET_OSX
+		bool modifierPressed = ofGetKeyPressed(OF_KEY_COMMAND);
+	#else
+		bool modifierPressed = ofGetKeyPressed(OF_KEY_CONTROL);
+	#endif
+
 	switch(key) {
 	
-		case OF_KEY_SUPER:
-			modifierPressed = true;
-			return;
-	
 		case OF_KEY_UP: {
-			ofxOscMessage message;
-			message.setAddress(config.deviceAddress + "/keyboard");
-			message.addStringArg("up");
-			sender.sendMessage(message);
-			return;
+			if(editor.isHidden()) {
+				ofxOscMessage message;
+				message.setAddress(config.deviceAddress + "/keyboard");
+				message.addStringArg("up");
+				sender.sendMessage(message);
+				return;
+			}
+			break;
 		}
 			
 		case OF_KEY_DOWN: {
-			ofxOscMessage message;
-			message.setAddress(config.deviceAddress + "/keyboard");
-			message.addStringArg("down");
-			sender.sendMessage(message);
-			return;
+			if(editor.isHidden()) {
+				ofxOscMessage message;
+				message.setAddress(config.deviceAddress + "/keyboard");
+				message.addStringArg("down");
+				sender.sendMessage(message);
+				return;
+			}
+			break;
 		}
 	
 		case OF_KEY_LEFT: {
-			if(modifierPressed) {
-				sceneManager.prevScene();
+			if(editor.isHidden()) {
+				if(shiftPressed) {
+					sceneManager.prevScene();
+					return;
+				}
+				ofxOscMessage message;
+				message.setAddress(config.deviceAddress + "/keyboard");
+				message.addStringArg("left");
+				sender.sendMessage(message);
 				return;
 			}
-			ofxOscMessage message;
-			message.setAddress(config.deviceAddress + "/keyboard");
-			message.addStringArg("left");
-			sender.sendMessage(message);
-			return;
+			break;
 		}
 
 		case OF_KEY_RIGHT: {
-			if(modifierPressed) {
-				sceneManager.nextScene();
+			if(editor.isHidden()) {
+				if(shiftPressed) {
+					sceneManager.nextScene();
+					return;
+				}
+				ofxOscMessage message;
+				message.setAddress(config.deviceAddress + "/keyboard");
+				message.addStringArg("right");
+				sender.sendMessage(message);
 				return;
 			}
-			ofxOscMessage message;
-			message.setAddress(config.deviceAddress + "/keyboard");
-			message.addStringArg("right");
-			sender.sendMessage(message);
-			return;
+			break;
 		}
 		
 		case 'p':
-			if(modifierPressed) {
+			if(editor.isHidden() && modifierPressed) {
 				bRunning = !bRunning;
 				receiver.ignoreMessages(!bRunning);
 				ofLogVerbose(PACKAGE) << "Running: " << bRunning;
@@ -257,7 +284,7 @@ void App::keyPressed(int key) {
 			break;
 
 		case 'd':
-			if(modifierPressed) {
+			if(editor.isHidden() && modifierPressed) {
 				bDebug = !bDebug;
 				bUpdateCursor = true;
 				ofLogVerbose(PACKAGE) << "Debug: " << bDebug;
@@ -265,8 +292,9 @@ void App::keyPressed(int key) {
 			}
 			break;
 
-		case 'r':
-			if(modifierPressed) {
+		case 'E':
+			// reload script & execute
+			if(modifierPressed && shiftPressed) {
 				if(ofGetElapsedTimeMillis() - reloadTimestamp > RELOAD_TIMEOUT_MS) {
 					reloadScript();
 					reloadTimestamp = ofGetElapsedTimeMillis();
@@ -275,7 +303,7 @@ void App::keyPressed(int key) {
 			}
 			break;
 		
-		case 'f':
+		case 'f': case 6:
 			if(modifierPressed) {
 				ofToggleFullscreen();
 				bUpdateCursor = true;
@@ -284,25 +312,23 @@ void App::keyPressed(int key) {
 			break;
 	}
 	
-	// forward key events
-	ofxOscMessage message;
-	message.setAddress(config.deviceAddress + "/keyboard");
-	message.addIntArg(key);
-	sender.sendMessage(message);
-	
-	scriptEngine.lua.scriptKeyPressed(key);
+	if(editor.isHidden()) {
+		if(key < 256) { // forward ASCII key events
+			ofxOscMessage message;
+			message.setAddress(config.deviceAddress + "/keyboard");
+			message.addIntArg(key);
+			sender.sendMessage(message);
+		}
+		scriptEngine.lua.scriptKeyPressed(key);
+	}
+	else {
+		editor.keyPressed(key);
+	}
 }
 
 //--------------------------------------------------------------
 void App::keyReleased(int key) {
-	
-	switch(key) {
-	
-		case OF_KEY_SUPER:
-			modifierPressed = false;
-			break;
-	}
-	
+	editor.keyReleased(key);
 	scriptEngine.lua.scriptKeyReleased(key);
 }
 
@@ -331,12 +357,9 @@ void App::windowResized(int w, int h) {
 	
 	// set up transforms with new screen size
 	transformer.setNewScreenSize(w, h);
-	
-	console.resizeToScreen();
-}
 
-//--------------------------------------------------------------
-void App::gotMessage(ofMessage msg) {}
+	editor.reShape();
+}
 
 //--------------------------------------------------------------
 void App::dragEvent(ofDragInfo dragInfo) {
@@ -365,10 +388,31 @@ void App::dragEvent(ofDragInfo dragInfo) {
 }
 
 //--------------------------------------------------------------
+void App::openFileEvent(int &whichEditor){
+	ofLogNotice() << "editor " << whichEditor << ": opened "
+		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
+}
+
+//--------------------------------------------------------------
+void App::saveFileEvent(int &whichEditor){
+	ofLogNotice() << "editor " << whichEditor << ": saved "
+		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
+}
+
+//--------------------------------------------------------------
+void App::executeScriptEvent(int &whichEditor){
+	scriptEngine.evalString(editor.getText(whichEditor));
+}
+
+//--------------------------------------------------------------
+void App::evalReplEvent(string &text) {
+	scriptEngine.evalString(text);
+	editor.evalReplReturn();
+}
+
+//--------------------------------------------------------------
 bool App::loadScript(string script) {
 	if(script == "") return;
-
-	clearScriptError();
 
 	ofLogNotice() << "loading \"" << script << "\"";
 	
@@ -380,6 +424,7 @@ bool App::loadScript(string script) {
 	if(!scriptEngine.loadScript(script)) {
 		return false;
 	}
+	editor.openFile(script);
 	
 	// load settings
 	if(config.isPlaylist) {
@@ -394,8 +439,6 @@ bool App::loadScript(string script) {
 //--------------------------------------------------------------
 void App::reloadScript() {
 	if(config.script == "") return;
-	
-	clearScriptError();
 	
 	ofLogNotice() << "reloading \"" << config.script << "\"";
 	
@@ -430,22 +473,6 @@ void App::unloadScript() {
 	if(!config.playlist.empty()) {
 		config.script = config.playlist;
 		scriptEngine.setCurrentScript(config.playlist);
-	}
-	
-	clearScriptError();
-}
-
-//--------------------------------------------------------------
-void App::scriptErrorOccurred(string &errorMessage) {
-	console.addLine(errorMessage);
-	bShowError = true;
-}
-
-//--------------------------------------------------------------
-void App::clearScriptError() {
-	if(bShowError) {
-		console.clear();
-		bShowError = false;
 	}
 }
 
