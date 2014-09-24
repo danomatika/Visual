@@ -39,7 +39,6 @@ ResourceManager::~ResourceManager() {
 void ResourceManager::clear() {
 	clearFonts();
 	clearImages();
-	clearSvgs();
 	clearVideos();
 }
 
@@ -182,53 +181,6 @@ void ResourceManager::clearImages() {
 		(iter->second).reset();
 	}
 	images.clear();
-}
-
-// SVG
-//--------------------------------------------------------------
-bool ResourceManager::addSvg(const string& name, const string& file) {
-	ofPtr<ofxSVG> s = ofPtr<ofxSVG>(new ofxSVG);
-	s->load(ofToDataPath(file)); // doesn't return a bool
-	svgs.insert(pair<string,ofPtr<ofxSVG> >(name, s));
-	return true;
-}
-
-//--------------------------------------------------------------
-void ResourceManager::removeSvg(const string& name) {
-	map<string,ofPtr<ofxSVG> >::iterator iter = svgs.find(name);
-	if(iter != svgs.end()) {
-		(iter->second).reset();
-		svgs.erase(iter);
-	}
-}
-
-//--------------------------------------------------------------
-bool ResourceManager::svgExists(const string& name) {
-	map<string,ofPtr<ofxSVG> >::iterator iter = svgs.find(name);
-	if(iter != svgs.end()) {
-		return true;
-	}
-	return false;
-}
-
-//--------------------------------------------------------------
-ofPtr<ofxSVG> ResourceManager::getSvg(const string& name) {
-	map<string,ofPtr<ofxSVG> >::iterator iter = svgs.find(name);
-	if(iter != svgs.end()) {
-		return iter->second;
-	}
-	else {
-		return ofPtr<ofxSVG>(); // NULL
-	}
-}
-
-//--------------------------------------------------------------
-void ResourceManager::clearSvgs() {
-	map<string,ofPtr<ofxSVG> >::iterator iter;
-	for(iter = svgs.begin(); iter != svgs.end(); iter++) {
-		(iter->second).reset();
-	}
-	svgs.clear();
 }
 
 // VIDEO

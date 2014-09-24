@@ -23,7 +23,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxSvg.h"
 
 #define DEFAULT_FONT_SIZE	12
 
@@ -50,13 +49,6 @@ class ResourceManager {
 		ofPtr<ofImage> getImage(const string& name);
 		void clearImages();
 		
-		/// svgs
-		bool addSvg(const string& name, const string& file);
-		void removeSvg(const string& name);
-		bool svgExists(const string& name);
-		ofPtr<ofxSVG> getSvg(const string& name);
-		void clearSvgs();
-		
 		/// videos
 		bool addVideo(const string& name, const string& file);
 		void removeVideo(const string& name);
@@ -75,6 +67,5 @@ class ResourceManager {
 		map<string,FontSet> fonts;
 		
 		map<string,ofPtr<ofImage> > images;
-		map<string,ofPtr<ofxSVG> > svgs;
 		map<string,ofPtr<ofVideoPlayer> > videos;
 };

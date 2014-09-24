@@ -340,37 +340,6 @@ luabind::scope Bindings::registerBindings() {
 			.property("type", &Sprite::getType),
 			
 		///////////////////////////////
-		/// \section Svg.h
-		
-		class_<Svg, bases<DrawableFrame, DrawableObject> >("Svg")
-			.def(constructor<string>())
-			.def(constructor<string,string>())
-			.def(constructor<unsigned int,string>())
-			.def("loadFile", &Svg::loadFile)
-			
-			.def("setup", &Svg::setup)
-			.def("draw", (void(Svg::*)(void)) &Svg::draw)
-			.def("draw", (void(Svg::*)(int,int)) &Svg::draw)
-			.def("draw", (void(Svg::*)(int,int,unsigned int,unsigned int)) &Svg::draw)
-			.def("clear", &Svg::clear)
-			
-			.def("getSvg", &Svg::getSvg)
-			.property("svg", &Svg::getSvg)
-			.def("isLoaded", &Svg::isLoaded)
-			.property("loaded", &Svg::isLoaded)
-			.def("getFilename", &Svg::getFilename)
-			.property("filename", &Svg::getFilename)
-			.property("color", &Svg::getColor, &Svg::setColor)
-			.property("visible", &Svg::getVisible, &Svg::setVisible)
-			.property("position", &Svg::getPos, &Svg::setPos)
-			.def("setSize", &Svg::setSize)
-			.property("width", &Svg::getWidth, &Svg::setWidth)
-			.property("height", &Svg::getHeight, &Svg::setHeight)
-			.property("center", &Svg::getDrawFromCenter, &Svg::setDrawFromCenter)
-			.property("name", &Svg::getName)
-			.property("type", &Svg::getType),
-			
-		///////////////////////////////
 		/// \section Text.h
 		
 		class_<Text, DrawableObject>("Text")

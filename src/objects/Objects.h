@@ -29,6 +29,5 @@
 #include "Script.h"
 #include "Sprite.h"
 #include "Image.h"
-#include "Svg.h"
 #include "Text.h"
 #include "Video.h"
