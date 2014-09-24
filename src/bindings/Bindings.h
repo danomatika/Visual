@@ -36,9 +36,7 @@ class Bindings {
 			];
 			
 			luabind::module(lua, "ofx") [
-				registerOsc(),
-				registerSvg(),
-				registerTween()
+				registerOsc()
 			];
 		}
 		
