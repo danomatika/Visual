@@ -29,7 +29,8 @@
 #define PACKAGE	"visual"
 #define	VERSION	"0.1.0"
 
-#define CONFIG_FONT	"fonts/PrintChar21.ttf"
+#define CONFIG_FONT "fonts/PrintChar21.ttf"
+#define CONFIG_FUNCTIONS "functions.lua"
 
 class App;
 
@@ -57,6 +58,8 @@ class Config {
 		/// print current variables
 		void print();
 		
+		
+		
 		/// \section Variables
 		
 		string script; ///< current lua script (playlist or lua run script)
@@ -76,6 +79,7 @@ class Config {
 		unsigned int connectionId; ///< our connection id when sending notifications
 		
 		string fontFilename; ///< font filename
+		string functionsFilename; ///< lua function overrides
 		
 		unsigned int renderWidth, renderHeight; ///< render dimensions
 		void setRenderSize(unsigned int w, unsigned int h);
@@ -93,6 +97,12 @@ class Config {
 		
 		ScriptEngine scriptEngine; ///< global lua scripting engine
 		ResourceManager resourceManager; ///< global resources
+		
+		// \section Realtime
+		
+		void setListeningPort(unsigned int port);
+		void setSendingIp(string address);
+		void setSendingPort(unsigned int port);
 
 	private:
 		

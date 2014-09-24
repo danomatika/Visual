@@ -77,7 +77,6 @@ void App::setup() {
 	#else
 		bool useSuperKey = false;
 	#endif
-	//ofxGLEditor::setReplWidth(40);
 	editor.setup(CONFIG_FONT, true, useSuperKey);
 	ofAddListener(editor.openFileEvent, this, &App::openFileEvent);
 	ofAddListener(editor.saveFileEvent, this, &App::saveFileEvent);
@@ -131,7 +130,7 @@ void App::setup() {
 void App::update() {
 
 	// update the window shape if we're using a different rendering size,
-	// this dosent seem to work in setup() so do it here
+	// this dosen't seem to work in setup() so do it here
 	if(bUpdateWindowShape) {// && ofGetFrameNum() > 1) {
 		ofSetWindowShape(config.renderWidth, config.renderHeight);
 		bUpdateWindowShape = false;
@@ -174,6 +173,20 @@ void App::draw() {
 	transformer.popTransforms();
 	
 	editor.draw();
+	if(!editor.isHidden() && editor.getCurrentEditor() > 0) {
+	
+		//editor.drawString("hello world", 320, 0);
+		//editor.drawString("foo bar", config.renderWidth -240, 0);
+		// draw the current editor num
+		//editor.drawString("Current editor: "+ofToString(editor.getCurrentEditor()), 10, 15);
+		//ofLog() << ofGetScreenWidth()-200 << " " << ofGetWidth()-200;
+		// draw the current & total line nums
+		//editor.drawString(ofToString(editor.getCurrentLine())
+		//	+","+ofToString(editor.getCurrentLinePos()), config.renderWidth*1.4, ofGetScreenHeight()-15);
+	
+		// draw the current pos & line length
+		//editor.drawString("         pos: "+ofToString(editor.getCurrentLinePos()), 740, 35);
+	}
 	
 	if(bDebug) {
 		ofSetColor(255);
@@ -321,9 +334,7 @@ void App::keyPressed(int key) {
 		}
 		scriptEngine.lua.scriptKeyPressed(key);
 	}
-	else {
-		editor.keyPressed(key);
-	}
+	editor.keyPressed(key);
 }
 
 //--------------------------------------------------------------
@@ -482,7 +493,7 @@ void App::unloadScript() {
 // closed before calling lua functions
 bool App::processOscMessage(const ofxOscMessage& message) {
 
-//	ofLogVerbose(PACKAGE) << "received " << message.getAddress();
+	ofLogVerbose(PACKAGE) << "received " << message.getAddress();
 	
 	if(message.getAddress() == getOscRootAddress() + "/scene") {
 	
@@ -545,7 +556,7 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	}
 
 	else if(message.getAddress() == getOscRootAddress() + "/quit") {
-		exitApp();
+		ofExit();
 		return true;
 	}
 	

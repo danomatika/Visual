@@ -41,6 +41,7 @@ bool ScriptEngine::setup() {
 	}
 	lua.bind<ofxLuaBindings>();
 	lua.bind<Bindings>();
+	lua.doScript(Config::instance().functionsFilename); // custom functions
 	return true;
 }
 

@@ -25,6 +25,21 @@
 #include "App.h"
 #include "tclap/tclap.h"
 
+// PRIVATE
+//--------------------------------------------------------------
+Config::Config() :
+	script(""), isPlaylist(false), playlist(""),
+	listeningPort(9990),
+	sendingIp("127.0.0.1"), sendingPort(8880),
+	baseAddress((string) "/"+PACKAGE),
+	notificationAddress(baseAddress+"/notifications"),
+	deviceAddress(baseAddress+"/devices"),
+	connectionId(0),
+	fontFilename(""),
+	renderWidth(0), renderHeight(0), fullscreen(false),
+	setupAllScenes(true), showSceneNames(true) {}
+
+// PUBLIC
 //--------------------------------------------------------------
 Config& Config::instance() {
 	static Config * pointerToTheSingletonInstance = new Config;
@@ -108,6 +123,7 @@ void Config::setup() {
 
 	ofTrueTypeFont::setGlobalDpi(96);
 	fontFilename = ofToDataPath(CONFIG_FONT, true);
+	functionsFilename = ofToDataPath(CONFIG_FUNCTIONS, true);
 }
 
 //--------------------------------------------------------------
@@ -124,21 +140,57 @@ void Config::print() {
 	ofLogNotice() << "show scene names: " << (showSceneNames ? "true" : "false");
 }
 
+//--------------------------------------------------------------
 void Config::setRenderSize(unsigned int w, unsigned int h) {
 	renderWidth = w;
 	renderHeight = h;
 }
 
-// PRIVATE
 //--------------------------------------------------------------
-Config::Config() :
-	script(""), isPlaylist(false), playlist(""),
-	listeningPort(9990),
-	sendingIp("127.0.0.1"), sendingPort(8880),
-	baseAddress((string) "/"+PACKAGE),
-	notificationAddress(baseAddress+"/notifications"),
-	deviceAddress(baseAddress+"/devices"),
-	connectionId(0),
-	fontFilename(""),
-	renderWidth(0), renderHeight(0), fullscreen(false),
-	setupAllScenes(true), showSceneNames(true) {}
+void Config::setListeningPort(unsigned int port) {
+	if(listeningPort == port) {
+		// silently ignore
+		return;
+	}
+	if(port < 1024) {
+		ofLogWarning() << "port should be > 1024";
+		return;
+	}
+	Config::instance().listeningPort = port;
+	OscReceiver &receiver = Config::instance().oscReceiver;
+	if(receiver.isListening()) {
+		receiver.stop();
+		receiver.setup(port);
+		receiver.start();
+	}
+	else {
+		receiver.setup(port);
+	}
+	ofLogNotice() << "listening port: " << port;
+}
+
+//--------------------------------------------------------------
+void Config::setSendingIp(string address) {
+	if(sendingIp == address) {
+		// silently ignore
+		return;
+	}
+	sendingIp = address;
+	oscSender.setup(sendingIp, sendingPort);
+	ofLogNotice() << "sending ip: " << sendingIp;
+}
+
+//--------------------------------------------------------------
+void Config::setSendingPort(unsigned int port) {
+	if(sendingPort == port) {
+		// silently ignore
+		return;
+	}
+	if(port < 1024) {
+		ofLogWarning() << "port should be > 1024";
+		return;
+	}
+	sendingPort = port;
+	oscSender.setup(sendingIp, sendingPort);
+	ofLogNotice() << "sending port: " << port;
+}

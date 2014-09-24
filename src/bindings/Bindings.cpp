@@ -51,7 +51,6 @@ float getRenderWidth() {
 	return Config::instance().renderWidth;
 }
 
-//--------------------------------------------------------------
 float getRenderHeight() {
 	return Config::instance().renderHeight;
 }
@@ -61,32 +60,21 @@ void addScene(Scene *scene) {
 	Config::instance().app->sceneManager.addScene(scene);
 }
 
-//--------------------------------------------------------------
 Scene* getCurrentScene() {
 	return Config::instance().app->sceneManager.getCurrentScene();
 }
 
 //--------------------------------------------------------------
 void setListeningPort(unsigned int port) {
-	if(Config::instance().listeningPort == port) {
-		// silently ignore
-		return;
-	}
-	if(port < 1024) {
-		ofLogWarning() << "port should be > 1024";
-		return;
-	}
-	Config::instance().listeningPort = port;
-	OscReceiver &receiver = Config::instance().oscReceiver;
-	if(receiver.isListening()) {
-		receiver.stop();
-		receiver.setup(port);
-		receiver.start();
-	}
-	else {
-		receiver.setup(port);
-	}
-	ofLogNotice() << "listening port: " << port;
+	Config::instance().setListeningPort(port);
+}
+
+void setSendingIp(string address) {
+	Config::instance().setSendingIp(address);
+}
+
+void setSendingPort(unsigned int port) {
+	Config::instance().setSendingPort(port);
 }
 
 //--------------------------------------------------------------
@@ -103,11 +91,12 @@ luabind::scope Bindings::registerBindings() {
 		///////////////////////////////
 		/// \section Utils
 		def("print", &print), // print override
-		def("clear", &clear), // clear Repl
 		
 		///////////////////////////////
-		/// \section Config live functions
+		/// \section Config reatime functions
 		def("setListeningPort", &setListeningPort),
+		def("setSendingAddress", &setSendingIp),
+		def("setSendingPort", &setSendingPort),
 		
 		///////////////////////////////
 		/// \section Config.h
@@ -117,6 +106,7 @@ luabind::scope Bindings::registerBindings() {
 		// this is a dummy class, you shouldn't be able to create it directly,
 		// it's only for access to the config variables
 		class_<Config>("Config")
+			.def("print", &Config::print)
 			.def_readwrite("isPlaylist", &Config::isPlaylist)
 			.def_readwrite("listeningPort", &Config::listeningPort)
 			.def_readwrite("sendingIp", &Config::sendingIp)
@@ -444,16 +434,4 @@ luabind::scope Bindings::registerBindings() {
 			.property("name", &Video::getName)
 			.property("type", &Video::getType)
 	;
-}
-
-// override of size with render size & print function
-static string overrideString =
-"of.getWidth = visual.getRenderWidth\n" \
-"of.getHeight = visual.getRenderHeight\n" \
-"print = function (m) visual.print(tostring(m)) end"
-;
-
-void Bindings::overrides(lua_State *L) {
-	luaL_loadstring(L, overrideString.c_str());
-	lua_pcall(L, 0, LUA_MULTRET, 0);
 }
