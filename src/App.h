@@ -30,7 +30,7 @@
 #include "SceneManager.h"
 #include "ScriptEngine.h"
 
-class App : public ofBaseApp, public OscObject {
+class App : public ofBaseApp, public ofxGLEditorListener, public OscObject {
 
 	public:
 	
@@ -59,7 +59,7 @@ class App : public ofBaseApp, public OscObject {
 		void saveFileEvent(int &whichEditor);
 		void openFileEvent(int &whichEditor);
 		void executeScriptEvent(int &whichEditor);
-		void evalReplEvent(string &text);
+		void evalReplEvent(const string &text);
 		
 		bool bDebug;
 		bool bRunning;  //< running or paused?

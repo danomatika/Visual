@@ -24,8 +24,11 @@
 
 #include "Config.h"
 #include "ofxOsc.h"
-#include "ofxLuaBindings.h"
-#include "bindings/Bindings.h"
+
+// declare the wrapped modules
+extern "C" {
+	int luaopen_osc(lua_State* L);
+}
 
 //--------------------------------------------------------------
 ScriptEngine::ScriptEngine() {
@@ -39,26 +42,25 @@ bool ScriptEngine::setup() {
 		ofLogError() << "ScriptEngine: could not init lua";
 		return false;
 	}
-	lua.bind<ofxLuaBindings>();
-	lua.bind<Bindings>();
+	luaopen_osc(lua); // osc bindings
 	lua.doScript(Config::instance().functionsFilename); // custom functions
 	return true;
 }
 
 //--------------------------------------------------------------
 void ScriptEngine::clear() {
-	if(lua.isValid()) {
+	//if(lua.isValid()) {
 		lua.clear();
-	}
+	//}
 	currentScript = "";
 }
 
 //--------------------------------------------------------------
 void ScriptEngine::unloadScript() {
 	lua.scriptExit();
-	if(lua.isValid()) {
+	//if(lua.isValid()) {
 		lua.clear();
-	}
+	//}
 }
 
 //--------------------------------------------------------------
@@ -125,16 +127,16 @@ bool ScriptEngine::evalString(const string &text) {
 }
 
 //--------------------------------------------------------------
-// calling lua functions with objects:
-// http://www.nuclex.org/articles/cxx/1-quick-introduction-to-luabind
 void ScriptEngine::sendOsc(const ofxOscMessage& msg) {
-	if(!lua.isValid()) {
+	if(!lua.isValid() || !lua.isFunction("oscReceived")) {
 		return;
 	}
-	try {
-		luabind::call_function<bool>(lua, "oscReceived", boost::ref(msg));
+	lua_getglobal(lua, "oscReceived");
+	lua.pushobject("ofxOscMessage", new ofxOscMessage(msg));
+	if(lua_pcall(lua, 1, 0, 0) != 0) {
+		string line = "Error running oscReceived(): " + (string) lua_tostring(lua, -1);
+		lua.errorOccurred(line);
 	}
-	catch(exception& e) {}
 }
 
 // PRIVATE

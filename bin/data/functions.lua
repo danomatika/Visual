@@ -1,7 +1,7 @@
 
 -- override size with render size functions
-of.getWidth = visual.getRenderWidth
-of.getHeight = visual.getRenderHeight
+--of.getWidth = visual.getRenderWidth
+--of.getHeight = visual.getRenderHeight
 
 -- custom print to hook into C++
 function print(...)
@@ -9,12 +9,12 @@ function print(...)
 	for i,v in ipairs(arg) do
 		s = s .. tostring(v)
 	end
-	visual.print(s)
+	of.logNotice(s)
 end
 
 -- variable argument OSC
 function sendOSC(...)
-    local msg = ofx.osc.Message()
+    local msg = osc.Message()
     for i,v in ipairs(arg) do
         if i == 1 then
             if type(v) == "string" then
@@ -32,5 +32,5 @@ function sendOSC(...)
             end
         end
     end
-    ofx.osc.sendMessage(msg)
+    osc.sendMessage(msg)
 end

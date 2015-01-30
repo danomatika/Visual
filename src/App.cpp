@@ -72,16 +72,8 @@ void App::setup() {
 	sceneManager.setup();
 	
 	// setup editor & add editor event listening
-	#ifdef TARGET_OSX
-		bool useSuperKey = true;
-	#else
-		bool useSuperKey = false;
-	#endif
-	editor.setup(CONFIG_FONT, true, useSuperKey);
-	ofAddListener(editor.openFileEvent, this, &App::openFileEvent);
-	ofAddListener(editor.saveFileEvent, this, &App::saveFileEvent);
-	ofAddListener(editor.executeScriptEvent, this, &App::executeScriptEvent);
-	ofAddListener(editor.evalReplEvent, this, &App::evalReplEvent);
+	ofxEditor::loadFont(CONFIG_FONT, 24);
+	editor.setup(this, true);
 	
 	// load lua script (if one was given)
 	if(!config.script.empty()) {
@@ -339,7 +331,6 @@ void App::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void App::keyReleased(int key) {
-	editor.keyReleased(key);
 	scriptEngine.lua.scriptKeyReleased(key);
 }
 
@@ -369,7 +360,7 @@ void App::windowResized(int w, int h) {
 	// set up transforms with new screen size
 	transformer.setNewScreenSize(w, h);
 
-	editor.reShape();
+	editor.resize(w, h);
 }
 
 //--------------------------------------------------------------
@@ -416,7 +407,7 @@ void App::executeScriptEvent(int &whichEditor){
 }
 
 //--------------------------------------------------------------
-void App::evalReplEvent(string &text) {
+void App::evalReplEvent(const string &text) {
 	scriptEngine.evalString(text);
 	editor.evalReplReturn();
 }
