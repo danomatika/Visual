@@ -1,3 +1,8 @@
+--[[
+	Visual: a simple, osc-controlled graphics & scripting engine
+  
+	Copyright (c) 2013 Dan Wilcox <danomatika@gmail.com>
+]]
 
 -- override size with render size functions
 --of.getWidth = visual.getRenderWidth
