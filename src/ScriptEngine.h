@@ -46,7 +46,7 @@ class ScriptEngine : private ofxLuaListener {
 		bool reloadScript();
 		
 		/// run a given string
-		bool evalString(const string &text);
+		bool evalString(const string &text, bool reload=false);
 		
 		/// send an osc message to the lua script
 		/// calls the oscReceived lua function

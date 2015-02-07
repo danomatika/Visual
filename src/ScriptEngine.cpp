@@ -118,10 +118,19 @@ bool ScriptEngine::reloadScript() {
 }
 
 //--------------------------------------------------------------
-bool ScriptEngine::evalString(const string &text) {
+bool ScriptEngine::evalString(const string &text, bool reload) {
+	if(reload) {
+		lua.scriptExit();
+		if(!setup()) {
+			return false;
+		}
+	}
 	if(!lua.doString(text)) {
 		setup(); // reset
 		return false;
+	}
+	if(reload) {
+		lua.scriptSetup();
 	}
 	return true;
 }

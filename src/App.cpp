@@ -58,7 +58,8 @@ void App::setup() {
 	#ifdef DEBUG
 		ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
 	#endif
-	ofSetFrameRate(30);
+	ofSetVerticalSync(true);
+	//ofSetFrameRate(30);
 	ofBackground(0);
 	
 	// read from the app bundle
@@ -165,20 +166,6 @@ void App::draw() {
 	transformer.popTransforms();
 	
 	editor.draw();
-	if(!editor.isHidden() && editor.getCurrentEditor() > 0) {
-	
-		//editor.drawString("hello world", 320, 0);
-		//editor.drawString("foo bar", config.renderWidth -240, 0);
-		// draw the current editor num
-		//editor.drawString("Current editor: "+ofToString(editor.getCurrentEditor()), 10, 15);
-		//ofLog() << ofGetScreenWidth()-200 << " " << ofGetWidth()-200;
-		// draw the current & total line nums
-		//editor.drawString(ofToString(editor.getCurrentLine())
-		//	+","+ofToString(editor.getCurrentLinePos()), config.renderWidth*1.4, ofGetScreenHeight()-15);
-	
-		// draw the current pos & line length
-		//editor.drawString("         pos: "+ofToString(editor.getCurrentLinePos()), 740, 35);
-	}
 	
 	if(bDebug) {
 		ofSetColor(255);
@@ -315,6 +302,27 @@ void App::keyPressed(int key) {
 				return;
 			}
 			break;
+			
+		case 'l': case 12:
+			if(modifierPressed) {
+				editor.setLineWrapping(!editor.getLineWrapping());
+				return;
+			}
+			break;
+		
+		case 'n': case 14:
+			if(modifierPressed) {
+				editor.setLineNumbers(!editor.getLineNumbers());
+				return;
+			}
+			break;
+		
+		case 'z': case 26:
+			if(modifierPressed) {
+				editor.setAutoFocus(!editor.getAutoFocus());
+				return;
+			}
+			break;
 	}
 	
 	if(editor.isHidden()) {
@@ -403,7 +411,7 @@ void App::saveFileEvent(int &whichEditor){
 
 //--------------------------------------------------------------
 void App::executeScriptEvent(int &whichEditor){
-	scriptEngine.evalString(editor.getText(whichEditor));
+	scriptEngine.evalString(editor.getText(whichEditor), !editor.isSelection());
 }
 
 //--------------------------------------------------------------

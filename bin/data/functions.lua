@@ -9,7 +9,7 @@ function print(...)
 	for i,v in ipairs(arg) do
 		s = s .. tostring(v)
 	end
-	of.logNotice(s)
+	of.log(of.LOG_NOTICE, s)
 end
 
 -- variable argument OSC
