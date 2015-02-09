@@ -30,6 +30,7 @@
 		3099FD3C18823D0000175228 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3A18823D0000175228 /* Config.cpp */; };
 		3099FD59188245B400175228 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD57188245B400175228 /* ResourceManager.cpp */; };
 		30EB6D611A86860900D5B42B /* ofxEditorFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EB6D5F1A86860900D5B42B /* ofxEditorFont.cpp */; };
+		30EB6D6B1A86BDAA00D5B42B /* VisualBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EB6D6A1A86BDAA00D5B42B /* VisualBindings.cpp */; };
 		30FC226B1A7C04A000CA4635 /* OscBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30FC226A1A7C04A000CA4635 /* OscBindings.cpp */; };
 		30FD0B951A6076E1001D6DBC /* ofxLuaBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30FD0B8B1A6076E1001D6DBC /* ofxLuaBindings.cpp */; };
 		30FD0B981A6076E1001D6DBC /* ofxLua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30FD0B911A6076E1001D6DBC /* ofxLua.cpp */; };
@@ -218,6 +219,8 @@
 		30EB6D651A86861300D5B42B /* fontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fontstash.h; sourceTree = "<group>"; };
 		30EB6D661A86861300D5B42B /* glfontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfontstash.h; sourceTree = "<group>"; };
 		30EB6D671A86861300D5B42B /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
+		30EB6D691A86A9E600D5B42B /* Visual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Visual.h; sourceTree = "<group>"; };
+		30EB6D6A1A86BDAA00D5B42B /* VisualBindings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VisualBindings.cpp; sourceTree = "<group>"; };
 		30FC22641A7BE4DE00CA4635 /* Osc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Osc.h; sourceTree = "<group>"; };
 		30FC226A1A7C04A000CA4635 /* OscBindings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscBindings.cpp; sourceTree = "<group>"; };
 		30FD0B8B1A6076E1001D6DBC /* ofxLuaBindings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxLuaBindings.cpp; sourceTree = "<group>"; };
@@ -523,6 +526,8 @@
 			children = (
 				30FC22641A7BE4DE00CA4635 /* Osc.h */,
 				30FC226A1A7C04A000CA4635 /* OscBindings.cpp */,
+				30EB6D691A86A9E600D5B42B /* Visual.h */,
+				30EB6D6A1A86BDAA00D5B42B /* VisualBindings.cpp */,
 			);
 			path = bindings;
 			sourceTree = "<group>";
@@ -1022,6 +1027,7 @@
 				30FD0BEF1A6076F3001D6DBC /* lzio.c in Sources */,
 				30FD0BDF1A6076F3001D6DBC /* llex.c in Sources */,
 				30134422187EFE5E00CA92B7 /* ofxQuadWarper.cpp in Sources */,
+				30EB6D6B1A86BDAA00D5B42B /* VisualBindings.cpp in Sources */,
 				30134425187EFE5E00CA92B7 /* ofxTransformer.cpp in Sources */,
 				302E999E18824DF300AF7621 /* Bitmap.cpp in Sources */,
 				30FD0C001A60770F001D6DBC /* ofxEditor.cpp in Sources */,

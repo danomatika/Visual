@@ -28,6 +28,7 @@
 // declare the wrapped modules
 extern "C" {
 	int luaopen_osc(lua_State* L);
+	int luaopen_visual(lua_State* L);
 }
 
 //--------------------------------------------------------------
@@ -43,6 +44,7 @@ bool ScriptEngine::setup() {
 		return false;
 	}
 	luaopen_osc(lua); // osc bindings
+	luaopen_visual(lua); // visual bindings
 	lua.doScript(Config::instance().functionsFilename); // custom functions
 	return true;
 }

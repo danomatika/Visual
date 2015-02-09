@@ -194,3 +194,11 @@ void Config::setSendingPort(unsigned int port) {
 	oscSender.setup(sendingIp, sendingPort);
 	ofLogNotice() << "sending port: " << port;
 }
+
+//--------------------------------------------------------------
+void Config::setBaseAddress(string base) {
+	baseAddress = base;
+	// make sure to update base objects ...
+	app->setOscRootAddress(base);
+	app->sceneManager.setOscRootAddress(base);
+}

@@ -59,7 +59,7 @@ scene = visual.Scene("primitives")
 	scene:add(line)
 	
 	-- a rectangle
-	rect = visual.Rectangle("rect")
+	rect = visual.Rectangle2("rect")
 		rect.position:set(100, 100)
 		rect.width = 200
 		rect.height = 260
@@ -150,13 +150,13 @@ scene = visual.Scene("bitmap&sprite")
 		sprite.center = true
 		sprite.overlay = false
 		-- note frametime in milliseconds instead of name for animation
-		sprite:add(visual.Image(100, "animation/frame1.gif"))
-		sprite:add(visual.Image(100, "animation/frame2.gif"))
-		sprite:add(visual.Image(100, "animation/frame3.gif"))
-		sprite:add(visual.Image(100, "animation/frame4.gif"))
-		sprite:add(visual.Image(100, "animation/frame5.gif"))
-		sprite:add(visual.Image(100, "animation/frame6.gif"))
-		sprite:add(visual.Image(200, "animation/frame7.gif"))
+		sprite:add(visual.Image2(100, "animation/frame1.gif"))
+		sprite:add(visual.Image2(100, "animation/frame2.gif"))
+		sprite:add(visual.Image2(100, "animation/frame3.gif"))
+		sprite:add(visual.Image2(100, "animation/frame4.gif"))
+		sprite:add(visual.Image2(100, "animation/frame5.gif"))
+		sprite:add(visual.Image2(100, "animation/frame6.gif"))
+		sprite:add(visual.Image2(200, "animation/frame7.gif"))
 	scene:add(sprite)
 
 visual.addScene(scene)
@@ -170,7 +170,7 @@ scene = visual.Scene("image&text")
 	--scene.slideshow = true
 
 	-- an image, rescaled when loaded to fit given size
-	image = visual.Image("image1", "icon.png")
+	image = visual.Image2("image1", "icon.png")
 		image.position:set(100, 50)
 		image:setSize(50, 50)
 		image.center = false
@@ -179,14 +179,14 @@ scene = visual.Scene("image&text")
 
 	-- image files can be reused as the filename is used as a unique id
 	-- for reusing currently loaded images
-	image = visual.Image("image2", "icon.png")
+	image = visual.Image2("image2", "icon.png")
 		image.position:set(150, 100)
 		image:setSize(50, 50)
 		image.center = false
 		image.visible = true
 	scene:add(image)
 	
-	image = visual.Image("image3", "icon.png")
+	image = visual.Image2("image3", "icon.png")
 		image.position:set(200, 150)
 		image:setSize(100, 100)
 		image.center = false
@@ -223,21 +223,21 @@ scene = visual.Scene("image&text")
 visual.addScene(scene)
 
 -- scalable vector graphic
-scene = visual.Scene("svg")
-	scene.background:set(200, 120, 140)
+-- scene = visual.Scene("svg")
+-- 	scene.background:set(200, 120, 140)
 
-	svg = visual.Svg("cow", "cow.svg")
-		svg.position:set(320, 240)
-		svg:setSize(640, 480)
-		svg.center = true
-	scene:add(svg)
+-- 	svg = visual.Svg("cow", "cow.svg")
+-- 		svg.position:set(320, 240)
+-- 		svg:setSize(640, 480)
+-- 		svg.center = true
+-- 	scene:add(svg)
 
-	svg = visual.Svg("cow2", "cow.svg")
-		svg.position:set(0, 400)
-		svg:setSize(82.2, 53.6)
-	scene:add(svg)
+-- 	svg = visual.Svg("cow2", "cow.svg")
+-- 		svg.position:set(0, 400)
+-- 		svg:setSize(82.2, 53.6)
+-- 	scene:add(svg)
 
-visual.addScene(scene)
+-- visual.addScene(scene)
 
 -- video
 scene = visual.Scene("video")
@@ -249,7 +249,7 @@ scene = visual.Scene("video")
 		video.play = true
 		video.volume = 0
 		video.speed = 2
-		video.loop = of.LOOP.PALINDROME
+		video.loop = of.LOOP_PALINDROME
 	scene:add(video)
 
 	-- reuse the first movie
@@ -277,3 +277,5 @@ scene = visual.Scene("script")
 	scene:add(text)
 
 visual.addScene(scene)
+
+scene = nil

@@ -96,12 +96,15 @@ class Config {
 		ScriptEngine scriptEngine; ///< global lua scripting engine
 		ResourceManager resourceManager; ///< global resources
 		
-		// \section Realtime
+		// \section Bindings
 		
 		void setListeningPort(unsigned int port);
 		void setSendingIp(string address);
 		void setSendingPort(unsigned int port);
-
+	
+		string getBaseAddress() {return baseAddress;}
+		void setBaseAddress(string base);
+	
 	private:
 		
 		// hide all the constructors, copy functions here

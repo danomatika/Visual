@@ -10,46 +10,66 @@ SWIG = swig
 # default output language, see swig -h for more
 LANG = lua
 
+# which module to build
+TARGET = osc.i
+
 # generated bindings filename
 NAME = OscBindings
 
 # where to copy the generated bindings
 DEST_DIR = ../src/bindings
 
+# path to OF headers
+OF_HEADERS = ../../../../libs/openFrameworks
+
 # path to addons
 ADDON_DIR = ../../../../addons
 
 # C & C++ flags
-CFLAGS = -I$(ADDON_DIR)
+CFLAGS = -I$(OF_HEADERS) -I$(ADDON_DIR) -DSWIG_NOINCLUDE
 CXXFLAGS = $(CFLAGS)
 
 .PHONY: all bindings debug clean
 
-all: bindings move
+all: osc visual
 
 # generates bindings
 bindings:
 
+	@echo Generating target: $(TARGET)
 	@echo LANG = $(LANG)
 	@echo CXXFLAGS = $(CXXFLAGS)
 	@echo NAME = $(NAME)
 	@echo DEST_DIR = $(DEST_DIR)
 	
-	$(SWIG) -c++ -$(LANG) -fcompact -fvirtual $(CXXFLAGS) osc.i
-	mv osc_wrap.cxx $(NAME).cpp
+	$(SWIG) -c++ -$(LANG) -fcompact -fvirtual $(CXXFLAGS) $(TARGET).i
+	mv $(TARGET)_wrap.cxx $(NAME).cpp
 
 # move generated files to DEST_DIR
 move:
-
 	mkdir -p $(DEST_DIR)
 	mv *.cpp $(DEST_DIR)
 
 # outputs debug symbols
 debug:
-	$(SWIG) -c++ -$(LANG) -debug-lsymbols $(CXXFLAGS) osc.i > debug.txt
+	$(SWIG) -c++ -$(LANG) -debug-lsymbols $(CXXFLAGS) $(TARGET).i > debug.txt
 	rm -f *.cxx
 
 # clean up
 clean:
-	rm -f $(DEST_DIR)/$(NAME).cpp
+	rm -f $(DEST_DIR)/*Bindings.cpp
 	rm -f debug.txt
+
+# osc bindings
+osc-prepare:
+	$(eval TARGET := osc)
+	$(eval NAME := OscBindings)
+
+osc: osc-prepare bindings move
+
+# visual bindings
+visual-prepare:
+	$(eval TARGET := visual)
+	$(eval NAME := VisualBindings)
+
+visual: visual-prepare bindings move

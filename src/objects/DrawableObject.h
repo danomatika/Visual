@@ -32,9 +32,9 @@ class DrawableObject : public OscObject {
 		DrawableObject(string objectName) : bVisible(true), name(objectName) {}
 		virtual ~DrawableObject() {}
 
-		virtual void setup() {};
-		virtual void update() {};
-		virtual void draw() {} // = 0;
+		virtual void setup() {}
+		virtual void update() {}
+		virtual void draw() {}
 		virtual void draw(int x, int y) {}
 		virtual void draw(int x, int y, unsigned int w, unsigned h) {}
 		virtual void clear() {}

@@ -5,8 +5,8 @@
 ]]
 
 -- override size with render size functions
---of.getWidth = visual.getRenderWidth
---of.getHeight = visual.getRenderHeight
+of.getWidth = visual.getRenderWidth
+of.getHeight = visual.getRenderHeight
 
 -- custom print to hook into C++
 function print(...)
@@ -14,7 +14,7 @@ function print(...)
 	for i,v in ipairs(arg) do
 		s = s .. tostring(v)
 	end
-	of.log(of.LOG_NOTICE, s)
+	visual.print(s)
 end
 
 -- variable argument OSC
