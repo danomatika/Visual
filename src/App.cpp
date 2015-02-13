@@ -59,7 +59,8 @@ void App::setup() {
 		ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
 	#endif
 	ofSetVerticalSync(true);
-	//ofSetFrameRate(30);
+	frameRate = 60;
+	frameTime = 1000/frameRate;
 	ofBackground(0);
 	
 	// read from the app bundle
@@ -122,6 +123,8 @@ void App::setup() {
 //--------------------------------------------------------------
 void App::update() {
 
+	idleTimer.set();
+
 	// update the window shape if we're using a different rendering size,
 	// this dosen't seem to work in setup() so do it here
 	if(bUpdateWindowShape) {// && ofGetFrameNum() > 1) {
@@ -182,6 +185,11 @@ void App::draw() {
 		else if(!config.script.empty()) {
 			ofDrawBitmapStringHighlight(ofFilePath::getFileName(config.script), 0, ofGetHeight()-8);
 		}
+	}
+	
+	// sleep a little if needed to lower usage
+	if(idleTimer.getDiff() < frameTime) {
+		ofSleepMillis(frameTime-idleTimer.getDiff()*0.8);
 	}
 }
 
