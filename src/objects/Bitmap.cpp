@@ -55,14 +55,6 @@ void Bitmap::draw(int x, int y) {
 	}
 
 	ofSetColor(color);
-	
-	if(bFilled) {
-		ofFill();
-	}
-	else {
-		ofNoFill();
-	}
-	
 	ofSetRectMode(OF_RECTMODE_CORNER);
 	
 	for(unsigned int _y = 0; _y < bitmapHeight; ++_y) {
@@ -100,13 +92,6 @@ void Bitmap::draw(int x, int y, unsigned int w, unsigned int h) {
 	}
 
 	ofSetColor(color);
-	
-	if(bFilled) {
-		ofFill();
-	}
-	else {
-		ofNoFill();
-	}
 	
 	ofSetRectMode(OF_RECTMODE_CORNER);
 	
