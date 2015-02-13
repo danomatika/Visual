@@ -66,12 +66,12 @@ class Scene : public OscObject {
 		string getName() {return name;}
 		ofColor& getBackground() {return background;}
 		void setBackground(ofColor &c) {background = c;}
-		int getFps() {return fps;} // returns -1 if not set
+		int getFps() {return fps;} //< returns -1 if not set
 		void setFps(unsigned int fps) {this->fps = fps;}
 
 	private:
 
-		bool bSetup; ///< make sure setup is only called once
+		bool bSetup; //< make sure setup is only called once
 
 		string name;
 		vector<DrawableObject*> objects;

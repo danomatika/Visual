@@ -74,13 +74,13 @@ class App : public ofBaseApp, public ofxGLEditorListener, public OscObject {
 		unsigned int reloadTimestamp;
 		unsigned int saveTimestamp;
 		
-		ofxTransformer transformer; ///< for screen scaling
+		ofxTransformer transformer; //< for screen scaling
 		
-		bool bUpdateCursor; ///< should we show/hide the cursor?
-		bool bUpdateWindowShape; ///< should we change the window size?
-		bool bGoFullscreen; ///< should the app be fullscreen on start?
+		bool bUpdateCursor; //< should we show/hide the cursor?
+		bool bUpdateWindowShape; //< should we change the window size?
+		bool bGoFullscreen; //< should the app be fullscreen on start?
 		
-		ofxGLEditor editor; ///< on screen text editor
+		ofxGLEditor editor; //< on screen text editor
 	
 		ofxTimer idleTimer; //< used for sleep idling to lower cpu usage
 		unsigned int frameRate; //< desired frame rate
@@ -88,7 +88,7 @@ class App : public ofBaseApp, public ofxGLEditorListener, public OscObject {
 		
 	protected:
 	
-		ofMutex mutex; ///< mutex between main & osc threads
+		ofMutex mutex; //< mutex between main & osc threads
 	
 		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message);

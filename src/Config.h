@@ -60,41 +60,41 @@ class Config {
 		
 		/// \section Variables
 		
-		string script; ///< current lua script (playlist or lua run script)
-		bool isPlaylist; ///< is the script a playlist?
+		string script; //< current lua script (playlist or lua run script)
+		bool isPlaylist; //< is the script a playlist?
 		
-		string playlist; ///< current playlist, maybe the same as script
+		string playlist; //< current playlist, maybe the same as script
 		
-		unsigned int listeningPort; ///< the listening port
+		unsigned int listeningPort; //< the listening port
 		
-		string sendingIp; ///< ip to send to
-		unsigned int sendingPort; ///< port to send to
+		string sendingIp; //< ip to send to
+		unsigned int sendingPort; //< port to send to
 		
-		string baseAddress; ///< base osc listening/sending address
-		string notificationAddress; ///< base osc sending address for notifications
-		string deviceAddress; ///< base osc sending addess for devices
+		string baseAddress; //< base osc listening/sending address
+		string notificationAddress; //< base osc sending address for notifications
+		string deviceAddress; //< base osc sending addess for devices
 	
-		unsigned int connectionId; ///< our connection id when sending notifications
+		unsigned int connectionId; //< our connection id when sending notifications
 		
-		string fontFilename; ///< font filename
-		string functionsFilename; ///< lua function overrides
+		string fontFilename; //< font filename
+		string functionsFilename; //< lua function overrides
 		
-		unsigned int renderWidth, renderHeight; ///< render dimensions
+		unsigned int renderWidth, renderHeight; //< render dimensions
 		void setRenderSize(unsigned int w, unsigned int h);
-		bool fullscreen; ///< start in fullscreen mode?
+		bool fullscreen; //< start in fullscreen mode?
 		
-		bool setupAllScenes; ///< setup all scenes on load?
-		bool showSceneNames; ///< show the scene names?
+		bool setupAllScenes; //< setup all scenes on load?
+		bool showSceneNames; //< show the scene names?
 
-		// \section Objects
+		/// \section Objects
 		
-		ofPtr<App> app; ///< global app pointer
+		ofPtr<App> app; //< global app pointer
 		
-		ofxOscSender oscSender; ///< global osc sender
-		OscReceiver oscReceiver; ///< global osc receiver
+		ofxOscSender oscSender; //< global osc sender
+		OscReceiver oscReceiver; //< global osc receiver
 		
-		ScriptEngine scriptEngine; ///< global lua scripting engine
-		ResourceManager resourceManager; ///< global resources
+		ScriptEngine scriptEngine; //< global lua scripting engine
+		ResourceManager resourceManager; //< global resources
 		
 		// \section Bindings
 		

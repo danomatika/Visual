@@ -72,5 +72,5 @@ class Image : public DrawableFrame {
 		string filename;
 		ofPoint pos;
 		unsigned int width, height;
-		bool bDrawFromCenter;       /// draw from the center using pos
+		bool bDrawFromCenter; //< draw from the center using pos
 };

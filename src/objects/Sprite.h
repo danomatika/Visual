@@ -92,5 +92,5 @@ class Sprite : public DrawableObject {
 
 		int currentFrame;
 		unsigned int timestamp;
-		bool bForward;  /// advance frames?
+		bool bForward;  //< advance frames?
 };

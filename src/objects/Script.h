@@ -36,7 +36,7 @@ class Script : public DrawableObject {
 		void setup();
 		void clear();
 		
-		// getters / setters
+		/// getters / setters
 		string getFilename() {return filename;}
 		bool isLoaded() {return bLoaded;}
 		

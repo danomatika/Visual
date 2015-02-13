@@ -97,5 +97,5 @@ class Line : public DrawableObject {
 			return false;
 		}
 
-		ofPoint pos1, pos2;
+		ofPoint pos1, pos2; //< start and end positions
 };

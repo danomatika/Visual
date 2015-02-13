@@ -92,6 +92,6 @@ class SceneManager : public OscObject {
 		ofxTimer frameRateTimer;
 		unsigned int frameRate;
 		
-		bool bSetBackground; ///< does the background need to be set?
-		bool bSetupScene; ///< does the current scene need to be setup?
+		bool bSetBackground; //< does the background need to be set?
+		bool bSetupScene; //< does the current scene need to be setup?
 };

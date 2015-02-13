@@ -51,9 +51,6 @@ class Bitmap : public DrawableFrame {
 		unsigned int getHeight() {return height;}
 		void setHeight(unsigned int h);
 		
-		bool getFilled() {return bFilled;}
-		void setFilled(bool f) {bFilled = f;}
-		
 		bool getDrawFromCenter() {return bDrawFromCenter;}
 		void setDrawFromCenter(bool c) {bDrawFromCenter = c;}
 		
@@ -67,12 +64,11 @@ class Bitmap : public DrawableFrame {
 		/// osc callback
 		bool processOscMessage(const ofxOscMessage& message);
 
-		vector<bool> bitmap; ///< actual bitmap
-		unsigned int bitmapWidth, bitmapHeight;	///< dimen of the bitmap
+		vector<bool> bitmap; //< actual bitmap
+		unsigned int bitmapWidth, bitmapHeight;	//< dimen of the bitmap
 
-		ofPoint pos; ///< screen position
-		unsigned int width, height; ///< screen size
-		unsigned int pixelWidth, pixelHeight; ///< dimen of one pixel in the bitmap
-		bool bFilled;
-		bool bDrawFromCenter; ///< draw from the center using pos?
+		ofPoint pos; //< screen position
+		unsigned int width, height; //< screen size
+		unsigned int pixelWidth, pixelHeight; //< dimen of one pixel in the bitmap
+		bool bDrawFromCenter; //< draw from the center using pos?
 };

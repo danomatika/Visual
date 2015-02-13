@@ -62,5 +62,5 @@ class ScriptEngine : private ofxLuaListener {
 		/// lua error callback
 		void errorReceived(string& msg);
 
-		string currentScript; ///< absolute path to current script
+		string currentScript; //< absolute path to current script
 };

@@ -142,5 +142,5 @@ class Rectangle : public DrawableObject {
 		ofPoint pos;
 		unsigned int width, height;
 		bool bFilled;
-		bool bDrawFromCenter;       /// draw from the center using pos
+		bool bDrawFromCenter; //< draw from the center using pos
 };

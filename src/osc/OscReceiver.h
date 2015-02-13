@@ -57,15 +57,15 @@ class OscReceiver {
 		/// get port num
 		unsigned int getPort();
 
-		// ignore incoming messages?
+		/// ignore incoming messages?
 		void ignoreMessages(bool yesno);
 
 	protected:
 	
-		// handles message
+		/// handles message
 		void processMessage(const ofxOscMessage &message);
 		
-		// wrapper to override and implement message processing
+		/// wrapper to override and implement message processing
 		class Receiver : public ofxOscReceiver {
 			public:
 				Receiver() : ofxOscReceiver(), receiver(NULL) {}
@@ -79,5 +79,5 @@ class OscReceiver {
 		unsigned int m_port;
 		ofPtr<Receiver> m_receiver;
 		bool m_bIsRunning, m_bIgnoreMessages;
-		vector<OscObject*> _objectList;    /// list of osc objects
+		vector<OscObject*> _objectList; //< list of osc objects
 };

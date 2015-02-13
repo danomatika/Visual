@@ -138,7 +138,6 @@ class Bitmap : public DrawableFrame {
 %attribute(Bitmap, ofPoint&, position, getPos, setPos);
 %attribute(Bitmap, unsigned int, width, getWidth, setWidth);
 %attribute(Bitmap, unsigned int, height, getHeight, setHeight);
-%attribute(Bitmap, bool, filled, getFilled, setFilled);
 %attribute(Bitmap, bool, center, getDrawFromCenter, setDrawFromCenter);
 
 // ----- Image -----------------------------------------------------------------

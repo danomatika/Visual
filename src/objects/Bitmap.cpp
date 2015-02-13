@@ -25,16 +25,14 @@
 //--------------------------------------------------------------
 Bitmap::Bitmap(string name, unsigned int w, unsigned int h) :
 	DrawableFrame(name), bitmapWidth(w), bitmapHeight(h),
-	pos(0, 0), width(1), height(1),
-	bFilled(true), bDrawFromCenter(false) {
+	pos(0, 0), width(1), height(1), bDrawFromCenter(false) {
 	clear();
 }
 
 //--------------------------------------------------------------
 Bitmap::Bitmap(unsigned int frameTime, unsigned int w, unsigned int h) :
 	DrawableFrame("", frameTime), bitmapWidth(w), bitmapHeight(h),
-	pos(0, 0), width(1), height(1),
-	bFilled(true), bDrawFromCenter(false) {
+	pos(0, 0), width(1), height(1), bDrawFromCenter(false) {
 	clear();
 }
 

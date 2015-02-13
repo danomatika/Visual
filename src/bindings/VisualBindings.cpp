@@ -2682,7 +2682,6 @@ typedef struct{} LANGUAGE_OBJ;
 }
 
 
-//#include "ofConstants.h"
 #include "Visual.h"
 
 
@@ -2776,10 +2775,6 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 
 #define Bitmap_height_get(self_) self_->getHeight()
 #define Bitmap_height_set(self_, val_) self_->setHeight(val_)
-  
-
-#define Bitmap_filled_get(self_) self_->getFilled()
-#define Bitmap_filled_set(self_, val_) self_->setFilled(val_)
   
 
 #define Bitmap_center_get(self_) self_->getDrawFromCenter()
@@ -3787,17 +3782,6 @@ static int _wrap_Bitmap_height_get(lua_State* L) { int SWIG_arg = 0; Bitmap *arg
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Bitmap,0))){
     SWIG_fail_ptr("Bitmap_height_get",1,SWIGTYPE_p_Bitmap); }  result = (unsigned int)Bitmap_height_get(arg1);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Bitmap_filled_set(lua_State* L) { int SWIG_arg = 0; Bitmap *arg1 = (Bitmap *) 0 ; bool arg2 ;
-  SWIG_check_num_args("Bitmap::filled",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Bitmap::filled",1,"Bitmap *");
-  if(!lua_isboolean(L,2)) SWIG_fail_arg("Bitmap::filled",2,"bool");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Bitmap,0))){
-    SWIG_fail_ptr("Bitmap_filled_set",1,SWIGTYPE_p_Bitmap); }  arg2 = (lua_toboolean(L, 2)!=0); Bitmap_filled_set(arg1,arg2);
-  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Bitmap_filled_get(lua_State* L) { int SWIG_arg = 0; Bitmap *arg1 = (Bitmap *) 0 ; bool result;
-  SWIG_check_num_args("Bitmap::filled",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Bitmap::filled",1,"Bitmap *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Bitmap,0))){
-    SWIG_fail_ptr("Bitmap_filled_get",1,SWIGTYPE_p_Bitmap); }  result = (bool)Bitmap_filled_get(arg1);
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_Bitmap_center_set(lua_State* L) { int SWIG_arg = 0; Bitmap *arg1 = (Bitmap *) 0 ; bool arg2 ;
   SWIG_check_num_args("Bitmap::center",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Bitmap::center",1,"Bitmap *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("Bitmap::center",2,"bool");
@@ -3826,7 +3810,6 @@ static swig_lua_attribute swig_Bitmap_attributes[] = {
     { "position", _wrap_Bitmap_position_get, _wrap_Bitmap_position_set },
     { "width", _wrap_Bitmap_width_get, _wrap_Bitmap_width_set },
     { "height", _wrap_Bitmap_height_get, _wrap_Bitmap_height_set },
-    { "filled", _wrap_Bitmap_filled_get, _wrap_Bitmap_filled_set },
     { "center", _wrap_Bitmap_center_get, _wrap_Bitmap_center_set },
     {0,0,0}
 };
