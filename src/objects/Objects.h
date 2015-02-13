@@ -22,7 +22,6 @@
 ==============================================================================*/
 #pragma once
 
-#include "Pixel.h"
 #include "Line.h"
 #include "Rectangle.h"
 #include "Bitmap.h"

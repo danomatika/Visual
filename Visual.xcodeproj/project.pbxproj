@@ -167,7 +167,6 @@
 		302E999318824DF300AF7621 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		302E999418824DF300AF7621 /* Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Line.h; sourceTree = "<group>"; };
 		302E999518824DF300AF7621 /* Objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Objects.h; sourceTree = "<group>"; };
-		302E999618824DF300AF7621 /* Pixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pixel.h; sourceTree = "<group>"; };
 		302E999A18824DF300AF7621 /* Rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rectangle.h; sourceTree = "<group>"; };
 		302E999C18824DF300AF7621 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
 		302E999D18824DF300AF7621 /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
@@ -421,7 +420,6 @@
 				302E999318824DF300AF7621 /* Image.h */,
 				302E999418824DF300AF7621 /* Line.h */,
 				302E999518824DF300AF7621 /* Objects.h */,
-				302E999618824DF300AF7621 /* Pixel.h */,
 				302E999A18824DF300AF7621 /* Rectangle.h */,
 				308B6F7A188C1A85003449F2 /* Script.cpp */,
 				308B6F77188C1936003449F2 /* Script.h */,

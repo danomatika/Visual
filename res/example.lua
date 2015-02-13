@@ -43,13 +43,6 @@ scene = visual.Scene("primitives")
 	-- set the background
 	scene.background:set(0)
 	
-	-- a single pixel
-	pixel = visual.Pixel("pixel")
-		pixel.position:set(10, 10)
-		pixel.color:set(255)
-		pixel.visible = true
-	scene:add(pixel)
-	
 	-- a line
 	line = visual.Line("line")
 		line.position1:set(200, 400)

@@ -2647,25 +2647,24 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 #define SWIGTYPE_p_DrawableObject swig_types[3]
 #define SWIGTYPE_p_Image swig_types[4]
 #define SWIGTYPE_p_Line swig_types[5]
-#define SWIGTYPE_p_Pixel swig_types[6]
-#define SWIGTYPE_p_Rectangle swig_types[7]
-#define SWIGTYPE_p_Scene swig_types[8]
-#define SWIGTYPE_p_Script swig_types[9]
-#define SWIGTYPE_p_Sprite swig_types[10]
-#define SWIGTYPE_p_TESSindex swig_types[11]
-#define SWIGTYPE_p_Text swig_types[12]
-#define SWIGTYPE_p_Video swig_types[13]
-#define SWIGTYPE_p_ofBaseApp swig_types[14]
-#define SWIGTYPE_p_ofColor_T_float_t swig_types[15]
-#define SWIGTYPE_p_ofColor_T_unsigned_char_t swig_types[16]
-#define SWIGTYPE_p_ofColor_T_unsigned_short_t swig_types[17]
-#define SWIGTYPE_p_ofImage swig_types[18]
-#define SWIGTYPE_p_ofTrueTypeFont swig_types[19]
-#define SWIGTYPE_p_ofVec3f swig_types[20]
-#define SWIGTYPE_p_ofVideoPlayer swig_types[21]
-#define SWIGTYPE_p_std__string swig_types[22]
-static swig_type_info *swig_types[24];
-static swig_module_info swig_module = {swig_types, 23, 0, 0, 0, 0};
+#define SWIGTYPE_p_Rectangle swig_types[6]
+#define SWIGTYPE_p_Scene swig_types[7]
+#define SWIGTYPE_p_Script swig_types[8]
+#define SWIGTYPE_p_Sprite swig_types[9]
+#define SWIGTYPE_p_TESSindex swig_types[10]
+#define SWIGTYPE_p_Text swig_types[11]
+#define SWIGTYPE_p_Video swig_types[12]
+#define SWIGTYPE_p_ofBaseApp swig_types[13]
+#define SWIGTYPE_p_ofColor_T_float_t swig_types[14]
+#define SWIGTYPE_p_ofColor_T_unsigned_char_t swig_types[15]
+#define SWIGTYPE_p_ofColor_T_unsigned_short_t swig_types[16]
+#define SWIGTYPE_p_ofImage swig_types[17]
+#define SWIGTYPE_p_ofTrueTypeFont swig_types[18]
+#define SWIGTYPE_p_ofVec3f swig_types[19]
+#define SWIGTYPE_p_ofVideoPlayer swig_types[20]
+#define SWIGTYPE_p_std__string swig_types[21]
+static swig_type_info *swig_types[23];
+static swig_module_info swig_module = {swig_types, 22, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2812,10 +2811,6 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 
 #define Line_position2_get(self_) self_->getPos2()
 #define Line_position2_set(self_, val_) self_->setPos2(val_)
-  
-
-#define Pixel_position_get(self_) self_->getPos()
-#define Pixel_position_set(self_, val_) self_->setPos(val_)
   
 
 #define Rectangle_position_get(self_) self_->getPos()
@@ -4116,86 +4111,6 @@ static swig_lua_class *swig_Line_bases[] = {0,0};
 static const char *swig_Line_base_names[] = {"DrawableObject *",0};
 static swig_lua_class _wrap_class_Line = { "Line", "Line", &SWIGTYPE_p_Line,_proxy__wrap_new_Line, swig_delete_Line, swig_Line_methods, swig_Line_attributes, &swig_Line_Sf_SwigStatic, swig_Line_meta, swig_Line_bases, swig_Line_base_names };
 
-static int _wrap_new_Pixel__SWIG_0(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; Pixel *result = 0 ;
-  SWIG_check_num_args("Pixel::Pixel",1,1) if(!lua_isstring(L,1)) SWIG_fail_arg("Pixel::Pixel",1,"std::string");
-  (&arg1)->assign(lua_tostring(L,1),lua_rawlen(L,1)); result = (Pixel *)new Pixel(arg1);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Pixel,1); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
-  return SWIG_arg; }
-static int _wrap_new_Pixel__SWIG_1(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; int arg2 ; int arg3 ;
-  Pixel *result = 0 ; SWIG_check_num_args("Pixel::Pixel",3,3)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("Pixel::Pixel",1,"std::string");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("Pixel::Pixel",2,"int"); if(!lua_isnumber(L,3)) SWIG_fail_arg("Pixel::Pixel",3,"int");
-  (&arg1)->assign(lua_tostring(L,1),lua_rawlen(L,1)); arg2 = (int)lua_tonumber(L, 2); arg3 = (int)lua_tonumber(L, 3);
-  result = (Pixel *)new Pixel(arg1,arg2,arg3); SWIG_NewPointerObj(L,result,SWIGTYPE_p_Pixel,1); SWIG_arg++;  return SWIG_arg;
-  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_new_Pixel(lua_State* L) { int argc; int argv[4]={ 1,2,3,4} ; argc = lua_gettop(L); if (argc == 1) { int _v; {
-      _v = lua_isstring(L,argv[0]); }  if (_v) { return _wrap_new_Pixel__SWIG_0(L);}  }  if (argc == 3) { int _v; {
-      _v = lua_isstring(L,argv[0]); }  if (_v) { { _v = lua_isnumber(L,argv[1]); }  if (_v) { { _v = lua_isnumber(L,argv[2]); } 
-        if (_v) { return _wrap_new_Pixel__SWIG_1(L);}  }  }  } 
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'new_Pixel'\n" "  Possible C/C++ prototypes are:\n"
-  "    Pixel::Pixel(std::string)\n" "    Pixel::Pixel(std::string,int,int)\n"); lua_error(L);return 0; }
-static int _wrap_Pixel_position_set(lua_State* L) { int SWIG_arg = 0; Pixel *arg1 = (Pixel *) 0 ; ofPoint *arg2 = 0 ;
-  SWIG_check_num_args("Pixel::position",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Pixel::position",1,"Pixel *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("Pixel::position",2,"ofPoint &");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Pixel,0))){
-    SWIG_fail_ptr("Pixel_position_set",1,SWIGTYPE_p_Pixel); } 
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_ofVec3f,0))){
-    SWIG_fail_ptr("Pixel_position_set",2,SWIGTYPE_p_ofVec3f); }  Pixel_position_set(arg1,*arg2); return SWIG_arg;
-  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Pixel_position_get(lua_State* L) { int SWIG_arg = 0; Pixel *arg1 = (Pixel *) 0 ; ofPoint *result = 0 ;
-  SWIG_check_num_args("Pixel::position",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Pixel::position",1,"Pixel *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Pixel,0))){
-    SWIG_fail_ptr("Pixel_position_get",1,SWIGTYPE_p_Pixel); }  result = (ofPoint *) &Pixel_position_get(arg1);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_ofVec3f,0); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
-  return SWIG_arg; }
-static void swig_delete_Pixel(void *obj) {
-Pixel *arg1 = (Pixel *) obj;
-delete arg1;
-}
-static int _proxy__wrap_new_Pixel(lua_State *L) {
-    assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_Pixel);
-    assert(!lua_isnil(L,-1));
-    lua_replace(L,1); /* replace our table with real constructor */
-    lua_call(L,lua_gettop(L)-1,1);
-    return 1;
-}
-static swig_lua_attribute swig_Pixel_attributes[] = {
-    { "position", _wrap_Pixel_position_get, _wrap_Pixel_position_set },
-    {0,0,0}
-};
-static swig_lua_method swig_Pixel_methods[]= {
-    {0,0}
-};
-static swig_lua_method swig_Pixel_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_Pixel_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_Pixel_Sf_SwigStatic_constants[]= {
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_Pixel_Sf_SwigStatic_methods[]= {
-    {0,0}
-};
-static swig_lua_class* swig_Pixel_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_Pixel_Sf_SwigStatic = {
-    "Pixel",
-    swig_Pixel_Sf_SwigStatic_methods,
-    swig_Pixel_Sf_SwigStatic_attributes,
-    swig_Pixel_Sf_SwigStatic_constants,
-    swig_Pixel_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_Pixel_bases[] = {0,0};
-static const char *swig_Pixel_base_names[] = {"DrawableObject *",0};
-static swig_lua_class _wrap_class_Pixel = { "Pixel", "Pixel", &SWIGTYPE_p_Pixel,_proxy__wrap_new_Pixel, swig_delete_Pixel, swig_Pixel_methods, swig_Pixel_attributes, &swig_Pixel_Sf_SwigStatic, swig_Pixel_meta, swig_Pixel_bases, swig_Pixel_base_names };
-
 static int _wrap_new_Rectangle2__SWIG_0(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; Rectangle *result = 0 ;
   SWIG_check_num_args("Rectangle::Rectangle",1,1) if(!lua_isstring(L,1)) SWIG_fail_arg("Rectangle::Rectangle",1,"std::string");
   (&arg1)->assign(lua_tostring(L,1),lua_rawlen(L,1)); result = (Rectangle *)new Rectangle(arg1);
@@ -5102,7 +5017,6 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_Bitmap,
 &_wrap_class_Image2,
 &_wrap_class_Line,
-&_wrap_class_Pixel,
 &_wrap_class_Rectangle2,
 &_wrap_class_Script,
 &_wrap_class_Sprite,
@@ -5140,9 +5054,6 @@ static void *_p_TextTo_p_DrawableObject(void *x, int *SWIGUNUSEDPARM(newmemory))
 static void *_p_LineTo_p_DrawableObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((DrawableObject *)  ((Line *) x));
 }
-static void *_p_PixelTo_p_DrawableObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((DrawableObject *)  ((Pixel *) x));
-}
 static void *_p_DrawableFrameTo_p_DrawableObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((DrawableObject *)  ((DrawableFrame *) x));
 }
@@ -5170,7 +5081,6 @@ static swig_type_info _swigt__p_DrawableFrame = {"_p_DrawableFrame", "DrawableFr
 static swig_type_info _swigt__p_DrawableObject = {"_p_DrawableObject", "DrawableObject *", 0, 0, (void*)&_wrap_class_DrawableObject, 0};
 static swig_type_info _swigt__p_Image = {"_p_Image", "Image *", 0, 0, (void*)&_wrap_class_Image2, 0};
 static swig_type_info _swigt__p_Line = {"_p_Line", "Line *", 0, 0, (void*)&_wrap_class_Line, 0};
-static swig_type_info _swigt__p_Pixel = {"_p_Pixel", "Pixel *", 0, 0, (void*)&_wrap_class_Pixel, 0};
 static swig_type_info _swigt__p_Rectangle = {"_p_Rectangle", "Rectangle *", 0, 0, (void*)&_wrap_class_Rectangle2, 0};
 static swig_type_info _swigt__p_Scene = {"_p_Scene", "Scene *", 0, 0, (void*)&_wrap_class_Scene, 0};
 static swig_type_info _swigt__p_Script = {"_p_Script", "Script *", 0, 0, (void*)&_wrap_class_Script, 0};
@@ -5195,7 +5105,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_DrawableObject,
   &_swigt__p_Image,
   &_swigt__p_Line,
-  &_swigt__p_Pixel,
   &_swigt__p_Rectangle,
   &_swigt__p_Scene,
   &_swigt__p_Script,
@@ -5217,10 +5126,9 @@ static swig_type_info *swig_type_initial[] = {
 static swig_cast_info _swigc__p_Bitmap[] = {  {&_swigt__p_Bitmap, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Config[] = {  {&_swigt__p_Config, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_DrawableFrame[] = {  {&_swigt__p_Image, _p_ImageTo_p_DrawableFrame, 0, 0},  {&_swigt__p_DrawableFrame, 0, 0, 0},  {&_swigt__p_Bitmap, _p_BitmapTo_p_DrawableFrame, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_DrawableObject[] = {  {&_swigt__p_Line, _p_LineTo_p_DrawableObject, 0, 0},  {&_swigt__p_Pixel, _p_PixelTo_p_DrawableObject, 0, 0},  {&_swigt__p_Script, _p_ScriptTo_p_DrawableObject, 0, 0},  {&_swigt__p_Image, _p_ImageTo_p_DrawableObject, 0, 0},  {&_swigt__p_Video, _p_VideoTo_p_DrawableObject, 0, 0},  {&_swigt__p_DrawableFrame, _p_DrawableFrameTo_p_DrawableObject, 0, 0},  {&_swigt__p_Rectangle, _p_RectangleTo_p_DrawableObject, 0, 0},  {&_swigt__p_DrawableObject, 0, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_DrawableObject, 0, 0},  {&_swigt__p_Bitmap, _p_BitmapTo_p_DrawableObject, 0, 0},  {&_swigt__p_Text, _p_TextTo_p_DrawableObject, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_DrawableObject[] = {  {&_swigt__p_Line, _p_LineTo_p_DrawableObject, 0, 0},  {&_swigt__p_Script, _p_ScriptTo_p_DrawableObject, 0, 0},  {&_swigt__p_Image, _p_ImageTo_p_DrawableObject, 0, 0},  {&_swigt__p_Video, _p_VideoTo_p_DrawableObject, 0, 0},  {&_swigt__p_DrawableFrame, _p_DrawableFrameTo_p_DrawableObject, 0, 0},  {&_swigt__p_Rectangle, _p_RectangleTo_p_DrawableObject, 0, 0},  {&_swigt__p_DrawableObject, 0, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_DrawableObject, 0, 0},  {&_swigt__p_Bitmap, _p_BitmapTo_p_DrawableObject, 0, 0},  {&_swigt__p_Text, _p_TextTo_p_DrawableObject, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Image[] = {  {&_swigt__p_Image, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Line[] = {  {&_swigt__p_Line, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_Pixel[] = {  {&_swigt__p_Pixel, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Rectangle[] = {  {&_swigt__p_Rectangle, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Scene[] = {  {&_swigt__p_Scene, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Script[] = {  {&_swigt__p_Script, 0, 0, 0},{0, 0, 0, 0}};
@@ -5245,7 +5153,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_DrawableObject,
   _swigc__p_Image,
   _swigc__p_Line,
-  _swigc__p_Pixel,
   _swigc__p_Rectangle,
   _swigc__p_Scene,
   _swigc__p_Script,

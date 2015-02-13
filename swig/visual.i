@@ -179,18 +179,6 @@ class Line : public DrawableObject {
 %attribute(Line, ofPoint&, position1, getPos1, setPos1);
 %attribute(Line, ofPoint&, position2, getPos2, setPos2);
 
-// ----- Pixel -----------------------------------------------------------------
-
-class Pixel : public DrawableObject {
-
-	public:
-
-		Pixel(std::string name);
-		Pixel(std::string name, int x, int y);
-};
-
-%attribute(Pixel, ofPoint&, position, getPos, setPos);
-
 // ----- Rectangle -------------------------------------------------------------
 
 %rename(Rectangle2) Rectangle;
