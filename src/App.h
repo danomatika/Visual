@@ -81,10 +81,6 @@ class App : public ofBaseApp, public ofxGLEditorListener, public OscObject {
 		bool bGoFullscreen; //< should the app be fullscreen on start?
 		
 		ofxGLEditor editor; //< on screen text editor
-	
-		ofxTimer idleTimer; //< used for sleep idling to lower cpu usage
-		unsigned int frameRate; //< desired frame rate
-		unsigned int frameTime; //< desired frame time
 		
 	protected:
 	

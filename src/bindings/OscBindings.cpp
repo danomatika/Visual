@@ -2624,13 +2624,13 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_int32_t swig_types[0]
+#define SWIGTYPE_p_int swig_types[0]
 #define SWIGTYPE_p_ofBuffer swig_types[1]
 #define SWIGTYPE_p_ofxOscArgType swig_types[2]
 #define SWIGTYPE_p_ofxOscBundle swig_types[3]
 #define SWIGTYPE_p_ofxOscMessage swig_types[4]
 #define SWIGTYPE_p_std__string swig_types[5]
-#define SWIGTYPE_p_uint64_t swig_types[6]
+#define SWIGTYPE_p_unsigned_int swig_types[6]
 static swig_type_info *swig_types[8];
 static swig_module_info swig_module = {swig_types, 7, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
@@ -2871,18 +2871,16 @@ static int _wrap_Message_getArgAsInt32(lua_State* L) { int SWIG_arg = 0; ofxOscM
   if(!lua_isnumber(L,2)) SWIG_fail_arg("ofxOscMessage::getArgAsInt32",2,"int");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_ofxOscMessage,0))){
     SWIG_fail_ptr("Message_getArgAsInt32",1,SWIGTYPE_p_ofxOscMessage); }  arg2 = (int)lua_tonumber(L, 2);
-  result = ((ofxOscMessage const *)arg1)->getArgAsInt32(arg2); { int32_t * resultptr = new int32_t((const int32_t &) result);
-    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_int32_t,1); SWIG_arg++; }  return SWIG_arg; if(0) SWIG_fail; fail:
-  lua_error(L); return SWIG_arg; }
+  result = (int32_t)((ofxOscMessage const *)arg1)->getArgAsInt32(arg2); lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_Message_getArgAsInt64(lua_State* L) { int SWIG_arg = 0; ofxOscMessage *arg1 = (ofxOscMessage *) 0 ; int arg2 ;
   uint64_t result; SWIG_check_num_args("ofxOscMessage::getArgAsInt64",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ofxOscMessage::getArgAsInt64",1,"ofxOscMessage const *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("ofxOscMessage::getArgAsInt64",2,"int");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_ofxOscMessage,0))){
     SWIG_fail_ptr("Message_getArgAsInt64",1,SWIGTYPE_p_ofxOscMessage); }  arg2 = (int)lua_tonumber(L, 2);
-  result = ((ofxOscMessage const *)arg1)->getArgAsInt64(arg2); { uint64_t * resultptr = new uint64_t((const uint64_t &) result);
-    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_uint64_t,1); SWIG_arg++; }  return SWIG_arg; if(0) SWIG_fail; fail:
-  lua_error(L); return SWIG_arg; }
+  result = (uint64_t)((ofxOscMessage const *)arg1)->getArgAsInt64(arg2); lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_Message_getArgAsFloat(lua_State* L) { int SWIG_arg = 0; ofxOscMessage *arg1 = (ofxOscMessage *) 0 ; int arg2 ;
   float result; SWIG_check_num_args("ofxOscMessage::getArgAsFloat",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ofxOscMessage::getArgAsFloat",1,"ofxOscMessage const *");
@@ -2926,23 +2924,20 @@ static int _wrap_Message_setRemoteEndpoint(lua_State* L) { int SWIG_arg = 0; ofx
   (&arg2)->assign(lua_tostring(L,2),lua_rawlen(L,2)); arg3 = (int)lua_tonumber(L, 3); (arg1)->setRemoteEndpoint(arg2,arg3);
   return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_Message_addIntArg(lua_State* L) { int SWIG_arg = 0; ofxOscMessage *arg1 = (ofxOscMessage *) 0 ; int32_t arg2 ;
-  int32_t *argp2 ; SWIG_check_num_args("ofxOscMessage::addIntArg",2,2)
+  SWIG_check_num_args("ofxOscMessage::addIntArg",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ofxOscMessage::addIntArg",1,"ofxOscMessage *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("ofxOscMessage::addIntArg",2,"int32_t");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("ofxOscMessage::addIntArg",2,"int32_t");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_ofxOscMessage,0))){
-    SWIG_fail_ptr("Message_addIntArg",1,SWIGTYPE_p_ofxOscMessage); } 
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_int32_t,0))){
-    SWIG_fail_ptr("Message_addIntArg",2,SWIGTYPE_p_int32_t); }  arg2 = *argp2; (arg1)->addIntArg(arg2); return SWIG_arg;
-  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+    SWIG_fail_ptr("Message_addIntArg",1,SWIGTYPE_p_ofxOscMessage); }  arg2 = (int32_t)lua_tonumber(L, 2);
+  (arg1)->addIntArg(arg2); return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_Message_addInt64Arg(lua_State* L) { int SWIG_arg = 0; ofxOscMessage *arg1 = (ofxOscMessage *) 0 ;
-  uint64_t arg2 ; uint64_t *argp2 ; SWIG_check_num_args("ofxOscMessage::addInt64Arg",2,2)
+  uint64_t arg2 ; SWIG_check_num_args("ofxOscMessage::addInt64Arg",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ofxOscMessage::addInt64Arg",1,"ofxOscMessage *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("ofxOscMessage::addInt64Arg",2,"uint64_t");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("ofxOscMessage::addInt64Arg",2,"uint64_t");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_ofxOscMessage,0))){
     SWIG_fail_ptr("Message_addInt64Arg",1,SWIGTYPE_p_ofxOscMessage); } 
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_uint64_t,0))){
-    SWIG_fail_ptr("Message_addInt64Arg",2,SWIGTYPE_p_uint64_t); }  arg2 = *argp2; (arg1)->addInt64Arg(arg2); return SWIG_arg;
-  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+  SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative") arg2 = (uint64_t)lua_tonumber(L, 2);
+  (arg1)->addInt64Arg(arg2); return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_Message_addFloatArg(lua_State* L) { int SWIG_arg = 0; ofxOscMessage *arg1 = (ofxOscMessage *) 0 ; float arg2 ;
   SWIG_check_num_args("ofxOscMessage::addFloatArg",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ofxOscMessage::addFloatArg",1,"ofxOscMessage *");
@@ -3258,40 +3253,40 @@ static swig_lua_namespace swig_SwigModule = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static swig_type_info _swigt__p_int32_t = {"_p_int32_t", "int32_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_int = {"_p_int", "int *|int32_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ofBuffer = {"_p_ofBuffer", "ofBuffer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ofxOscArgType = {"_p_ofxOscArgType", "ofxOscArgType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ofxOscBundle = {"_p_ofxOscBundle", "ofxOscBundle *", 0, 0, (void*)&_wrap_class_Bundle, 0};
 static swig_type_info _swigt__p_ofxOscMessage = {"_p_ofxOscMessage", "ofxOscMessage *", 0, 0, (void*)&_wrap_class_Message, 0};
 static swig_type_info _swigt__p_std__string = {"_p_std__string", "std::string *", 0, 0, (void*)&_wrap_class_string, 0};
-static swig_type_info _swigt__p_uint64_t = {"_p_uint64_t", "uint64_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint64_t *|unsigned int *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__p_int32_t,
+  &_swigt__p_int,
   &_swigt__p_ofBuffer,
   &_swigt__p_ofxOscArgType,
   &_swigt__p_ofxOscBundle,
   &_swigt__p_ofxOscMessage,
   &_swigt__p_std__string,
-  &_swigt__p_uint64_t,
+  &_swigt__p_unsigned_int,
 };
 
-static swig_cast_info _swigc__p_int32_t[] = {  {&_swigt__p_int32_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ofBuffer[] = {  {&_swigt__p_ofBuffer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ofxOscArgType[] = {  {&_swigt__p_ofxOscArgType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ofxOscBundle[] = {  {&_swigt__p_ofxOscBundle, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ofxOscMessage[] = {  {&_swigt__p_ofxOscMessage, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__string[] = {  {&_swigt__p_std__string, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_uint64_t[] = {  {&_swigt__p_uint64_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_unsigned_int[] = {  {&_swigt__p_unsigned_int, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__p_int32_t,
+  _swigc__p_int,
   _swigc__p_ofBuffer,
   _swigc__p_ofxOscArgType,
   _swigc__p_ofxOscBundle,
   _swigc__p_ofxOscMessage,
   _swigc__p_std__string,
-  _swigc__p_uint64_t,
+  _swigc__p_unsigned_int,
 };
 
 

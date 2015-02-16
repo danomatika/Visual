@@ -35,16 +35,16 @@ class ScriptEngine : private ofxLuaListener {
 		bool setup();
 		void clear();
 		
-		/// clears the current lua state, calls scriptExit
-		void unloadScript();
-		
 		/// load a new script
 		/// clears the current lua state
 		bool loadScript(string script);
 		
 		/// exit, reinit the lua state, and reload the current script
 		bool reloadScript();
-		
+	
+		/// clears the current lua state, calls scriptExit
+		void unloadScript();
+	
 		/// run a given string
 		bool evalString(const string &text, bool reload=false);
 		

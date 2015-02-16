@@ -4,6 +4,9 @@ config = visual.getConfig()
 -- tell Visual this is a playlist file (important!)
 config.isPlaylist = true
 
+-- hide the editor when loading this playlist?
+config.hideEditor = true
+
 -- OSC receive settings
 config.listeningPort = 9999
 
@@ -44,7 +47,7 @@ scene = visual.Scene("primitives")
 	scene.background:set(0)
 	
 	-- a line
-	line = visual.Line("line")
+	line = visual.vLine("line")
 		line.position1:set(200, 400)
 		line.position2:set(580, 400)
 		line.color:set(255, 0, 0)
@@ -52,7 +55,7 @@ scene = visual.Scene("primitives")
 	scene:add(line)
 	
 	-- a rectangle
-	rect = visual.Rectangle2("rect")
+	rect = visual.vRectangle("rect")
 		rect.position:set(100, 100)
 		rect.width = 200
 		rect.height = 260
@@ -68,7 +71,7 @@ scene = visual.Scene("bitmap&sprite")
 	scene.background:set(64, 64, 64)
 	
 	-- a simple, single color bitmap, stretched to fit a given size
-	bitmap = visual.Bitmap("bitmap", 5, 5)
+	bitmap = visual.vBitmap("bitmap", 5, 5)
 		bitmap.position:set(250, 500)
 		bitmap:setSize(500, 500)
 		bitmap.center = true
@@ -92,7 +95,7 @@ scene = visual.Scene("bitmap&sprite")
 	scene:add(bitmap)
 
 	-- a sprite is a sequence of bitmaps and/or images
-	sprite = visual.Sprite("sprite1")
+	sprite = visual.vSprite("sprite1")
 		sprite.position:set(320, 240)
 		sprite.animate = true
 		sprite.loop = true
@@ -100,7 +103,7 @@ scene = visual.Scene("bitmap&sprite")
 		sprite.center = true
 		sprite.overlay = false
 		-- note frametime in milliseconds instead of name for animation
-		bitmap = visual.Bitmap(1000, 5, 5)
+		bitmap = visual.vBitmap(1000, 5, 5)
 			bitmap:setSize(50, 50)
 			bitmap.color:set(0, 200, 0)
 			bitmap.bitmap = [[
@@ -111,7 +114,7 @@ scene = visual.Scene("bitmap&sprite")
 				--***
 			]]
 		sprite:add(bitmap)
-		bitmap = visual.Bitmap(1000, 5, 5)
+		bitmap = visual.vBitmap(1000, 5, 5)
 			bitmap:setSize(50, 50)
 			bitmap.color:set(255)
 			bitmap.bitmap = [[
@@ -122,7 +125,7 @@ scene = visual.Scene("bitmap&sprite")
 				--*--
 			]]
 		sprite:add(bitmap)
-		bitmap = visual.Bitmap(1000, 5, 5)
+		bitmap = visual.vBitmap(1000, 5, 5)
 			bitmap:setSize(50, 50)
 			bitmap.color:set(0, 0, 200)
 			bitmap.bitmap = [[
@@ -136,20 +139,20 @@ scene = visual.Scene("bitmap&sprite")
 	scene:add(sprite)
 
 	-- this is a sprite using images
-	sprite = visual.Sprite("sprite1")
+	sprite = visual.vSprite("sprite1")
 		sprite.position:set(480, 120)
 		sprite:setSize(200, 200)
 		sprite:setAnimation(true, true, true) -- animate, loop, & pingpong
 		sprite.center = true
 		sprite.overlay = false
 		-- note frametime in milliseconds instead of name for animation
-		sprite:add(visual.Image2(100, "animation/frame1.gif"))
-		sprite:add(visual.Image2(100, "animation/frame2.gif"))
-		sprite:add(visual.Image2(100, "animation/frame3.gif"))
-		sprite:add(visual.Image2(100, "animation/frame4.gif"))
-		sprite:add(visual.Image2(100, "animation/frame5.gif"))
-		sprite:add(visual.Image2(100, "animation/frame6.gif"))
-		sprite:add(visual.Image2(200, "animation/frame7.gif"))
+		sprite:add(visual.vImage(100, "animation/frame1.gif"))
+		sprite:add(visual.vImage(100, "animation/frame2.gif"))
+		sprite:add(visual.vImage(100, "animation/frame3.gif"))
+		sprite:add(visual.vImage(100, "animation/frame4.gif"))
+		sprite:add(visual.vImage(100, "animation/frame5.gif"))
+		sprite:add(visual.vImage(100, "animation/frame6.gif"))
+		sprite:add(visual.vImage(200, "animation/frame7.gif"))
 	scene:add(sprite)
 
 visual.addScene(scene)
@@ -160,10 +163,10 @@ scene = visual.Scene("image&text")
 
 	-- slideshow mode only shows one drawable object at a time,
 	-- cycle through them using OSC commands
-	--scene.slideshow = true
+	scene.slideshow = true
 
 	-- an image, rescaled when loaded to fit given size
-	image = visual.Image2("image1", "icon.png")
+	image = visual.vImage("image1", "icon.png")
 		image.position:set(100, 50)
 		image:setSize(50, 50)
 		image.center = false
@@ -172,14 +175,14 @@ scene = visual.Scene("image&text")
 
 	-- image files can be reused as the filename is used as a unique id
 	-- for reusing currently loaded images
-	image = visual.Image2("image2", "icon.png")
+	image = visual.vImage("image2", "icon.png")
 		image.position:set(150, 100)
 		image:setSize(50, 50)
 		image.center = false
 		image.visible = true
 	scene:add(image)
 	
-	image = visual.Image2("image3", "icon.png")
+	image = visual.vImage("image3", "icon.png")
 		image.position:set(200, 150)
 		image:setSize(100, 100)
 		image.center = false
@@ -187,7 +190,7 @@ scene = visual.Scene("image&text")
 	scene:add(image)
 
 	-- draw some text, uses default font & size
-	text = visual.Text("text1")
+	text = visual.vText("text1")
 		text.position:set(10, 290)
 		text.center = false
 		text.color:set(200)
@@ -196,7 +199,7 @@ scene = visual.Scene("image&text")
 	scene:add(text)
 
 	-- default font with size
-	text = visual.Text("text2", 18)
+	text = visual.vText("text2", 18)
 		text.position:set(10, 330)
 		text.center = false
 		text.color:set(200, 255, 127)
@@ -205,7 +208,7 @@ scene = visual.Scene("image&text")
 	scene:add(text)
 
 	-- load a local font with size
-	text = visual.Text("text3", "verdana.ttf", 36)
+	text = visual.vText("text3", "verdana.ttf", 36)
 		text.position:set(320, 410)
 		text.center = true
 		text.color:set(255, 0, 255, 200)
@@ -236,7 +239,7 @@ visual.addScene(scene)
 scene = visual.Scene("video")
 	scene.background:set(0)
 
-	video = visual.Video("video1", "test_clip.mov")
+	video = visual.vVideo("video1", "test_clip.mov")
 		video.position:set(320, 240)
 		video.center = true
 		video.play = true
@@ -246,7 +249,7 @@ scene = visual.Scene("video")
 	scene:add(video)
 
 	-- reuse the first movie
-	video2 = visual.Video("video1 clone", "test_clip.mov")
+	video2 = visual.vVideo("video1 clone", "test_clip.mov")
 		video2:setSize(160, 90) -- make it smaller
 		-- play, volume, & speed have already been set
 	scene:add(video2)
@@ -258,17 +261,7 @@ scene = visual.Scene("script")
 	
 	-- scripts have no options, only use 1 per scene as proceeding scripts will
 	-- overwrite preceeding ones
-	script = visual.Script("script1", "test.lua")
+	script = visual.vScript("script1", "test.lua")
 	scene:add(script)
 
-	text = visual.Text("text3", "verdana.ttf", 36)
-		text.position:set(320, 410)
-		text.center = true
-		text.color:set(255, 0, 255, 200)
-		text.visible = true
-		text.text = "a different, local font"
-	scene:add(text)
-
 visual.addScene(scene)
-
-scene = nil

@@ -59,8 +59,7 @@ void App::setup() {
 		ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
 	#endif
 	ofSetVerticalSync(true);
-	frameRate = 60;
-	frameTime = 1000/frameRate;
+	ofSetFrameRate(60); // set this as well for when window is hidden
 	ofBackground(0);
 	
 	// read from the app bundle
@@ -76,6 +75,7 @@ void App::setup() {
 	// setup editor & add editor event listening
 	ofxEditor::loadFont(CONFIG_FONT, 24);
 	editor.setup(this, true);
+	editor.setCurrentEditor(0); // start with Repl
 	
 	// load lua script (if one was given)
 	if(!config.script.empty()) {
@@ -84,7 +84,6 @@ void App::setup() {
 	else {
 		scriptEngine.setup();
 		ofSetDataPathRoot(ofFilePath::addTrailingSlash(ofFilePath::getUserHomeDir()));
-		editor.setCurrentEditor(0); // start with Repl
 	}
 	editor.setPath(ofToDataPath(""));
 	config.print();
@@ -122,8 +121,6 @@ void App::setup() {
 
 //--------------------------------------------------------------
 void App::update() {
-
-	idleTimer.set();
 
 	// update the window shape if we're using a different rendering size,
 	// this dosen't seem to work in setup() so do it here
@@ -180,16 +177,11 @@ void App::draw() {
 		
 		Scene *s = sceneManager.getCurrentScene();
 		if(s) {
-			ofDrawBitmapStringHighlight(s->getName(), 0, ofGetHeight()-8);
+			ofDrawBitmapStringHighlight(s->getName(), 0, ofGetHeight()-6);
 		}
 		else if(!config.script.empty()) {
-			ofDrawBitmapStringHighlight(ofFilePath::getFileName(config.script), 0, ofGetHeight()-8);
+			ofDrawBitmapStringHighlight(ofFilePath::getFileName(config.script), 0, ofGetHeight()-6);
 		}
-	}
-	
-	// sleep a little if needed to lower usage
-	if(idleTimer.getDiff() < frameTime) {
-		ofSleepMillis(frameTime-idleTimer.getDiff()*0.8);
 	}
 }
 
@@ -223,7 +215,13 @@ void App::keyPressed(int key) {
 	switch(key) {
 	
 		case OF_KEY_UP: {
-			if(editor.isHidden()) {
+			if(modifierPressed) {
+				if(shiftPressed && sceneManager.getCurrentScene()->getSlideshow()) {
+					sceneManager.getCurrentScene()->nextObject();
+					return;
+				}
+			}
+			else if(editor.isHidden()) {
 				ofxOscMessage message;
 				message.setAddress(config.deviceAddress + "/keyboard");
 				message.addStringArg("up");
@@ -234,7 +232,13 @@ void App::keyPressed(int key) {
 		}
 			
 		case OF_KEY_DOWN: {
-			if(editor.isHidden()) {
+			if(modifierPressed) {
+				if(shiftPressed && sceneManager.getCurrentScene()->getSlideshow()) {
+					sceneManager.getCurrentScene()->prevObject();
+					return;
+				}
+			}
+			else if(editor.isHidden()) {
 				ofxOscMessage message;
 				message.setAddress(config.deviceAddress + "/keyboard");
 				message.addStringArg("down");
@@ -245,11 +249,13 @@ void App::keyPressed(int key) {
 		}
 	
 		case OF_KEY_LEFT: {
-			if(editor.isHidden()) {
+			if(modifierPressed) {
 				if(shiftPressed) {
 					sceneManager.prevScene();
 					return;
 				}
+			}
+			else if(editor.isHidden()) {
 				ofxOscMessage message;
 				message.setAddress(config.deviceAddress + "/keyboard");
 				message.addStringArg("left");
@@ -259,12 +265,14 @@ void App::keyPressed(int key) {
 			break;
 		}
 
-		case OF_KEY_RIGHT: {
-			if(editor.isHidden()) {
+		case OF_KEY_RIGHT: {		
+			if(modifierPressed) {
 				if(shiftPressed) {
 					sceneManager.nextScene();
 					return;
 				}
+			}
+			else if(editor.isHidden()) {
 				ofxOscMessage message;
 				message.setAddress(config.deviceAddress + "/keyboard");
 				message.addStringArg("right");
@@ -442,13 +450,14 @@ bool App::loadScript(string script) {
 	if(!scriptEngine.loadScript(script)) {
 		return false;
 	}
-	editor.openFile(script);
 	
 	// load settings
 	if(config.isPlaylist) {
 		sceneManager.showSceneName(config.showSceneNames);
 		sceneManager.gotoScene(0);
 		config.playlist = script;
+		editor.setHidden(config.hideEditor);
+		scriptEngine.unloadScript();
 	}
 	
 	return true;

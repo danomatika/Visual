@@ -22,7 +22,7 @@
 ==============================================================================*/
 #include "Scene.h"
 
-#include "objects/Objects.h"
+#include "objects/DrawableObject.h"
 
 //--------------------------------------------------------------
 Scene::Scene(string name) : bSetup(false), name(name), background(0), fps(-1),
@@ -147,7 +147,6 @@ void Scene::draw() {
 
 //--------------------------------------------------------------
 void Scene::exit() {
-//	bSetup = false;
 	for(unsigned int i = 0; i < objects.size(); ++i) {
 		if(objects[i]->shouldClearOnExit()) {
 			objects.at(i)->clear();

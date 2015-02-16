@@ -13,6 +13,10 @@
 // STL types
 %include <std_string.i>
 
+// other types we need to know about
+typedef int int32_t;
+typedef unsigned int uint64_t;
+
 // ----- Renaming -----
 
 // strip "ofxOsc" prefix from classes

@@ -51,18 +51,8 @@ bool ScriptEngine::setup() {
 
 //--------------------------------------------------------------
 void ScriptEngine::clear() {
-	//if(lua.isValid()) {
-		lua.clear();
-	//}
+	lua.clear();
 	currentScript = "";
-}
-
-//--------------------------------------------------------------
-void ScriptEngine::unloadScript() {
-	lua.scriptExit();
-	//if(lua.isValid()) {
-		lua.clear();
-	//}
 }
 
 //--------------------------------------------------------------
@@ -117,6 +107,13 @@ bool ScriptEngine::reloadScript() {
 		lua.scriptSetup();
 	}
 	return ret;
+}
+
+//--------------------------------------------------------------
+void ScriptEngine::unloadScript() {
+	lua.scriptExit();
+	lua.clear();
+	setup(); // stay inited
 }
 
 //--------------------------------------------------------------

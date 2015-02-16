@@ -24,11 +24,11 @@
 
 #include "App.h"
 #include "Scene.h"
-#include "Objects.h"
+#include "Objects.h" // needed for bindings
 
 /// \section Utils
 //--------------------------------------------------------------
-void print(const string& message) {
+void print(const string message) {
 	ofLogNotice() << message;
 }
 
@@ -66,8 +66,8 @@ float getRenderHeight() {
 
 /// \section Scene.h
 //--------------------------------------------------------------
-void addScene(Scene *scene) {
-	Config::instance().app->sceneManager.addScene(scene);
+void addScene(Scene *scene_disown) {
+	Config::instance().app->sceneManager.addScene(scene_disown);
 }
 
 //--------------------------------------------------------------

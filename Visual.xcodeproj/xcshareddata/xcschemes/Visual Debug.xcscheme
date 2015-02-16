@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0460"
+   LastUpgradeVersion = "0610"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -75,6 +75,10 @@
          <CommandLineArgument
             argument = "../res/example.lua"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "../res/hello.lua"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "../res/visual_sprites_new.lua"

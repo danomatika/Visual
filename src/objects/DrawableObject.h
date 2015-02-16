@@ -54,7 +54,7 @@ class DrawableObject : public OscObject {
 		
 		string getName() {return name;}
 		
-		virtual string getType() {return "Object";}// = 0;
+		virtual string getType() {return "drawableobject";}
 		
 		/// can this object be setup before it's parent scene is active?
 		virtual bool allowsEarlySetup() {return true;}
@@ -124,6 +124,8 @@ class DrawableFrame : public DrawableObject {
 			DrawableObject(objectName), frameTime(frameTime) {}
 		
 		virtual ~DrawableFrame() {}
+	
+		virtual string getType() {return "drawableframe";}
 		
 		unsigned int getFrameTime()	{return frameTime;}
 		void setFrameTime(unsigned int time) {frameTime = time;}

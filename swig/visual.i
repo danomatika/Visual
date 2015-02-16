@@ -22,9 +22,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // ----- BINDINGS --------------------------------------------------------------
 
-// Visual helpers
-%include "../src/bindings/Visual.h"
-
 // forward declares to silece warning
 %ignore OscObject;
 class OscObject {};
@@ -44,6 +41,7 @@ class Config {
 		void print();
 		
 		bool isPlaylist;
+		bool hideEditor;
 		unsigned int listeningPort;
 		std::string sendingIp;
 		unsigned int sendingPort; 
@@ -70,12 +68,13 @@ class Config {
 
 // lua gives up ownership to C++
 %apply SWIGTYPE *DISOWN { DrawableObject* object_disown };
+//%apply SWIGTYPE *DISOWN { std::string name_disown };
 
 class Scene {
 
 	public:
 
-		Scene(std::string name);
+		Scene(std::string name_disown);
 
 		void addObject(DrawableObject* object_disown);
 		void removeObject(DrawableObject* object);
@@ -90,7 +89,18 @@ class Scene {
 %attribute(Scene, int, fps, getFps, setFps);
 %attribute(Scene, ofColor&, background, getBackground, setBackground);
 
+// ----- Visual Helpers --------------------------------------------------------
+
+// lua gives up ownership to C++
+%apply SWIGTYPE *DISOWN { Scene* scene_disown };
+
+// load these after Scene since swig needs to know the Scene type
+%include "../src/bindings/Visual.h"
+
 // ----- DrawableObject --------------------------------------------------------
+
+%rename(vDrawableObject) DrawableObject;
+%rename(vDrawableFrame) DrawableFrame;
 
 %ignore DrawableObject::setup;
 %ignore DrawableObject::update;
@@ -126,6 +136,8 @@ class DrawableFrame : public DrawableObject {
 
 // ----- Bitmap ----------------------------------------------------------------
 
+%rename(vBitmap) Bitmap;
+
 class Bitmap : public DrawableFrame {
 
 	public:
@@ -142,7 +154,7 @@ class Bitmap : public DrawableFrame {
 
 // ----- Image -----------------------------------------------------------------
 
-%rename(Image2) Image;
+%rename(vImage) Image;
 
 class Image : public DrawableFrame {
 
@@ -167,6 +179,8 @@ class Image : public DrawableFrame {
 
 // ----- Line ------------------------------------------------------------------
 
+%rename(vLine) Line;
+
 class Line : public DrawableObject {
 
 	public:
@@ -181,7 +195,7 @@ class Line : public DrawableObject {
 
 // ----- Rectangle -------------------------------------------------------------
 
-%rename(Rectangle2) Rectangle;
+%rename(vRectangle) Rectangle;
 
 class Rectangle : public DrawableObject {
 
@@ -200,6 +214,8 @@ class Rectangle : public DrawableObject {
 
 // ----- Script ----------------------------------------------------------------
 
+%rename(vScript) Script;
+
 class Script : public DrawableObject {
 
 	public:
@@ -216,6 +232,8 @@ class Script : public DrawableObject {
 %attributestring(Script, std::string, filename, getFilename);
 
 // ----- Sprite ----------------------------------------------------------------
+
+%rename(vSprite) Sprite;
 
 %rename(add) Sprite::addFrame;
 %rename(remove) Sprite::removeFrame;
@@ -257,6 +275,8 @@ class Sprite : public DrawableObject {
 
 // ----- Text ------------------------------------------------------------------
 
+%rename(vText) Text;
+
 class Text : public DrawableObject {
 
 	public:
@@ -284,6 +304,8 @@ class Text : public DrawableObject {
 %attribute(Text, bool, center, getDrawFromCenter, setDrawFromCenter);
 
 // ----- Video -----------------------------------------------------------------
+
+%rename(vVideo) Video;
 
 class Video : public DrawableObject {
 

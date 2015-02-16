@@ -82,7 +82,7 @@ class Rectangle : public DrawableObject {
 		bool getDrawFromCenter() {return bDrawFromCenter;}
 		void setDrawFromCenter(bool c) {bDrawFromCenter = c;}
 		
-		string getType() {return "rect";}
+		string getType() {return "rectangle";}
 
 	protected:
 

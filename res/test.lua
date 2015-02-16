@@ -27,7 +27,7 @@ function draw()
 	of.setColor(255, 0, 0)
 	of.circle(of.getWidth()/2, of.getHeight()/2, size, size)
 
-	--osc.sendFloat("/audio/circle/size", n)
+	osc.sendFloat("/audio/circle/size", n)
 end
 
 function exit()

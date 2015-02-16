@@ -61,7 +61,6 @@ void Script::setup() {
 
 //--------------------------------------------------------------
 void Script::clear() {
-//	filename = "";
 	if(bLoaded) {
 		Config::instance().app->unloadScript();
 	}

@@ -62,7 +62,8 @@ class Config {
 		
 		string script; //< current lua script (playlist or lua run script)
 		bool isPlaylist; //< is the script a playlist?
-		
+		bool hideEditor; //< hide the editor?
+	
 		string playlist; //< current playlist, maybe the same as script
 		
 		unsigned int listeningPort; //< the listening port
