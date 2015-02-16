@@ -417,6 +417,8 @@ void App::dragEvent(ofDragInfo dragInfo) {
 void App::openFileEvent(int &whichEditor){
 	ofLogNotice() << "editor " << whichEditor << ": opened "
 		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
+	//loadScript(<#string script#>)
+	scriptEngine.evalString(editor.getText(whichEditor), true);
 }
 
 //--------------------------------------------------------------
@@ -512,24 +514,26 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	ofLogVerbose(PACKAGE) << "received " << message.getAddress();
 	
 	if(message.getAddress() == getOscRootAddress() + "/scene") {
-	
-		if(message.getArgType(0) == OFXOSC_TYPE_STRING) {
-			string scene = message.getArgAsString(0);
+		string name;
+		int index;
+		if(OscObject::tryString(message, name, 0)) {
 			mutex.lock();
-				sceneManager.gotoScene(scene);
+				sceneManager.gotoScene(name);
 			mutex.unlock();
 			return true;
 		}
-		else if(message.getArgType(0) == OFXOSC_TYPE_INT32) {
-			int index = message.getArgAsInt32(0);
-			mutex.lock();
-				sceneManager.gotoScene(index);
-			mutex.unlock();
+		else if(OscObject::tryNumber(message, index, 0)) {
+			if(index > -1) {
+				mutex.lock();
+					sceneManager.gotoScene(index);
+				mutex.unlock();
+			}
 			return true;
 		}
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/scene/prev") {
+		// ignore TouchOsc "button off" events
 		if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
 			return true;
 		}
@@ -540,18 +544,17 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	}
 	
 	else if(message.getAddress() == getOscRootAddress() + "/scene/next") {
+		// ignore TouchOsc "button off" events
 		if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
 			return true;
 		}
 		mutex.lock();
-			
 			sceneManager.nextScene();
 		mutex.unlock();
 		return true;
 	}
 
-	else if(message.getAddress() == getOscRootAddress() + "/file"
-		&& message.getArgType(0) == OFXOSC_TYPE_STRING) {
+	else if(message.getAddress() == getOscRootAddress() + "/file") {
 		if(tryString(message, config.script, 0)) {
 			loadScript(config.script);
 		}
@@ -581,7 +584,9 @@ bool App::processOscMessage(const ofxOscMessage& message) {
 	}
 	
 	// forward message to lua
-	scriptEngine.sendOsc(message);
-
+	mutex.lock();
+		scriptEngine.sendOsc(message);
+	mutex.unlock();
+	
 	return true;
 }

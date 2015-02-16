@@ -123,7 +123,6 @@ void Scene::update() {
 
 //--------------------------------------------------------------
 void Scene::draw() {
-
 	if(bSlideshow) {
 		if(currentObject >= 0) {
 			objects[currentObject]->draw();

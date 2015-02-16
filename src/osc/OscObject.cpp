@@ -95,7 +95,7 @@ bool OscObject::tryBool(const ofxOscMessage& message, bool &dest, unsigned int a
 	}
 	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
 		dest = (bool) message.getArgAsFloat(at);
-		return false;
+		return true;
 	}
 	return false;
 }
@@ -114,12 +114,12 @@ bool OscObject::tryChar(const ofxOscMessage& message, char &dest, unsigned int a
 bool OscObject::tryNumber(const ofxOscMessage& message, int &dest, unsigned int at) {
 	if(message.getArgType(at) == OFXOSC_TYPE_INT32 ||
 	   message.getArgType(at) == OFXOSC_TYPE_INT64) {
-		dest = message.getArgAsInt32(at);
+		dest = (int) message.getArgAsInt32(at);
 		return true;
 	}
 	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
 		dest = (int) message.getArgAsFloat(at);
-		return false;
+		return true;
 	}
 	return false;
 }
@@ -133,7 +133,7 @@ bool OscObject::tryNumber(const ofxOscMessage& message, unsigned int &dest, unsi
 	}
 	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
 		dest = (unsigned int) message.getArgAsFloat(at);
-		return false;
+		return true;
 	}
 	return false;
 }
@@ -147,7 +147,7 @@ bool OscObject::tryNumber(const ofxOscMessage& message, float &dest, unsigned in
 	}
 	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
 		dest = message.getArgAsFloat(at);
-		return false;
+		return true;
 	}
 	return false;
 }
@@ -161,7 +161,7 @@ bool OscObject::tryNumber(const ofxOscMessage& message, double &dest, unsigned i
 	}
 	else if(message.getArgType(at) == OFXOSC_TYPE_FLOAT) {
 		dest = (double) message.getArgAsFloat(at);
-		return false;
+		return true;
 	}
 	return false;
 }

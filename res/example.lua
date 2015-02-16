@@ -261,7 +261,11 @@ scene = visual.Scene("script")
 	
 	-- scripts have no options, only use 1 per scene as proceeding scripts will
 	-- overwrite preceeding ones
-	script = visual.vScript("script1", "test.lua")
+	script = visual.vScript("script", "test.lua")
 	scene:add(script)
 
 visual.addScene(scene)
+
+-- same as the above via a quick helper,
+-- both scene and script object share the same name
+visual.addScript("script", "test.lua")

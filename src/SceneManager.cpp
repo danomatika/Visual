@@ -289,14 +289,16 @@ bool SceneManager::processOscMessage(const ofxOscMessage& message) {
 				return true;
 			}
 			
-			if(message.getArgType(0) == OFXOSC_TYPE_STRING) {
-				string object = message.getArgAsString(0);
-				scene->gotoObject(object);
+			string name;
+			int index;
+			if(OscObject::tryString(message, name, 0)) {
+				scene->gotoObject(name);
 				return true;
 			}
-			else if(message.getArgType(0) == OFXOSC_TYPE_INT32) {
-				int index = message.getArgAsInt32(0);
-				scene->gotoObject(index);
+			else if(OscObject::tryNumber(message, index, 0)) {
+				if(index > -1) {
+					scene->gotoObject(index);
+				}
 				return true;
 			}
 			
@@ -307,6 +309,7 @@ bool SceneManager::processOscMessage(const ofxOscMessage& message) {
 			if(!objectChangeTimer.alarm()) {
 				return true;
 			}
+			// ignore TouchOsc "button off" events
 			if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
 				return true;
 			}
@@ -319,6 +322,7 @@ bool SceneManager::processOscMessage(const ofxOscMessage& message) {
 			if(!objectChangeTimer.alarm()) {
 				return true;
 			}
+			// ignore TouchOsc "button off" events
 			if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
 				return true;
 			}

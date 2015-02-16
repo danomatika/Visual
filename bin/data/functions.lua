@@ -18,7 +18,7 @@ function print(...)
 end
 
 -- variable argument OSC
-function sendOSC(...)
+function osc.send(...)
     local msg = osc.Message()
     for i,v in ipairs(arg) do
         if i == 1 then

@@ -38,6 +38,9 @@ typedef unsigned int uint64_t;
 %include "ofxOsc/src/ofxOscMessage.h"
 %include "ofxOsc/src/ofxOscBundle.h"
 
+%attributestring(ofxOscMessage, std::string, address, getAddress, setAddress)
+%attributestring(ofxOscMessage, std::string, remoteIp, getRemoteIp)
+%attribute(ofxOscMessage, int, remotePort, getRemotePort)
 %attribute(ofxOscMessage, int, numArgs, getNumArgs);
 %attribute(ofxOscBundle, int, messageCount, getMessageCount);
 %attribute(ofxOscBundle, int, bundleCount, getBundleCount);

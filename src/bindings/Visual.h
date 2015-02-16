@@ -74,3 +74,11 @@ void addScene(Scene *scene_disown) {
 Scene* getCurrentScene() {
 	return Config::instance().app->sceneManager.getCurrentScene();
 }
+
+/// \section Script Helper
+//--------------------------------------------------------------
+void addScript(string name, string filename) {
+	Scene *s = new Scene(name);
+	s->addObject(new Script(name, filename));
+	Config::instance().app->sceneManager.addScene(s);
+}
