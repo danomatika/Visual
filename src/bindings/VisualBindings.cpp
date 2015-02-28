@@ -3465,6 +3465,8 @@ static int _wrap_getCurrentScene(lua_State* L) { int SWIG_arg = 0; Scene *result
   SWIG_check_num_args("getCurrentScene",0,0) result = (Scene *)getCurrentScene();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_Scene,0); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
   return SWIG_arg; }
+static int _wrap_clearScenes(lua_State* L) { int SWIG_arg = 0; SWIG_check_num_args("clearScenes",0,0) clearScenes();
+  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_addScript(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; std::string arg2 ;
   SWIG_check_num_args("addScript",2,2) if(!lua_isstring(L,1)) SWIG_fail_arg("addScript",1,"std::string");
   if(!lua_isstring(L,2)) SWIG_fail_arg("addScript",2,"std::string"); (&arg1)->assign(lua_tostring(L,1),lua_rawlen(L,1));
@@ -5045,6 +5047,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "getRenderHeight", _wrap_getRenderHeight},
     { "addScene", _wrap_addScene},
     { "getCurrentScene", _wrap_getCurrentScene},
+    { "clearScenes", _wrap_clearScenes},
     { "addScript", _wrap_addScript},
     { "addObject", _wrap_addObject},
     {0,0}

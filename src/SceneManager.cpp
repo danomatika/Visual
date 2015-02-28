@@ -46,6 +46,16 @@ void SceneManager::addScene(Scene* scene) {
 		ofLogError() << "SceneManager: cannot add NULL scene";
 		return;
 	}
+	
+	// remove existing scene with the same name
+	for(int i = 0; i < scenes.size(); ++i) {
+		if(scenes[i]->getName() == scene->getName()) {
+			removeScene(scenes[i]);
+			ofLogVerbose(PACKAGE) << "SceneManager: removed duplicate scene \"" << scene->getName() << "\"";
+			break;
+		}
+	}
+	
 	scene->setOscRootAddress(oscRootAddress+"/"+scene->getName());
 	scenes.push_back(scene);
 }
@@ -56,7 +66,6 @@ void SceneManager::removeScene(Scene* scene) {
 		ofLogError() << "SceneManager: cannot remove NULL scene";
 		return;
 	}
-
 	vector<Scene*>::iterator iter;
 	iter = find(scenes.begin(), scenes.end(), scene);
 	if(iter != scenes.end()) {

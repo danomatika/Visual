@@ -202,7 +202,7 @@ void App::exit() {
 	receiver.stop();
 	sceneManager.clear();
 	
-	ofLogVerbose() << "exiting ...";
+	ofLogVerbose(PACKAGE) << "exiting ...";
 }
 
 //--------------------------------------------------------------
@@ -418,13 +418,13 @@ void App::dragEvent(ofDragInfo dragInfo) {
 
 //--------------------------------------------------------------
 void App::openFileEvent(int &whichEditor){
-	ofLogVerbose() << "editor " << whichEditor << ": opened "
+	ofLogVerbose(PACKAGE) << "editor " << whichEditor << ": opened "
 		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
 }
 
 //--------------------------------------------------------------
 void App::saveFileEvent(int &whichEditor){
-	ofLogVerbose() << "editor " << whichEditor << ": saved "
+	ofLogVerbose(PACKAGE) << "editor " << whichEditor << ": saved "
 		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
 }
 
@@ -443,7 +443,7 @@ void App::evalReplEvent(const string &text) {
 bool App::loadScript(string script) {
 	if(script == "") return;
 
-	ofLogNotice() << "loading \"" << ofFilePath::getFileName(script) << "\"";
+	ofLogNotice(PACKAGE) << "loading \"" << ofFilePath::getFileName(script) << "\"";
 	
 	// set data path to config file folder
 	ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(script));
@@ -470,7 +470,7 @@ bool App::loadScript(string script) {
 void App::reloadScript() {
 	if(config.script == "") return;
 	
-	ofLogNotice() << "reloading \"" << ofFilePath::getFileName(config.script) << "\"";
+	ofLogNotice(PACKAGE) << "reloading \"" << ofFilePath::getFileName(config.script) << "\"";
 	
 	if(config.isPlaylist) {
 		sceneManager.clear(true);
@@ -488,7 +488,7 @@ void App::reloadScript() {
 void App::unloadScript() {
 	if(config.script == "") return;
 	
-	ofLogNotice() << "unloading \"" << ofFilePath::getFileName(config.script) << "\"";
+	ofLogNotice(PACKAGE) << "unloading \"" << ofFilePath::getFileName(config.script) << "\"";
 	
 	if(config.isPlaylist) {
 		scriptEngine.unloadScript();
@@ -513,7 +513,7 @@ void App::unloadScript() {
 bool App::processOscMessage(const ofxOscMessage& message) {
 
 #ifdef DEBUG
-	ofLogVerbose() << "received " << message.getAddress();
+	ofLogVerbose(PACKAGE) << "received " << message.getAddress();
 #endif
 	
 	if(message.getAddress() == getOscRootAddress() + "/scene") {

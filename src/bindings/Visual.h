@@ -75,6 +75,11 @@ Scene* getCurrentScene() {
 	return Config::instance().app->sceneManager.getCurrentScene();
 }
 
+//--------------------------------------------------------------
+void clearScenes() {
+	Config::instance().app->sceneManager.clear();
+}
+
 /// \section Helpers
 //--------------------------------------------------------------
 // add scene with given script

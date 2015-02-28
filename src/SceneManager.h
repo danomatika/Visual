@@ -32,7 +32,7 @@ class SceneManager : public OscObject {
 		SceneManager();
 		virtual ~SceneManager();
 
-		/// add a scene
+		/// add a scene, removes existing scenes with the same name
 		void addScene(Scene* scene);
 
 		/// remove a scene
