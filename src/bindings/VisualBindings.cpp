@@ -3470,6 +3470,11 @@ static int _wrap_addScript(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; 
   if(!lua_isstring(L,2)) SWIG_fail_arg("addScript",2,"std::string"); (&arg1)->assign(lua_tostring(L,1),lua_rawlen(L,1));
   (&arg2)->assign(lua_tostring(L,2),lua_rawlen(L,2)); addScript(arg1,arg2); return SWIG_arg; if(0) SWIG_fail; fail:
   lua_error(L); return SWIG_arg; }
+static int _wrap_addObject(lua_State* L) { int SWIG_arg = 0; DrawableObject *arg1 = (DrawableObject *) 0 ;
+  SWIG_check_num_args("addObject",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("addObject",1,"DrawableObject *");
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_DrawableObject,SWIG_POINTER_DISOWN))){
+    SWIG_fail_ptr("addObject",1,SWIGTYPE_p_DrawableObject); }  addObject(arg1); return SWIG_arg; if(0) SWIG_fail; fail:
+  lua_error(L); return SWIG_arg; }
 static int _wrap_new_vDrawableObject(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; DrawableObject *result = 0 ;
   SWIG_check_num_args("DrawableObject::DrawableObject",1,1)
   if(!lua_isstring(L,1)) SWIG_fail_arg("DrawableObject::DrawableObject",1,"std::string");
@@ -4828,6 +4833,14 @@ static int _wrap_vVideo_loadFile(lua_State* L) { int argc; int argv[3]={ 1,2,3} 
         _v = 1; }  }  if (_v) { { _v = lua_isstring(L,argv[1]); }  if (_v) { return _wrap_vVideo_loadFile__SWIG_0(L);}  }  } 
   SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'vVideo_loadFile'\n" "  Possible C/C++ prototypes are:\n"
   "    Video::loadFile(std::string)\n" "    Video::loadFile()\n"); lua_error(L);return 0; }
+static int _wrap_vVideo_nextFrame(lua_State* L) { int SWIG_arg = 0; Video *arg1 = (Video *) 0 ;
+  SWIG_check_num_args("Video::nextFrame",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Video::nextFrame",1,"Video *");
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Video,0))){ SWIG_fail_ptr("vVideo_nextFrame",1,SWIGTYPE_p_Video); }
+   (arg1)->nextFrame(); return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+static int _wrap_vVideo_prevFrame(lua_State* L) { int SWIG_arg = 0; Video *arg1 = (Video *) 0 ;
+  SWIG_check_num_args("Video::prevFrame",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Video::prevFrame",1,"Video *");
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Video,0))){ SWIG_fail_ptr("vVideo_prevFrame",1,SWIGTYPE_p_Video); }
+   (arg1)->prevFrame(); return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
 static int _wrap_vVideo_getVideo(lua_State* L) { int SWIG_arg = 0; Video *arg1 = (Video *) 0 ; ofVideoPlayer *result = 0 ;
   SWIG_check_num_args("Video::getVideo",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Video::getVideo",1,"Video *");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Video,0))){ SWIG_fail_ptr("vVideo_getVideo",1,SWIGTYPE_p_Video); }
@@ -4980,6 +4993,8 @@ static swig_lua_attribute swig_vVideo_attributes[] = {
 };
 static swig_lua_method swig_vVideo_methods[]= {
     { "loadFile", _wrap_vVideo_loadFile},
+    { "nextFrame", _wrap_vVideo_nextFrame},
+    { "prevFrame", _wrap_vVideo_prevFrame},
     { "getVideo", _wrap_vVideo_getVideo},
     { "isLoaded", _wrap_vVideo_isLoaded},
     { "getFilename", _wrap_vVideo_getFilename},
@@ -5031,6 +5046,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "addScene", _wrap_addScene},
     { "getCurrentScene", _wrap_getCurrentScene},
     { "addScript", _wrap_addScript},
+    { "addObject", _wrap_addObject},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {

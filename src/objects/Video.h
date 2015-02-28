@@ -41,6 +41,9 @@ class Video : public DrawableObject {
 		void draw(int x, int y, unsigned int w, unsigned int h);
 		
 		void clear();
+	
+		void nextFrame();
+		void prevFrame();
 		
 		// getters / setters
 		ofVideoPlayer& getVideo() {return *video;}

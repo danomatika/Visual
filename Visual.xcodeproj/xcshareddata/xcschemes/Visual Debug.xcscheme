@@ -77,6 +77,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "~/Projects/twerk/video.lua"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "../res/hello.lua"
             isEnabled = "NO">
          </CommandLineArgument>

@@ -131,6 +131,16 @@ void Video::clear() {
 }
 
 //--------------------------------------------------------------
+void Video::nextFrame() {
+	video->nextFrame();
+}
+
+//--------------------------------------------------------------
+void Video::prevFrame() {
+	video->previousFrame();
+}
+
+//--------------------------------------------------------------
 void Video::setPlay(bool b) {
 	if(bPlay == b) {
 		return;

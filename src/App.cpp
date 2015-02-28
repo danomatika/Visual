@@ -74,6 +74,7 @@ void App::setup() {
 	
 	// setup editor & add editor event listening
 	ofxEditor::loadFont(CONFIG_FONT, 24);
+	ofxRepl::setReplBanner("Welcome to Visual");//\nType visual.help() for info");
 	editor.setup(this, true);
 	editor.setCurrentEditor(0); // start with Repl
 	
@@ -86,7 +87,9 @@ void App::setup() {
 		ofSetDataPathRoot(ofFilePath::addTrailingSlash(ofFilePath::getUserHomeDir()));
 	}
 	editor.setPath(ofToDataPath(""));
-	config.print();
+	if(bDebug) {
+		config.print();
+	}
 	
 	// new render size?
 	if(config.renderWidth != ofGetWidth() || config.renderHeight != ofGetHeight()) {
@@ -199,7 +202,7 @@ void App::exit() {
 	receiver.stop();
 	sceneManager.clear();
 	
-	ofLog() << "exiting ...";
+	ofLogVerbose() << "exiting ...";
 }
 
 //--------------------------------------------------------------
@@ -415,15 +418,13 @@ void App::dragEvent(ofDragInfo dragInfo) {
 
 //--------------------------------------------------------------
 void App::openFileEvent(int &whichEditor){
-	ofLogNotice() << "editor " << whichEditor << ": opened "
+	ofLogVerbose() << "editor " << whichEditor << ": opened "
 		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
-	//loadScript(<#string script#>)
-	scriptEngine.evalString(editor.getText(whichEditor), true);
 }
 
 //--------------------------------------------------------------
 void App::saveFileEvent(int &whichEditor){
-	ofLogNotice() << "editor " << whichEditor << ": saved "
+	ofLogVerbose() << "editor " << whichEditor << ": saved "
 		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
 }
 
@@ -442,7 +443,7 @@ void App::evalReplEvent(const string &text) {
 bool App::loadScript(string script) {
 	if(script == "") return;
 
-	ofLogNotice() << "loading \"" << script << "\"";
+	ofLogNotice() << "loading \"" << ofFilePath::getFileName(script) << "\"";
 	
 	// set data path to config file folder
 	ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(script));
@@ -469,7 +470,7 @@ bool App::loadScript(string script) {
 void App::reloadScript() {
 	if(config.script == "") return;
 	
-	ofLogNotice() << "reloading \"" << config.script << "\"";
+	ofLogNotice() << "reloading \"" << ofFilePath::getFileName(config.script) << "\"";
 	
 	if(config.isPlaylist) {
 		sceneManager.clear(true);
@@ -487,7 +488,7 @@ void App::reloadScript() {
 void App::unloadScript() {
 	if(config.script == "") return;
 	
-	ofLogNotice() << "unloading \"" << config.script << "\"";
+	ofLogNotice() << "unloading \"" << ofFilePath::getFileName(config.script) << "\"";
 	
 	if(config.isPlaylist) {
 		scriptEngine.unloadScript();
@@ -511,7 +512,9 @@ void App::unloadScript() {
 // closed before calling lua functions
 bool App::processOscMessage(const ofxOscMessage& message) {
 
-	ofLogVerbose(PACKAGE) << "received " << message.getAddress();
+#ifdef DEBUG
+	ofLogVerbose() << "received " << message.getAddress();
+#endif
 	
 	if(message.getAddress() == getOscRootAddress() + "/scene") {
 		string name;

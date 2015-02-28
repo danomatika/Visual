@@ -75,10 +75,23 @@ Scene* getCurrentScene() {
 	return Config::instance().app->sceneManager.getCurrentScene();
 }
 
-/// \section Script Helper
+/// \section Helpers
 //--------------------------------------------------------------
+// add scene with given script
 void addScript(string name, string filename) {
 	Scene *s = new Scene(name);
 	s->addObject(new Script(name, filename));
 	Config::instance().app->sceneManager.addScene(s);
+}
+
+//--------------------------------------------------------------
+// add object to current scene
+void addObject(DrawableObject *object_disown) {
+	Scene *s = Config::instance().app->sceneManager.getCurrentScene();
+	if(!s) {
+		s = new Scene("default");
+		Config::instance().app->sceneManager.addScene(s);
+		Config::instance().app->sceneManager.gotoScene("default");
+	}
+	s->addObject(object_disown);
 }

@@ -26,6 +26,12 @@
 %ignore OscObject;
 class OscObject {};
 
+// lua gives up ownership to C++ for arguments with the following names in this
+// interface or %included C++ files
+%apply SWIGTYPE *DISOWN { Scene* scene_disown };
+%apply SWIGTYPE *DISOWN { DrawableObject* object_disown };
+%apply SWIGTYPE *DISOWN { DrawableFrame* frame_disown };
+
 // ----- Config -----------------------------------------------------------------
 
 // this is a dummy class, you shouldn't be able to create it directly,
@@ -66,10 +72,6 @@ class Config {
 %rename(remove) Scene::removeObject;
 %rename(clear) Scene::clearObject;
 
-// lua gives up ownership to C++
-%apply SWIGTYPE *DISOWN { DrawableObject* object_disown };
-//%apply SWIGTYPE *DISOWN { std::string name_disown };
-
 class Scene {
 
 	public:
@@ -90,9 +92,6 @@ class Scene {
 %attribute(Scene, ofColor&, background, getBackground, setBackground);
 
 // ----- Visual Helpers --------------------------------------------------------
-
-// lua gives up ownership to C++
-%apply SWIGTYPE *DISOWN { Scene* scene_disown };
 
 // load these after Scene since swig needs to know the Scene type
 %include "../src/bindings/Visual.h"
@@ -239,9 +238,6 @@ class Script : public DrawableObject {
 %rename(remove) Sprite::removeFrame;
 %rename(clear) Sprite::clearFrames;
 
-// lua gives up ownership to C++
-%apply SWIGTYPE *DISOWN { DrawableFrame* frame_disown };
-
 class Sprite : public DrawableObject {
 
 	public:
@@ -317,6 +313,9 @@ class Video : public DrawableObject {
 		bool loadFile(std::string filename="");
 
 		void setup();
+
+		void nextFrame();
+		void prevFrame();
 
 		ofVideoPlayer& getVideo();
 		bool isLoaded();
