@@ -29,6 +29,7 @@
 		3099FD3918822C1E00175228 /* OscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3618822C1E00175228 /* OscReceiver.cpp */; };
 		3099FD3C18823D0000175228 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD3A18823D0000175228 /* Config.cpp */; };
 		3099FD59188245B400175228 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3099FD57188245B400175228 /* ResourceManager.cpp */; };
+		30CA30E91ACE5FDD0024E734 /* ofxEditorSyntax.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30CA30E71ACE5FDD0024E734 /* ofxEditorSyntax.cpp */; };
 		30EB6D611A86860900D5B42B /* ofxEditorFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EB6D5F1A86860900D5B42B /* ofxEditorFont.cpp */; };
 		30EB6D6B1A86BDAA00D5B42B /* VisualBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EB6D6A1A86BDAA00D5B42B /* VisualBindings.cpp */; };
 		30FC226B1A7C04A000CA4635 /* OscBindings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30FC226A1A7C04A000CA4635 /* OscBindings.cpp */; };
@@ -213,6 +214,8 @@
 		3099FD5318823EE700175228 /* XorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XorHandler.h; sourceTree = "<group>"; };
 		3099FD57188245B400175228 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		3099FD58188245B400175228 /* ResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
+		30CA30E71ACE5FDD0024E734 /* ofxEditorSyntax.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxEditorSyntax.cpp; sourceTree = "<group>"; };
+		30CA30E81ACE5FDD0024E734 /* ofxEditorSyntax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxEditorSyntax.h; sourceTree = "<group>"; };
 		30EB6D5F1A86860900D5B42B /* ofxEditorFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxEditorFont.cpp; sourceTree = "<group>"; };
 		30EB6D601A86860900D5B42B /* ofxEditorFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxEditorFont.h; sourceTree = "<group>"; };
 		30EB6D651A86861300D5B42B /* fontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fontstash.h; sourceTree = "<group>"; };
@@ -660,6 +663,8 @@
 				30EB6D601A86860900D5B42B /* ofxEditorFont.h */,
 				30FD0BF61A60770F001D6DBC /* ofxEditorSettings.cpp */,
 				30FD0BF71A60770F001D6DBC /* ofxEditorSettings.h */,
+				30CA30E71ACE5FDD0024E734 /* ofxEditorSyntax.cpp */,
+				30CA30E81ACE5FDD0024E734 /* ofxEditorSyntax.h */,
 				30FD0BF81A60770F001D6DBC /* ofxFileDialog.cpp */,
 				30FD0BF91A60770F001D6DBC /* ofxFileDialog.h */,
 				30FD0BFA1A60770F001D6DBC /* ofxGLEditor.cpp */,
@@ -956,6 +961,7 @@
 				3099FD59188245B400175228 /* ResourceManager.cpp in Sources */,
 				30FD0BD91A6076F3001D6DBC /* ldo.c in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* App.cpp in Sources */,
+				30CA30E91ACE5FDD0024E734 /* ofxEditorSyntax.cpp in Sources */,
 				30FD0B981A6076E1001D6DBC /* ofxLua.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,

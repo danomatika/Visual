@@ -38,7 +38,3 @@ function osc.send(...)
     end
     osc.sendMessage(msg)
 end
-
-function visual.help(...)
-	
-end

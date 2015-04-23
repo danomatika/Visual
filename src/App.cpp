@@ -74,7 +74,7 @@ void App::setup() {
 	
 	// setup editor & add editor event listening
 	ofxEditor::loadFont(CONFIG_FONT, 24);
-	ofxRepl::setReplBanner("Welcome to Visual");//\nType visual.help() for info");
+	ofxRepl::setReplBanner("Welcome to Visual\nType visual.help() for info");
 	editor.setup(this, true);
 	editor.setCurrentEditor(0); // start with Repl
 	
@@ -161,12 +161,12 @@ void App::update() {
 //--------------------------------------------------------------
 void App::draw() {
 	
-	transformer.pushTransforms();
+	transformer.push();
 		mutex.lock();
 			sceneManager.draw();
 			scriptEngine.lua.scriptDraw();
 		mutex.unlock();
-	transformer.popTransforms();
+	transformer.pop();
 	
 	editor.draw();
 	
@@ -443,7 +443,7 @@ void App::evalReplEvent(const string &text) {
 bool App::loadScript(string script) {
 	if(script == "") return;
 
-	ofLogNotice(PACKAGE) << "loading \"" << ofFilePath::getFileName(script) << "\"";
+	ofLogVerbose(PACKAGE) << "loading \"" << ofFilePath::getFileName(script) << "\"";
 	
 	// set data path to config file folder
 	ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(script));
@@ -470,7 +470,7 @@ bool App::loadScript(string script) {
 void App::reloadScript() {
 	if(config.script == "") return;
 	
-	ofLogNotice(PACKAGE) << "reloading \"" << ofFilePath::getFileName(config.script) << "\"";
+	ofLogVerbose(PACKAGE) << "reloading \"" << ofFilePath::getFileName(config.script) << "\"";
 	
 	if(config.isPlaylist) {
 		sceneManager.clear(true);
@@ -488,7 +488,7 @@ void App::reloadScript() {
 void App::unloadScript() {
 	if(config.script == "") return;
 	
-	ofLogNotice(PACKAGE) << "unloading \"" << ofFilePath::getFileName(config.script) << "\"";
+	ofLogVerbose(PACKAGE) << "unloading \"" << ofFilePath::getFileName(config.script) << "\"";
 	
 	if(config.isPlaylist) {
 		scriptEngine.unloadScript();

@@ -124,6 +124,7 @@ void Config::setup() {
 	ofTrueTypeFont::setGlobalDpi(96);
 	fontFilename = ofToDataPath(CONFIG_FONT, true);
 	functionsFilename = ofToDataPath(CONFIG_FUNCTIONS, true);
+	helpFilename = ofToDataPath(CONFIG_HELP, true);
 }
 
 //--------------------------------------------------------------

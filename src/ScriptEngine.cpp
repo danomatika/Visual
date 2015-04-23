@@ -46,6 +46,7 @@ bool ScriptEngine::setup() {
 	luaopen_osc(lua); // osc bindings
 	luaopen_visual(lua); // visual bindings
 	lua.doScript(Config::instance().functionsFilename); // custom functions
+	lua.doScript(Config::instance().helpFilename); // help functions
 	return true;
 }
 

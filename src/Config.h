@@ -31,6 +31,7 @@
 
 #define CONFIG_FONT "fonts/PrintChar21.ttf"
 #define CONFIG_FUNCTIONS "functions.lua"
+#define CONFIG_HELP "help.lua"
 
 class App;
 
@@ -79,6 +80,7 @@ class Config {
 		
 		string fontFilename; //< font filename
 		string functionsFilename; //< lua function overrides
+		string helpFilename; //< lua help
 		
 		unsigned int renderWidth, renderHeight; //< render dimensions
 		void setRenderSize(unsigned int w, unsigned int h);
