@@ -445,9 +445,6 @@ bool App::loadScript(string script) {
 
 	ofLogVerbose(PACKAGE) << "loading \"" << ofFilePath::getFileName(script) << "\"";
 	
-	// set data path to config file folder
-	ofSetDataPathRoot(ofFilePath::getEnclosingDirectory(script));
-	
 	config.script = script;
 	config.isPlaylist = false;
 	if(!scriptEngine.loadScript(script)) {
