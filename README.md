@@ -11,8 +11,6 @@ Copyright (c) [Dan Wilcox](danomatika.com) 2014
 DESCRIPTION
 -----------
 
-**NOTE: Currently under upgrade to new ofxGLEditor and ofxLua (swig branch), not working yet."
-
 This is basically a more advanced version of [rc-visual](https://github.com/danomatika/rc-visual) built for the [robotcowboy: Onward to Mars](http://robotcowboy.com/onwardtomars) project.
 
 A current OSX build can be found at: <http://docs.danomatika.com/Visual.app.zip>
