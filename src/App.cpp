@@ -78,6 +78,14 @@ void App::setup() {
 	editor.setup(this, true);
 	editor.setCurrentEditor(0); // start with Repl
 	
+	// lua syntax
+	syntax.loadFile("luaSyntax.xml");
+	editor.getSettings().addSyntax(&syntax);
+    
+    // syntax highlighter colors
+    colorScheme.loadFile("colorScheme.xml");
+    editor.setColorScheme(&colorScheme);
+	
 	// load lua script (if one was given)
 	if(!config.script.empty()) {
 		loadScript(config.script);

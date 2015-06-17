@@ -81,6 +81,8 @@ class App : public ofBaseApp, public ofxGLEditorListener, public OscObject {
 		bool bGoFullscreen; //< should the app be fullscreen on start?
 		
 		ofxGLEditor editor; //< on screen text editor
+		ofxEditorSyntax syntax; //< editor language syntax
+		ofxEditorColorScheme colorScheme; //< editor syntax color scheme
 		
 	protected:
 	
