@@ -72,6 +72,13 @@ bool ScriptEngine::loadScript(string script) {
 		return;
 	}
 	
+	// change the current dir to the scene directory,
+	// this allows the lua state to find local files
+	if(chdir(path.c_str()) != 0) {
+		ofLogError() << "ScriptEngine: couldn't change directory to \"" << path << "\"";
+		return;
+	}
+	
 	// set data path to script dir
 	ofSetDataPathRoot(path);
 	
@@ -80,11 +87,9 @@ bool ScriptEngine::loadScript(string script) {
 	bool ret = lua.doScript(currentScript, true);
 	if(ret) {
 		lua.scriptSetup();
-		if(ofGetLogLevel() == OF_LOG_VERBOSE) {
-			char currentDir[1024];
-			getcwd(currentDir, 1024);
-			ofLogVerbose(PACKAGE) << "ScriptEngine: current dir: \"" << currentDir << "\"";
-		}
+		char currentDir[1024];
+		getcwd(currentDir, 1024);
+		ofLogVerbose(PACKAGE) << "ScriptEngine: current dir: \"" << currentDir << "\"";
 	}
 	return ret;
 }

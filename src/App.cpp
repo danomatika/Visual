@@ -418,8 +418,21 @@ void App::dragEvent(ofDragInfo dragInfo) {
 
 //--------------------------------------------------------------
 void App::openFileEvent(int &whichEditor){
+
+	string path =  editor.getEditorFilename(whichEditor);
 	ofLogVerbose(PACKAGE) << "editor " << whichEditor << ": opened "
-		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
+		<< ofFilePath::getFileName(path);
+	
+	// change the current dir to the scene directory,
+	// this allows the lua state to find local files
+	if(chdir(ofFilePath::getEnclosingDirectory(path).c_str()) != 0) {
+		ofLogError() << "ScriptEngine: couldn't change directory to \"" << path << "\"";
+		return;
+	}
+	
+	char currentDir[1024];
+	getcwd(currentDir, 1024);
+	ofLogVerbose(PACKAGE) << "ScriptEngine: current dir: \"" << currentDir << "\"";
 }
 
 //--------------------------------------------------------------

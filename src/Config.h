@@ -27,7 +27,7 @@
 #include "ResourceManager.h"
 
 #define PACKAGE	"visual"
-#define	VERSION	"0.2.0"
+#define	VERSION	"0.3.0"
 
 #define CONFIG_FONT "fonts/PrintChar21.ttf"
 #define CONFIG_FUNCTIONS "functions.lua"
