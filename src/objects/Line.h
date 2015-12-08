@@ -40,7 +40,7 @@ class Line : public DrawableObject {
 		void draw() {
 			if(bVisible) {
 				ofSetColor(color);
-				ofLine(pos1, pos2);
+				ofDrawLine(pos1, pos2);
 			}
 		}
 		

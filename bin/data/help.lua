@@ -1,6 +1,10 @@
 
-function visual.help()
+function help(topic)
+
+if topic == "keys" then
 print([[
+Visual keys
+-----------
 
 MOD -> CMD (Mac) or CTRL (Win & Linux)
 
@@ -27,7 +31,15 @@ MOD + o: open a file via file browser, starts in current path
 MOD + -: decrease current editor alpha
 MOD + =: increase current editor alpha
 
+MOD + z: undo
+MOD + y: redo
+
 ESC: clear current selection
+
+MOD + f: toggle fullscreen
+MOD + l: toggle line wrapping
+MOD + n: toggle line numbers
+MOD + k: toggle auto focus zoom
 
 REPL (Read-Eval-Print-Loop)
 ---------------------------
@@ -44,4 +56,24 @@ ARROWS: select file to open
 RETURN: open/save file
 ESC: exit file dialog
 ]])
+
+	elseif topic == "console" then
+print([[
+Visual console (or REPL) --------------
+
+If you press MOD + 0 or MOD + R
+]])
+
+	else
+print([[
+Visual documentation
+--------------------
+
+More help topics:
+help("keys") for keyboard commands for controlling Visual
+help("console") for ore help on the console
+]])
+end
+
+
 end

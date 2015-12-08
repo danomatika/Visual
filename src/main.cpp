@@ -22,13 +22,13 @@
 ==============================================================================*/
 #include "ofMain.h"
 
-#include "App.h"
+#include "ofApp.h"
 #include "Config.h"
 
 int main(int argc, char *argv[]) {
 
 	// create app before parsing
-	Config::instance().app = ofPtr<App>(new App);
+	Config::instance().app = ofPtr<ofApp>(new ofApp);
 
 	// parse the commandline
 	if(!Config::instance().parseCommandLine(argc, argv)) {

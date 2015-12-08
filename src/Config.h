@@ -33,7 +33,7 @@
 #define CONFIG_FUNCTIONS "functions.lua"
 #define CONFIG_HELP "help.lua"
 
-class App;
+class ofApp;
 
 /// global, per-application instance state variable container class
 ///
@@ -91,7 +91,7 @@ class Config {
 
 		/// \section Objects
 		
-		ofPtr<App> app; //< global app pointer
+		ofPtr<ofApp> app; //< global app pointer
 		
 		ofxOscSender oscSender; //< global osc sender
 		OscReceiver oscReceiver; //< global osc receiver

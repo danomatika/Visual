@@ -22,8 +22,8 @@
 ==============================================================================*/
 #include "Config.h"
 
-#include "App.h"
-#include "tclap/tclap.h"
+#include "ofApp.h"
+#include "options/Options.h"
 
 // PRIVATE
 //--------------------------------------------------------------
@@ -48,66 +48,29 @@ Config& Config::instance() {
 
 //--------------------------------------------------------------
 bool Config::parseCommandLine(int argc, char **argv) {
-	try {
-		// the commandline parser
-		TCLAP::CommandLine cmd("a simple 2d rendering engine", VERSION);
-		
-		// options to parse
-		// short id, long id, description, required?, default value, short usage type description
-		TCLAP::ValueArg<string> ipOpt("i", "ip", (string) "IP address to send to, default: "+sendingIp, false, sendingIp, "string");
-		
-		TCLAP::ValueArg<int> portOpt("p","port", (string) "Port to send to, default: "+ofToString(sendingPort), false, sendingPort, "int");
-	 
-		TCLAP::ValueArg<int> inputPortOpt("", "listeningPort", "Listening port, default: "+ofToString(listeningPort), false, listeningPort, "int");
-		
-		TCLAP::ValueArg<int> connectionIdOpt("", "connectionId", "Connection id for notifications, default: "+ofToString(connectionId), false, connectionId, "int");
-		
-		TCLAP::SwitchArg fullscreenOpt("f", "fullscreen", "Start in fullscreen?", false);
-		
-		// commands to parse
-		// name, description, required?, default value, short usage type description
-		TCLAP::UnlabeledValueArg<string> fileCmd("lua", "Visual lua script to load", false, "", "file");
-
-		// add args to parser (in reverse order)
-		cmd.add(fullscreenOpt);
-		cmd.add(connectionIdOpt);
-		cmd.add(inputPortOpt);
-		cmd.add(portOpt);
-		cmd.add(ipOpt);
-		
-		// add commands
-		cmd.add(fileCmd);
-		
-		// parse the commandline
-		vector<string> line;
-		line.push_back(PACKAGE); // set name since argv[0] includes app bundle path
-		for(int i = 1; i < argc; ++i) {
-			line.push_back((string) argv[i]);
-		}
-		cmd.parse(line);
-
-		// set the config/playlist file path (if one exists)
-		if(fileCmd.getValue() != "") {
-			script = ofFilePath::getAbsolutePath(fileCmd.getValue(), false);
-			if(ofFilePath::getFileExt(script) != "lua") {
-				ofLogError(PACKAGE) << "given script, << \"" << script << " is not a lua file";
-				script = "";
-				return false;
-			}
-		}
-		
-		// set the variables, may override lua settings
-		if(ipOpt.isSet())			sendingIp = ipOpt.getValue();
-		if(portOpt.isSet())			sendingPort = portOpt.getValue();
-		if(inputPortOpt.isSet())	listeningPort = inputPortOpt.getValue();
-		if(connectionIdOpt.isSet())	connectionId = connectionIdOpt.getValue();
-		if(fullscreenOpt.isSet())	fullscreen = fullscreenOpt.getValue();
-	}
-	catch(TCLAP::ArgException &e) {	// catch any exceptions
-		ofLogError(PACKAGE) << "CommandLine: " << e.error() << " for arg " << e.argId();
+	Options options("  a simple 2d rendering engine", VERSION);
+	options.addString("IP", "i", "ip", "IP address to send to (default: 127.0.0.1)");
+	options.addInteger("PORT", "p", "port", "IP address to send to (default: 8880)");
+	options.addString("LISTENPORT", "l", "listening-port", "IP address to send to (default: 9990)");
+	options.addInteger("CONNECTID", "c", "connection-id", "Connection id for notifications (default: 0)");
+	options.addSwitch("FULLSCREEN", "f", "fullscreen", "Start in fullscreen?");
+	options.addArgument("FILE", "  FILE \tOptional XML config file");
+	if(!options.parse(argc, argv)) {
 		return false;
 	}
-
+	if(options.numArguments() > 0) { // load the config file (if one exists)
+		script = ofFilePath::getAbsolutePath(options.getArgumentString(0), false);
+		if(ofFilePath::getFileExt(script) != "lua") {
+			ofLogError(PACKAGE) << "given script, << \"" << script << " is not a lua file";
+			script = "";
+			return false;
+		}
+	}
+	if(options.isSet("IP"))         {sendingIp = options.getString("IP");}
+	if(options.isSet("PORT"))       {sendingPort = options.getUInt("PORT");}
+	if(options.isSet("LISTENPORT")) {listeningPort = options.getUInt("LISTENPORT");}
+	if(options.isSet("CONNECTID"))  {connectionId = options.getInt("CONNECTID");}
+	if(options.isSet("FULLSCREEN")) {fullscreen = true;}
 	return true;
 }
 

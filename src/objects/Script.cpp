@@ -22,7 +22,7 @@
 ==============================================================================*/
 #include "Script.h"
 
-#include "App.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 Script::Script(string name) : DrawableObject(name),

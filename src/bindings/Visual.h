@@ -22,7 +22,7 @@
 ==============================================================================*/
 #include "Config.h"
 
-#include "App.h"
+#include "ofApp.h"
 #include "Scene.h"
 #include "Objects.h" // needed for bindings
 

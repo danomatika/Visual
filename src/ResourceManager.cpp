@@ -62,7 +62,7 @@ bool ResourceManager::addFont(const string& name, unsigned int size, string file
 				file = fontSet.filename;
 			}
 			ofPtr<ofTrueTypeFont> f = ofPtr<ofTrueTypeFont>(new ofTrueTypeFont);
-			if(!f->loadFont(ofToDataPath(file), size)) {
+			if(!f->load(ofToDataPath(file), size)) {
 				return false;
 			}
 			fontSet.fonts.insert(pair<unsigned int,ofPtr<ofTrueTypeFont> >(size, f));
@@ -70,7 +70,7 @@ bool ResourceManager::addFont(const string& name, unsigned int size, string file
 	}
 	else { // new font
 		ofPtr<ofTrueTypeFont> f = ofPtr<ofTrueTypeFont>(new ofTrueTypeFont);
-		if(!f->loadFont(ofToDataPath(file), size)) {
+		if(!f->load(ofToDataPath(file), size)) {
 			return false;
 		}
 		FontSet fontSet;
@@ -138,7 +138,7 @@ void ResourceManager::clearFonts() {
 //--------------------------------------------------------------
 bool ResourceManager::addImage(const string& name, const string& file) {
 	ofPtr<ofImage> i = ofPtr<ofImage>(new ofImage);
-	if(!i->loadImage(ofToDataPath(file))) {
+	if(!i->load(ofToDataPath(file))) {
 		return false;
 	}
 	images.insert(pair<string,ofPtr<ofImage> >(name, i));
@@ -187,7 +187,7 @@ void ResourceManager::clearImages() {
 //--------------------------------------------------------------
 bool ResourceManager::addVideo(const string& name, const string& file) {
 	ofPtr<ofVideoPlayer> v = ofPtr<ofVideoPlayer>(new ofVideoPlayer);
-	if(!v->loadMovie(ofToDataPath(file))) {
+	if(!v->load(ofToDataPath(file))) {
 		return false;
 	}
 	videos.insert(pair<string,ofPtr<ofVideoPlayer> >(name, v));

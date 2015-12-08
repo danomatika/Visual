@@ -61,3 +61,14 @@ This way I can run a lua script from anywhere:
     visual cool_script.lua
 
 CMD+F toggles fullscreen
+
+NOTES
+-----
+
+### Xcode settings after regenerating roject
+
+Uncheck "Allow debugging when using document Versions Browser" in Scheme Run tab to disable debug commandline argument which causes parse failure.
+
+Drag `bin/data` folder into project as a folder reference so resources will be built into the app bundle.
+
+Add data folder to "Copy Files" build phase. Install to Resources folder.

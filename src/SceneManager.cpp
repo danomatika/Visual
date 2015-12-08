@@ -180,7 +180,7 @@ void SceneManager::setup(bool loadAll) {
 	
 	// load scene change font
 	if(!sceneNameFont.isLoaded()) {
-		sceneNameFont.loadFont(Config::instance().fontFilename, SCENE_NAME_FONT_SIZE, false);
+		sceneNameFont.load(Config::instance().fontFilename, SCENE_NAME_FONT_SIZE, false);
 	}
 	
 	// setup all scenes

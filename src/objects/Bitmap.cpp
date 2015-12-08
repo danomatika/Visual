@@ -60,7 +60,7 @@ void Bitmap::draw(int x, int y) {
 	for(unsigned int _y = 0; _y < bitmapHeight; ++_y) {
 		for(unsigned int _x = 0; _x < bitmapWidth; ++_x) {
 			if(bitmap.at(_y*bitmapWidth + _x)) {
-				ofRect(xPos, yPos, pixelWidth, pixelHeight);
+				ofDrawRectangle(xPos, yPos, pixelWidth, pixelHeight);
 			}
 			xPos += pixelWidth;
 		}
@@ -98,7 +98,7 @@ void Bitmap::draw(int x, int y, unsigned int w, unsigned int h) {
 	for(unsigned int _y = 0; _y < bitmapHeight; ++_y) {
 		for(unsigned int _x = 0; _x < bitmapWidth; ++_x) {
 			if(bitmap.at(_y*bitmapWidth + _x)) {
-				ofRect(xPos, yPos, pixWidth, pixHeight);
+				ofDrawRectangle(xPos, yPos, pixWidth, pixHeight);
 			}
 			xPos += pixWidth;
 		}

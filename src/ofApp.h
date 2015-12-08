@@ -30,11 +30,11 @@
 #include "SceneManager.h"
 #include "ScriptEngine.h"
 
-class App : public ofBaseApp, public ofxGLEditorListener, public OscObject {
+class ofApp : public ofBaseApp, public ofxGLEditorListener, public OscObject {
 
 	public:
 	
-		App();
+		ofApp();
 	
 		void setup();
 		void update();

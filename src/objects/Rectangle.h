@@ -59,7 +59,7 @@ class Rectangle : public DrawableObject {
 					ofSetRectMode(OF_RECTMODE_CORNER);
 				}
 
-				ofRect(pos, width, height);
+				ofDrawRectangle(pos, width, height);
 			}
 		}
 		

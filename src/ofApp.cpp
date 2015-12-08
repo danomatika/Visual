@@ -20,14 +20,14 @@
 	See https://github.com/danomatika/Visual for documentation
 
 ==============================================================================*/
-#include "App.h"
+#include "ofApp.h"
 
 #include "Scene.h"
 
 #define RELOAD_TIMEOUT_MS 1000
 
 //--------------------------------------------------------------
-App::App() : config(Config::instance()),
+ofApp::ofApp() : config(Config::instance()),
 	receiver(Config::instance().oscReceiver),
 	sender(Config::instance().oscSender),
 	scriptEngine(Config::instance().scriptEngine) {
@@ -53,7 +53,7 @@ App::App() : config(Config::instance()),
 }
 
 //--------------------------------------------------------------
-void App::setup() {
+void ofApp::setup() {
 	
 	#ifdef DEBUG
 		ofSetLogLevel(PACKAGE, OF_LOG_VERBOSE);
@@ -74,8 +74,9 @@ void App::setup() {
 	
 	// setup editor & add editor event listening
 	ofxEditor::loadFont(CONFIG_FONT, 24);
-	ofxRepl::setReplBanner("Welcome to Visual\nType visual.help() for info");
+	ofxRepl::setReplBanner("Welcome to Visual\nType help() for info");
 	editor.setup(this, true);
+	editor.setFlashEvalSelection(true);
 	editor.setCurrentEditor(0); // start with Repl
 	
 	// lua syntax
@@ -131,7 +132,7 @@ void App::setup() {
 }
 
 //--------------------------------------------------------------
-void App::update() {
+void ofApp::update() {
 
 	// update the window shape if we're using a different rendering size,
 	// this dosen't seem to work in setup() so do it here
@@ -167,7 +168,7 @@ void App::update() {
 }
 
 //--------------------------------------------------------------
-void App::draw() {
+void ofApp::draw() {
 	
 	transformer.push();
 		mutex.lock();
@@ -197,7 +198,7 @@ void App::draw() {
 }
 
 //--------------------------------------------------------------
-void App::exit() {
+void ofApp::exit() {
 
 	// notify of disconnection
 	ofxOscMessage message;
@@ -214,7 +215,7 @@ void App::exit() {
 }
 
 //--------------------------------------------------------------
-void App::keyPressed(int key) {
+void ofApp::keyPressed(int key) {
 	
 	bool shiftPressed = ofGetKeyPressed(OF_KEY_SHIFT);
 	#ifdef TARGET_OSX
@@ -344,7 +345,7 @@ void App::keyPressed(int key) {
 			}
 			break;
 		
-		case 'z': case 26:
+		case 'k': case 26:
 			if(modifierPressed) {
 				editor.setAutoFocus(!editor.getAutoFocus());
 				return;
@@ -365,32 +366,32 @@ void App::keyPressed(int key) {
 }
 
 //--------------------------------------------------------------
-void App::keyReleased(int key) {
+void ofApp::keyReleased(int key) {
 	scriptEngine.lua.scriptKeyReleased(key);
 }
 
 //--------------------------------------------------------------
-void App::mouseMoved(int x, int y ) {
+void ofApp::mouseMoved(int x, int y ) {
 	scriptEngine.lua.scriptMouseMoved(x, y);
 }
 
 //--------------------------------------------------------------
-void App::mouseDragged(int x, int y, int button) {
+void ofApp::mouseDragged(int x, int y, int button) {
 	scriptEngine.lua.scriptMouseDragged(x, y, button);
 }
 
 //--------------------------------------------------------------
-void App::mousePressed(int x, int y, int button) {
+void ofApp::mousePressed(int x, int y, int button) {
 	scriptEngine.lua.scriptMousePressed(x, y, button);
 }
 
 //--------------------------------------------------------------
-void App::mouseReleased(int x, int y, int button) {
+void ofApp::mouseReleased(int x, int y, int button) {
 	scriptEngine.lua.scriptMouseReleased(x, y, button);
 }
 
 //--------------------------------------------------------------
-void App::windowResized(int w, int h) {
+void ofApp::windowResized(int w, int h) {
 	
 	// set up transforms with new screen size
 	transformer.setNewScreenSize(w, h);
@@ -399,7 +400,7 @@ void App::windowResized(int w, int h) {
 }
 
 //--------------------------------------------------------------
-void App::dragEvent(ofDragInfo dragInfo) {
+void ofApp::dragEvent(ofDragInfo dragInfo) {
 	if(dragInfo.files.empty()) return;
 	
 	string script = dragInfo.files[0];
@@ -425,7 +426,7 @@ void App::dragEvent(ofDragInfo dragInfo) {
 }
 
 //--------------------------------------------------------------
-void App::openFileEvent(int &whichEditor){
+void ofApp::openFileEvent(int &whichEditor){
 
 	string path =  editor.getEditorFilename(whichEditor);
 	ofLogVerbose(PACKAGE) << "editor " << whichEditor << ": opened "
@@ -444,24 +445,24 @@ void App::openFileEvent(int &whichEditor){
 }
 
 //--------------------------------------------------------------
-void App::saveFileEvent(int &whichEditor){
+void ofApp::saveFileEvent(int &whichEditor){
 	ofLogVerbose(PACKAGE) << "editor " << whichEditor << ": saved "
 		<< ofFilePath::getFileName(editor.getEditorFilename(whichEditor));
 }
 
 //--------------------------------------------------------------
-void App::executeScriptEvent(int &whichEditor){
+void ofApp::executeScriptEvent(int &whichEditor){
 	scriptEngine.evalString(editor.getText(whichEditor), !editor.isSelection());
 }
 
 //--------------------------------------------------------------
-void App::evalReplEvent(const string &text) {
+void ofApp::evalReplEvent(const string &text) {
 	scriptEngine.evalString(text);
 	editor.evalReplReturn();
 }
 
 //--------------------------------------------------------------
-bool App::loadScript(string script) {
+bool ofApp::loadScript(string script) {
 	if(script == "") return;
 
 	ofLogVerbose(PACKAGE) << "loading \"" << ofFilePath::getFileName(script) << "\"";
@@ -485,7 +486,7 @@ bool App::loadScript(string script) {
 }
 
 //--------------------------------------------------------------
-void App::reloadScript() {
+void ofApp::reloadScript() {
 	if(config.script == "") return;
 	
 	ofLogVerbose(PACKAGE) << "reloading \"" << ofFilePath::getFileName(config.script) << "\"";
@@ -503,7 +504,7 @@ void App::reloadScript() {
 }
 
 //--------------------------------------------------------------
-void App::unloadScript() {
+void ofApp::unloadScript() {
 	if(config.script == "") return;
 	
 	ofLogVerbose(PACKAGE) << "unloading \"" << ofFilePath::getFileName(config.script) << "\"";
@@ -528,7 +529,7 @@ void App::unloadScript() {
 //--------------------------------------------------------------
 // lock scene changes with the mutex to make sure the lua state is
 // closed before calling lua functions
-bool App::processOscMessage(const ofxOscMessage& message) {
+bool ofApp::processOscMessage(const ofxOscMessage& message) {
 
 #ifdef DEBUG
 	ofLogVerbose(PACKAGE) << "received " << message.getAddress();

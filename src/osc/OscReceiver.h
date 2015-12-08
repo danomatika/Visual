@@ -72,7 +72,7 @@ class OscReceiver {
 				OscReceiver *receiver;
 			protected:
 				void ProcessMessage(const osc::ReceivedMessage &m,
-					const IpEndpointName& remoteEndpoint);
+					const osc::IpEndpointName& remoteEndpoint);
 		};
 		friend Receiver;
 		

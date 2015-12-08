@@ -141,7 +141,7 @@ void OscReceiver::processMessage(const ofxOscMessage &message) {
 
 //--------------------------------------------------------------
 void OscReceiver::Receiver::ProcessMessage(const osc::ReceivedMessage &m,
-										   const IpEndpointName& remoteEndpoint) {
+										   const osc::IpEndpointName& remoteEndpoint) {
 	
 	// convert the message to an ofxOscMessage
 	ofxOscMessage message;
@@ -150,7 +150,7 @@ void OscReceiver::Receiver::ProcessMessage(const osc::ReceivedMessage &m,
 	message.setAddress(m.AddressPattern());
 
 	// set the sender ip/host
-	char endpoint_host[IpEndpointName::ADDRESS_STRING_LENGTH];
+	char endpoint_host[osc::IpEndpointName::ADDRESS_STRING_LENGTH];
 	remoteEndpoint.AddressAsString(endpoint_host);
     message.setRemoteEndpoint(endpoint_host, remoteEndpoint.port);
 
