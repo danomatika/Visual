@@ -1,6 +1,8 @@
 Visual
 ======
 
+**_This project is dead. See [loaf](https://github.com/danomatika/loaf) instead._**
+
 a simple scene manager and general purpose OF + Lua interpreter controllable over Open Sound Control
 
 directly inspired by [Love2d](http://www.love2d.org/), [Fluxus](http://www.pawfal.org//fluxus), etc 
