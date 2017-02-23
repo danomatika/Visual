@@ -12,6 +12,11 @@
 		<begin>--[[</begin>
 		<end>]]</end>
 	</multicomment>
+	
+	<stringliteral>
+		<begin>[[</begin>
+		<end>]]</end>
+	</stringliteral>
 
     <!-- lua doesn't support hex literals aka 0x123 -->
     <hexliteral>false</hexliteral>
@@ -23,24 +28,25 @@
 		
         <!-- lang keywords -->
 		<keyword>and</keyword>
-		<keyword>end</keyword>
-		<keyword>in</keyword>
-		<keyword>repeat</keyword>
 		<keyword>break</keyword>
+		<keyword>do</keyword>
+		<keyword>else</keyword>
+		<keyword>elseif</keyword>
+		<keyword>end</keyword>
 		<keyword>false</keyword>
-        <keyword>local</keyword>
+		<keyword>goto</keyword>
+		<keyword>for</keyword>
+		<keyword>function</keyword>
+		<keyword>if</keyword>
+		<keyword>in</keyword>
+		<keyword>local</keyword>
+		<keyword>nil</keyword>
+		<keyword>not</keyword>
+		<keyword>or</keyword>
+		<keyword>repeat</keyword>
         <keyword>return</keyword>
-        <keyword>do</keyword>
-        <keyword>for</keyword>
-        <keyword>nil</keyword>
-        <keyword>then</keyword>
-        <keyword>else</keyword>
-        <keyword>function</keyword>
-        <keyword>not</keyword>
-        <keyword>true</keyword>
-        <keyword>elseif</keyword>
-        <keyword>if</keyword>
-        <keyword>or</keyword>
+		<keyword>then</keyword>
+		<keyword>true</keyword>
         <keyword>until</keyword>
         <keyword>while</keyword>
 

@@ -10,7 +10,7 @@ of.getHeight = visual.getRenderHeight
 -- custom print to hook into C++
 function print(...)
 	local s = ""
-	for i,v in ipairs(arg) do
+	for i,v in ipairs({...}) do
 		s = s .. tostring(v)
 	end
 	visual.print(s)

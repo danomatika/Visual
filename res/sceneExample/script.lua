@@ -1,4 +1,7 @@
-require 'Hello'
+-- a script scene loaded by the sceneExample config script
+
+-- try loading the test script module from "hello.lua"
+require 'hello'
 
 -- global vars
 time = 0.0
@@ -6,7 +9,7 @@ increment = 0.01
 
 function setup()
 
-	print "setup was called"
+	print("setup was called")
 	of.setCircleResolution(50)
 
 end
@@ -25,11 +28,11 @@ function draw()
 	time = time + increment
 
 	of.setColor(255, 0, 0)
-	of.circle(of.getWidth()/2, of.getHeight()/2, size, size)
+	of.drawCircle(of.getWidth()/2, of.getHeight()/2, size, size)
 
 	osc.sendFloat("/audio/circle/size", n)
 end
 
 function exit()
-	print "exit was called"
+	print("exit was called")
 end

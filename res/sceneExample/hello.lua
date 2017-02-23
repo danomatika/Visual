@@ -1,3 +1,4 @@
+-- this is a test scipt module loaded by script.lua
 print("hello world")
 
 color = of.Color(255)

@@ -78,6 +78,7 @@ void ofApp::setup() {
 	editor.setup(this, true);
 	editor.setFlashEvalSelection(true);
 	editor.setCurrentEditor(0); // start with Repl
+	ofxEditor::setAutoFocusMinScale(0.75);
 	
 	// lua syntax
 	syntax.loadFile("luaSyntax.xml");
@@ -95,7 +96,7 @@ void ofApp::setup() {
 		scriptEngine.setup();
 		ofSetDataPathRoot(ofFilePath::addTrailingSlash(ofFilePath::getUserHomeDir()));
 	}
-	editor.setPath(ofToDataPath(""));
+	editor.setPath(ofToDataPath("", true));
 	if(bDebug) {
 		config.print();
 	}
@@ -159,11 +160,9 @@ void ofApp::update() {
 	}
 
 	if(bRunning) {
-		mutex.lock();
-			sceneManager.update();
+		sceneManager.update();
 //			config.resourceManager.update();
-			scriptEngine.lua.scriptUpdate();
-		mutex.unlock();
+		scriptEngine.lua.scriptUpdate();
 	}
 }
 
@@ -171,10 +170,8 @@ void ofApp::update() {
 void ofApp::draw() {
 	
 	transformer.push();
-		mutex.lock();
-			sceneManager.draw();
-			scriptEngine.lua.scriptDraw();
-		mutex.unlock();
+		sceneManager.draw();
+		scriptEngine.lua.scriptDraw();
 	transformer.pop();
 	
 	editor.draw();
@@ -312,7 +309,7 @@ void ofApp::keyPressed(int key) {
 			}
 			break;
 
-		case 'E':
+		case 'e':
 			// reload script & execute
 			if(modifierPressed && shiftPressed) {
 				if(ofGetElapsedTimeMillis() - reloadTimestamp > RELOAD_TIMEOUT_MS) {
@@ -452,7 +449,7 @@ void ofApp::saveFileEvent(int &whichEditor){
 
 //--------------------------------------------------------------
 void ofApp::executeScriptEvent(int &whichEditor){
-	scriptEngine.evalString(editor.getText(whichEditor), !editor.isSelection());
+	scriptEngine.evalString(editor.getText(whichEditor), false);//!editor.isSelection());
 }
 
 //--------------------------------------------------------------
@@ -539,16 +536,12 @@ bool ofApp::processOscMessage(const ofxOscMessage& message) {
 		string name;
 		int index;
 		if(OscObject::tryString(message, name, 0)) {
-			mutex.lock();
-				sceneManager.gotoScene(name);
-			mutex.unlock();
+			sceneManager.gotoScene(name);
 			return true;
 		}
 		else if(OscObject::tryNumber(message, index, 0)) {
 			if(index > -1) {
-				mutex.lock();
-					sceneManager.gotoScene(index);
-				mutex.unlock();
+				sceneManager.gotoScene(index);
 			}
 			return true;
 		}
@@ -559,9 +552,7 @@ bool ofApp::processOscMessage(const ofxOscMessage& message) {
 		if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
 			return true;
 		}
-		mutex.lock();
-			sceneManager.prevScene();
-		mutex.unlock();
+		sceneManager.prevScene();
 		return true;
 	}
 	
@@ -570,9 +561,7 @@ bool ofApp::processOscMessage(const ofxOscMessage& message) {
 		if(message.getArgType(0) == OFXOSC_TYPE_FLOAT && message.getArgAsFloat(0) == 0) {
 			return true;
 		}
-		mutex.lock();
-			sceneManager.nextScene();
-		mutex.unlock();
+		sceneManager.nextScene();
 		return true;
 	}
 
@@ -606,9 +595,7 @@ bool ofApp::processOscMessage(const ofxOscMessage& message) {
 	}
 	
 	// forward message to lua
-	mutex.lock();
-		scriptEngine.sendOsc(message);
-	mutex.unlock();
+	scriptEngine.sendOsc(message);
 	
 	return true;
 }

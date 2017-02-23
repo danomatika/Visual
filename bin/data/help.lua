@@ -1,7 +1,6 @@
 
-function help(topic)
+function help()
 
-if topic == "keys" then
 print([[
 Visual keys
 -----------
@@ -9,7 +8,7 @@ Visual keys
 MOD -> CMD (Mac) or CTRL (Win & Linux)
 
 MOD + t: toggle whether to show or hide the editor
-MOD + r & MOD + 0: switch to REPL (console), if enabled
+MOD + r &  MOD + 0: switch to REPL (console), if enabled
 MOD + 1 to MOD + 9: switch to editor 1 - 9
 
 Editor
@@ -56,24 +55,5 @@ ARROWS: select file to open
 RETURN: open/save file
 ESC: exit file dialog
 ]])
-
-	elseif topic == "console" then
-print([[
-Visual console (or REPL) --------------
-
-If you press MOD + 0 or MOD + R
-]])
-
-	else
-print([[
-Visual documentation
---------------------
-
-More help topics:
-help("keys") for keyboard commands for controlling Visual
-help("console") for ore help on the console
-]])
-end
-
 
 end

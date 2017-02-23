@@ -98,9 +98,6 @@ class Scene {
 
 // ----- DrawableObject --------------------------------------------------------
 
-%rename(vDrawableObject) DrawableObject;
-%rename(vDrawableFrame) DrawableFrame;
-
 %ignore DrawableObject::setup;
 %ignore DrawableObject::update;
 
@@ -135,8 +132,6 @@ class DrawableFrame : public DrawableObject {
 
 // ----- Bitmap ----------------------------------------------------------------
 
-%rename(vBitmap) Bitmap;
-
 class Bitmap : public DrawableFrame {
 
 	public:
@@ -153,7 +148,7 @@ class Bitmap : public DrawableFrame {
 
 // ----- Image -----------------------------------------------------------------
 
-%rename(vImage) Image;
+%rename(Picture) Image;
 
 class Image : public DrawableFrame {
 
@@ -178,8 +173,6 @@ class Image : public DrawableFrame {
 
 // ----- Line ------------------------------------------------------------------
 
-%rename(vLine) Line;
-
 class Line : public DrawableObject {
 
 	public:
@@ -194,7 +187,7 @@ class Line : public DrawableObject {
 
 // ----- Rectangle -------------------------------------------------------------
 
-%rename(vRectangle) Rectangle;
+%rename(Box) Rectangle;
 
 class Rectangle : public DrawableObject {
 
@@ -213,8 +206,6 @@ class Rectangle : public DrawableObject {
 
 // ----- Script ----------------------------------------------------------------
 
-%rename(vScript) Script;
-
 class Script : public DrawableObject {
 
 	public:
@@ -231,8 +222,6 @@ class Script : public DrawableObject {
 %attributestring(Script, std::string, filename, getFilename);
 
 // ----- Sprite ----------------------------------------------------------------
-
-%rename(vSprite) Sprite;
 
 %rename(add) Sprite::addFrame;
 %rename(remove) Sprite::removeFrame;
@@ -271,8 +260,6 @@ class Sprite : public DrawableObject {
 
 // ----- Text ------------------------------------------------------------------
 
-%rename(vText) Text;
-
 class Text : public DrawableObject {
 
 	public:
@@ -300,8 +287,6 @@ class Text : public DrawableObject {
 %attribute(Text, bool, center, getDrawFromCenter, setDrawFromCenter);
 
 // ----- Video -----------------------------------------------------------------
-
-%rename(vVideo) Video;
 
 class Video : public DrawableObject {
 

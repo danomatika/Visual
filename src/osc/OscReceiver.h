@@ -80,4 +80,6 @@ class OscReceiver {
 		ofPtr<Receiver> m_receiver;
 		bool m_bIsRunning, m_bIgnoreMessages;
 		vector<OscObject*> _objectList; //< list of osc objects
+	
+		ofMutex mutex; //< mutex between main & osc threads
 };

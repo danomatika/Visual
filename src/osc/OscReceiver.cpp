@@ -87,7 +87,9 @@ void OscReceiver::addOscObject(OscObject *object) {
 		ofLogWarning() << "OscReceiver: can't add NULL object" << std::endl;
 		return;
 	}
+	mutex.lock();
 	_objectList.push_back(object);
+	mutex.unlock();
 }
 
 //--------------------------------------------------------------
@@ -98,11 +100,13 @@ void OscReceiver::removeOscObject(OscObject *object) {
 	}
 
 	// find object in list and remove it
+	mutex.lock();
 	vector<OscObject*>::iterator iter;
 	iter = find(_objectList.begin(), _objectList.end(), object);
 	if(iter != _objectList.end()) {
 		_objectList.erase(iter);
 	}
+	mutex.unlock();
 }
 
 //--------------------------------------------------------------
@@ -176,5 +180,7 @@ void OscReceiver::Receiver::ProcessMessage(const osc::ReceivedMessage &m,
 	}
 	
 	// send
+	receiver->mutex.lock();
 	receiver->processMessage(message);
+	receiver->mutex.unlock();
 }

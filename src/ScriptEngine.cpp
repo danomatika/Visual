@@ -66,7 +66,7 @@ bool ScriptEngine::loadScript(string script) {
 	}
 	currentScript = script;
 	
-	string path = ofFilePath::getEnclosingDirectory(script);
+	string path = ofFilePath::getEnclosingDirectory(ofFilePath::getAbsolutePath(script));
 	if(!ofDirectory::doesDirectoryExist(path)) {
 		ofLogError() << "ScriptEngine: script dir \"" << path << "\" does not exist";
 		return;
