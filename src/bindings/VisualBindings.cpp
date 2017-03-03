@@ -3917,171 +3917,167 @@ static swig_lua_class *swig_Bitmap_bases[] = {0,0};
 static const char *swig_Bitmap_base_names[] = {"DrawableFrame *",0};
 static swig_lua_class _wrap_class_Bitmap = { "Bitmap", "Bitmap", &SWIGTYPE_p_Bitmap,_proxy__wrap_new_Bitmap, swig_delete_Bitmap, swig_Bitmap_methods, swig_Bitmap_attributes, &swig_Bitmap_SwigStatic, swig_Bitmap_meta, swig_Bitmap_bases, swig_Bitmap_base_names };
 
-static int _wrap_new_Picture__SWIG_0(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; Image *result = 0 ;
+static int _wrap_new_Photo__SWIG_0(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; Image *result = 0 ;
   SWIG_check_num_args("Image::Image",1,1) if(!lua_isstring(L,1)) SWIG_fail_arg("Image::Image",1,"std::string");
   (&arg1)->assign(lua_tostring(L,1),lua_rawlen(L,1)); result = (Image *)new Image(arg1);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_Image,1); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
   return SWIG_arg; }
-static int _wrap_new_Picture__SWIG_1(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; std::string arg2 ; Image *result = 0 ;
+static int _wrap_new_Photo__SWIG_1(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; std::string arg2 ; Image *result = 0 ;
   SWIG_check_num_args("Image::Image",2,2) if(!lua_isstring(L,1)) SWIG_fail_arg("Image::Image",1,"std::string");
   if(!lua_isstring(L,2)) SWIG_fail_arg("Image::Image",2,"std::string"); (&arg1)->assign(lua_tostring(L,1),lua_rawlen(L,1));
   (&arg2)->assign(lua_tostring(L,2),lua_rawlen(L,2)); result = (Image *)new Image(arg1,arg2);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_Image,1); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
   return SWIG_arg; }
-static int _wrap_new_Picture__SWIG_2(lua_State* L) { int SWIG_arg = 0; unsigned int arg1 ; std::string arg2 ;
-  Image *result = 0 ; SWIG_check_num_args("Image::Image",2,2)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("Image::Image",1,"unsigned int");
+static int _wrap_new_Photo__SWIG_2(lua_State* L) { int SWIG_arg = 0; unsigned int arg1 ; std::string arg2 ; Image *result = 0 ;
+  SWIG_check_num_args("Image::Image",2,2) if(!lua_isnumber(L,1)) SWIG_fail_arg("Image::Image",1,"unsigned int");
   if(!lua_isstring(L,2)) SWIG_fail_arg("Image::Image",2,"std::string");
   SWIG_contract_assert((lua_tonumber(L,1)>=0),"number must not be negative") arg1 = (unsigned int)lua_tonumber(L, 1);
   (&arg2)->assign(lua_tostring(L,2),lua_rawlen(L,2)); result = (Image *)new Image(arg1,arg2);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_Image,1); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
   return SWIG_arg; }
-static int _wrap_new_Picture(lua_State* L) { int argc; int argv[3]={ 1,2,3} ; argc = lua_gettop(L); if (argc == 1) { int _v; {
-      _v = lua_isstring(L,argv[0]); }  if (_v) { return _wrap_new_Picture__SWIG_0(L);}  }  if (argc == 2) { int _v; {
-      _v = lua_isnumber(L,argv[0]); }  if (_v) { { _v = lua_isstring(L,argv[1]); }  if (_v) {
-        return _wrap_new_Picture__SWIG_2(L);}  }  }  if (argc == 2) { int _v; { _v = lua_isstring(L,argv[0]); }  if (_v) { {
-        _v = lua_isstring(L,argv[1]); }  if (_v) { return _wrap_new_Picture__SWIG_1(L);}  }  } 
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'new_Picture'\n" "  Possible C/C++ prototypes are:\n"
+static int _wrap_new_Photo(lua_State* L) { int argc; int argv[3]={ 1,2,3} ; argc = lua_gettop(L); if (argc == 1) { int _v; {
+      _v = lua_isstring(L,argv[0]); }  if (_v) { return _wrap_new_Photo__SWIG_0(L);}  }  if (argc == 2) { int _v; {
+      _v = lua_isnumber(L,argv[0]); }  if (_v) { { _v = lua_isstring(L,argv[1]); }  if (_v) { return _wrap_new_Photo__SWIG_2(L);}
+       }  }  if (argc == 2) { int _v; { _v = lua_isstring(L,argv[0]); }  if (_v) { { _v = lua_isstring(L,argv[1]); }  if (_v) {
+        return _wrap_new_Photo__SWIG_1(L);}  }  } 
+  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'new_Photo'\n" "  Possible C/C++ prototypes are:\n"
   "    Image::Image(std::string)\n" "    Image::Image(std::string,std::string)\n"
   "    Image::Image(unsigned int,std::string)\n"); lua_error(L);return 0; }
-static int _wrap_Picture_loadFile__SWIG_0(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; std::string arg2 ;
+static int _wrap_Photo_loadFile__SWIG_0(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; std::string arg2 ;
   bool result; SWIG_check_num_args("Image::loadFile",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::loadFile",1,"Image *");
   if(!lua_isstring(L,2)) SWIG_fail_arg("Image::loadFile",2,"std::string");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Picture_loadFile",1,SWIGTYPE_p_Image); }
-   (&arg2)->assign(lua_tostring(L,2),lua_rawlen(L,2)); result = (bool)(arg1)->loadFile(arg2);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_loadFile",1,SWIGTYPE_p_Image); } 
+  (&arg2)->assign(lua_tostring(L,2),lua_rawlen(L,2)); result = (bool)(arg1)->loadFile(arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_loadFile__SWIG_1(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool result;
+static int _wrap_Photo_loadFile__SWIG_1(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool result;
   SWIG_check_num_args("Image::loadFile",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::loadFile",1,"Image *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Picture_loadFile",1,SWIGTYPE_p_Image); }
-   result = (bool)(arg1)->loadFile(); lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail:
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_loadFile",1,SWIGTYPE_p_Image); } 
+  result = (bool)(arg1)->loadFile(); lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail:
   lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_loadFile(lua_State* L) { int argc; int argv[3]={ 1,2,3} ; argc = lua_gettop(L); if (argc == 1) {
-    int _v; { void *ptr; if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Image, 0)) {
-        _v = 0; }  else { _v = 1; }  }  if (_v) { return _wrap_Picture_loadFile__SWIG_1(L);}  }  if (argc == 2) { int _v; {
-      void *ptr; if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Image, 0)) { _v = 0; }
-       else { _v = 1; }  }  if (_v) { { _v = lua_isstring(L,argv[1]); }  if (_v) { return _wrap_Picture_loadFile__SWIG_0(L);}  }
-     }  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'Picture_loadFile'\n"
-  "  Possible C/C++ prototypes are:\n" "    Image::loadFile(std::string)\n" "    Image::loadFile()\n"); lua_error(L);return 0; }
-static int _wrap_Picture_image_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; ofImage *result = 0 ;
+static int _wrap_Photo_loadFile(lua_State* L) { int argc; int argv[3]={ 1,2,3} ; argc = lua_gettop(L); if (argc == 1) { int _v;
+    { void *ptr; if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Image, 0)) { _v = 0; }
+       else { _v = 1; }  }  if (_v) { return _wrap_Photo_loadFile__SWIG_1(L);}  }  if (argc == 2) { int _v; { void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Image, 0)) { _v = 0; }  else {
+        _v = 1; }  }  if (_v) { { _v = lua_isstring(L,argv[1]); }  if (_v) { return _wrap_Photo_loadFile__SWIG_0(L);}  }  } 
+  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'Photo_loadFile'\n" "  Possible C/C++ prototypes are:\n"
+  "    Image::loadFile(std::string)\n" "    Image::loadFile()\n"); lua_error(L);return 0; }
+static int _wrap_Photo_image_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; ofImage *result = 0 ;
   SWIG_check_num_args("Image::image",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::image",1,"Image *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_image_get",1,SWIGTYPE_p_Image); }  result = (ofImage *) &Image_image_get(arg1);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_ofImage,0); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
-  return SWIG_arg; }
-static int _wrap_Picture_loaded_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool result;
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_image_get",1,SWIGTYPE_p_Image); }
+   result = (ofImage *) &Image_image_get(arg1); SWIG_NewPointerObj(L,result,SWIGTYPE_p_ofImage,0); SWIG_arg++;  return SWIG_arg;
+  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+static int _wrap_Photo_loaded_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool result;
   SWIG_check_num_args("Image::loaded",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::loaded",1,"Image *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_loaded_get",1,SWIGTYPE_p_Image); }  result = (bool)Image_loaded_get(arg1);
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_filename_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; std::string *result = 0 ;
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_loaded_get",1,SWIGTYPE_p_Image); }
+   result = (bool)Image_loaded_get(arg1); lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail;
+  fail: lua_error(L); return SWIG_arg; }
+static int _wrap_Photo_filename_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; std::string *result = 0 ;
   SWIG_check_num_args("Image::filename",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::filename",1,"Image *");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_filename_get",1,SWIGTYPE_p_Image); }  result = (std::string *) &Image_filename_get(arg1);
+    SWIG_fail_ptr("Photo_filename_get",1,SWIGTYPE_p_Image); }  result = (std::string *) &Image_filename_get(arg1);
   lua_pushlstring(L,result->data(),result->size()); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
   return SWIG_arg; }
-static int _wrap_Picture_position_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; ofPoint *arg2 = 0 ;
+static int _wrap_Photo_position_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; ofPoint *arg2 = 0 ;
   SWIG_check_num_args("Image::position",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::position",1,"Image *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("Image::position",2,"ofPoint &");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_position_set",1,SWIGTYPE_p_Image); } 
+    SWIG_fail_ptr("Photo_position_set",1,SWIGTYPE_p_Image); } 
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_ofVec3f,0))){
-    SWIG_fail_ptr("Picture_position_set",2,SWIGTYPE_p_ofVec3f); }  Image_position_set(arg1,*arg2); return SWIG_arg;
+    SWIG_fail_ptr("Photo_position_set",2,SWIGTYPE_p_ofVec3f); }  Image_position_set(arg1,*arg2); return SWIG_arg;
   if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_position_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; ofPoint *result = 0 ;
+static int _wrap_Photo_position_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; ofPoint *result = 0 ;
   SWIG_check_num_args("Image::position",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::position",1,"Image *");
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_position_get",1,SWIGTYPE_p_Image); }  result = (ofPoint *) &Image_position_get(arg1);
+    SWIG_fail_ptr("Photo_position_get",1,SWIGTYPE_p_Image); }  result = (ofPoint *) &Image_position_get(arg1);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_ofVec3f,0); SWIG_arg++;  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
   return SWIG_arg; }
-static int _wrap_Picture_width_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int arg2 ;
+static int _wrap_Photo_width_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int arg2 ;
   SWIG_check_num_args("Image::width",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::width",1,"Image *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("Image::width",2,"unsigned int");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_width_set",1,SWIGTYPE_p_Image); } 
-  SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative") arg2 = (unsigned int)lua_tonumber(L, 2);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_width_set",1,SWIGTYPE_p_Image); }
+   SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative") arg2 = (unsigned int)lua_tonumber(L, 2);
   Image_width_set(arg1,arg2); return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_width_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int result;
+static int _wrap_Photo_width_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int result;
   SWIG_check_num_args("Image::width",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::width",1,"Image *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_width_get",1,SWIGTYPE_p_Image); }  result = (unsigned int)Image_width_get(arg1);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_height_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int arg2 ;
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_width_get",1,SWIGTYPE_p_Image); }
+   result = (unsigned int)Image_width_get(arg1); lua_pushnumber(L, (lua_Number) result); SWIG_arg++; return SWIG_arg;
+  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+static int _wrap_Photo_height_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int arg2 ;
   SWIG_check_num_args("Image::height",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::height",1,"Image *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("Image::height",2,"unsigned int");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_height_set",1,SWIGTYPE_p_Image); } 
-  SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative") arg2 = (unsigned int)lua_tonumber(L, 2);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_height_set",1,SWIGTYPE_p_Image); }
+   SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative") arg2 = (unsigned int)lua_tonumber(L, 2);
   Image_height_set(arg1,arg2); return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_height_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int result;
+static int _wrap_Photo_height_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; unsigned int result;
   SWIG_check_num_args("Image::height",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::height",1,"Image *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_height_get",1,SWIGTYPE_p_Image); }  result = (unsigned int)Image_height_get(arg1);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_center_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool arg2 ;
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_height_get",1,SWIGTYPE_p_Image); }
+   result = (unsigned int)Image_height_get(arg1); lua_pushnumber(L, (lua_Number) result); SWIG_arg++; return SWIG_arg;
+  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+static int _wrap_Photo_center_set(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool arg2 ;
   SWIG_check_num_args("Image::center",2,2) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::center",1,"Image *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("Image::center",2,"bool");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_center_set",1,SWIGTYPE_p_Image); }  arg2 = (lua_toboolean(L, 2)!=0); Image_center_set(arg1,arg2);
-  return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static int _wrap_Picture_center_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool result;
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_center_set",1,SWIGTYPE_p_Image); }
+   arg2 = (lua_toboolean(L, 2)!=0); Image_center_set(arg1,arg2); return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L);
+  return SWIG_arg; }
+static int _wrap_Photo_center_get(lua_State* L) { int SWIG_arg = 0; Image *arg1 = (Image *) 0 ; bool result;
   SWIG_check_num_args("Image::center",1,1) if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Image::center",1,"Image *");
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){
-    SWIG_fail_ptr("Picture_center_get",1,SWIGTYPE_p_Image); }  result = (bool)Image_center_get(arg1);
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
-static void swig_delete_Picture(void *obj) {
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Image,0))){ SWIG_fail_ptr("Photo_center_get",1,SWIGTYPE_p_Image); }
+   result = (bool)Image_center_get(arg1); lua_pushboolean(L,(int)(result!=0)); SWIG_arg++; return SWIG_arg; if(0) SWIG_fail;
+  fail: lua_error(L); return SWIG_arg; }
+static void swig_delete_Photo(void *obj) {
 Image *arg1 = (Image *) obj;
 delete arg1;
 }
-static int _proxy__wrap_new_Picture(lua_State *L) {
+static int _proxy__wrap_new_Photo(lua_State *L) {
     assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_Picture);
+    lua_pushcfunction(L,_wrap_new_Photo);
     assert(!lua_isnil(L,-1));
     lua_replace(L,1); /* replace our table with real constructor */
     lua_call(L,lua_gettop(L)-1,1);
     return 1;
 }
-static swig_lua_attribute swig_Picture_attributes[] = {
-    { "image", _wrap_Picture_image_get, SWIG_Lua_set_immutable },
-    { "loaded", _wrap_Picture_loaded_get, SWIG_Lua_set_immutable },
-    { "filename", _wrap_Picture_filename_get, SWIG_Lua_set_immutable },
-    { "position", _wrap_Picture_position_get, _wrap_Picture_position_set },
-    { "width", _wrap_Picture_width_get, _wrap_Picture_width_set },
-    { "height", _wrap_Picture_height_get, _wrap_Picture_height_set },
-    { "center", _wrap_Picture_center_get, _wrap_Picture_center_set },
+static swig_lua_attribute swig_Photo_attributes[] = {
+    { "image", _wrap_Photo_image_get, SWIG_Lua_set_immutable },
+    { "loaded", _wrap_Photo_loaded_get, SWIG_Lua_set_immutable },
+    { "filename", _wrap_Photo_filename_get, SWIG_Lua_set_immutable },
+    { "position", _wrap_Photo_position_get, _wrap_Photo_position_set },
+    { "width", _wrap_Photo_width_get, _wrap_Photo_width_set },
+    { "height", _wrap_Photo_height_get, _wrap_Photo_height_set },
+    { "center", _wrap_Photo_center_get, _wrap_Photo_center_set },
     {0,0,0}
 };
-static swig_lua_method swig_Picture_methods[]= {
-    { "loadFile", _wrap_Picture_loadFile},
+static swig_lua_method swig_Photo_methods[]= {
+    { "loadFile", _wrap_Photo_loadFile},
     {0,0}
 };
-static swig_lua_method swig_Picture_meta[] = {
+static swig_lua_method swig_Photo_meta[] = {
     {0,0}
 };
 
-static swig_lua_attribute swig_Picture_Sf_SwigStatic_attributes[] = {
+static swig_lua_attribute swig_Photo_Sf_SwigStatic_attributes[] = {
     {0,0,0}
 };
-static swig_lua_const_info swig_Picture_Sf_SwigStatic_constants[]= {
+static swig_lua_const_info swig_Photo_Sf_SwigStatic_constants[]= {
     {0,0,0,0,0,0}
 };
-static swig_lua_method swig_Picture_Sf_SwigStatic_methods[]= {
+static swig_lua_method swig_Photo_Sf_SwigStatic_methods[]= {
     {0,0}
 };
-static swig_lua_class* swig_Picture_Sf_SwigStatic_classes[]= {
+static swig_lua_class* swig_Photo_Sf_SwigStatic_classes[]= {
     0
 };
 
-static swig_lua_namespace swig_Picture_Sf_SwigStatic = {
-    "Picture",
-    swig_Picture_Sf_SwigStatic_methods,
-    swig_Picture_Sf_SwigStatic_attributes,
-    swig_Picture_Sf_SwigStatic_constants,
-    swig_Picture_Sf_SwigStatic_classes,
+static swig_lua_namespace swig_Photo_Sf_SwigStatic = {
+    "Photo",
+    swig_Photo_Sf_SwigStatic_methods,
+    swig_Photo_Sf_SwigStatic_attributes,
+    swig_Photo_Sf_SwigStatic_constants,
+    swig_Photo_Sf_SwigStatic_classes,
     0
 };
-static swig_lua_class *swig_Picture_bases[] = {0,0};
-static const char *swig_Picture_base_names[] = {"DrawableFrame *",0};
-static swig_lua_class _wrap_class_Picture = { "Picture", "Picture", &SWIGTYPE_p_Image,_proxy__wrap_new_Picture, swig_delete_Picture, swig_Picture_methods, swig_Picture_attributes, &swig_Picture_Sf_SwigStatic, swig_Picture_meta, swig_Picture_bases, swig_Picture_base_names };
+static swig_lua_class *swig_Photo_bases[] = {0,0};
+static const char *swig_Photo_base_names[] = {"DrawableFrame *",0};
+static swig_lua_class _wrap_class_Photo = { "Photo", "Photo", &SWIGTYPE_p_Image,_proxy__wrap_new_Photo, swig_delete_Photo, swig_Photo_methods, swig_Photo_attributes, &swig_Photo_Sf_SwigStatic, swig_Photo_meta, swig_Photo_bases, swig_Photo_base_names };
 
 static int _wrap_new_Line__SWIG_0(lua_State* L) { int SWIG_arg = 0; std::string arg1 ; Line *result = 0 ;
   SWIG_check_num_args("Line::Line",1,1) if(!lua_isstring(L,1)) SWIG_fail_arg("Line::Line",1,"std::string");
@@ -5105,7 +5101,7 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_DrawableObject,
 &_wrap_class_DrawableFrame,
 &_wrap_class_Bitmap,
-&_wrap_class_Picture,
+&_wrap_class_Photo,
 &_wrap_class_Line,
 &_wrap_class_Box,
 &_wrap_class_Script,
@@ -5169,7 +5165,7 @@ static swig_type_info _swigt__p_Bitmap = {"_p_Bitmap", "Bitmap *", 0, 0, (void*)
 static swig_type_info _swigt__p_Config = {"_p_Config", "Config *", 0, 0, (void*)&_wrap_class_Config, 0};
 static swig_type_info _swigt__p_DrawableFrame = {"_p_DrawableFrame", "DrawableFrame *", 0, 0, (void*)&_wrap_class_DrawableFrame, 0};
 static swig_type_info _swigt__p_DrawableObject = {"_p_DrawableObject", "DrawableObject *", 0, 0, (void*)&_wrap_class_DrawableObject, 0};
-static swig_type_info _swigt__p_Image = {"_p_Image", "Image *", 0, 0, (void*)&_wrap_class_Picture, 0};
+static swig_type_info _swigt__p_Image = {"_p_Image", "Image *", 0, 0, (void*)&_wrap_class_Photo, 0};
 static swig_type_info _swigt__p_Line = {"_p_Line", "Line *", 0, 0, (void*)&_wrap_class_Line, 0};
 static swig_type_info _swigt__p_Rectangle = {"_p_Rectangle", "Rectangle *", 0, 0, (void*)&_wrap_class_Box, 0};
 static swig_type_info _swigt__p_Scene = {"_p_Scene", "Scene *", 0, 0, (void*)&_wrap_class_Scene, 0};

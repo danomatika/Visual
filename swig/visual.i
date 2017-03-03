@@ -32,7 +32,7 @@ class OscObject {};
 %apply SWIGTYPE *DISOWN { DrawableObject* object_disown };
 %apply SWIGTYPE *DISOWN { DrawableFrame* frame_disown };
 
-// ----- Config -----------------------------------------------------------------
+// ----- Config ----------------------------------------------------------------
 
 // this is a dummy class, you shouldn't be able to create it directly,
 // it's only for access to the config variables
@@ -148,7 +148,7 @@ class Bitmap : public DrawableFrame {
 
 // ----- Image -----------------------------------------------------------------
 
-%rename(Picture) Image;
+%rename(Photo) Image;
 
 class Image : public DrawableFrame {
 

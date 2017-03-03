@@ -148,13 +148,13 @@ scene = visual.Scene("bitmap&sprite")
 		sprite.center = true
 		sprite.overlay = false
 		-- note frametime in milliseconds instead of name for animation
-		sprite:add(visual.Picture(100, "media/animation/frame1.gif"))
-		sprite:add(visual.Picture(100, "media/animation/frame2.gif"))
-		sprite:add(visual.Picture(100, "media/animation/frame3.gif"))
-		sprite:add(visual.Picture(100, "media/animation/frame4.gif"))
-		sprite:add(visual.Picture(100, "media/animation/frame5.gif"))
-		sprite:add(visual.Picture(100, "media/animation/frame6.gif"))
-		sprite:add(visual.Picture(200, "media/animation/frame7.gif"))
+		sprite:add(visual.Photo(100, "media/animation/frame1.gif"))
+		sprite:add(visual.Photo(100, "media/animation/frame2.gif"))
+		sprite:add(visual.Photo(100, "media/animation/frame3.gif"))
+		sprite:add(visual.Photo(100, "media/animation/frame4.gif"))
+		sprite:add(visual.Photo(100, "media/animation/frame5.gif"))
+		sprite:add(visual.Photo(100, "media/animation/frame6.gif"))
+		sprite:add(visual.Photo(200, "media/animation/frame7.gif"))
 	scene:add(sprite)
 
 visual.addScene(scene)
@@ -168,7 +168,7 @@ scene = visual.Scene("image&text")
 	scene.slideshow = true
 
 	-- an image, rescaled when loaded to fit given size
-	image = visual.Picture("image1", "../icon.png")
+	image = visual.Photo("image1", "../icon.png")
 		image.position:set(100, 50)
 		image:setSize(50, 50)
 		image.center = false
@@ -177,14 +177,14 @@ scene = visual.Scene("image&text")
 
 	-- image files can be reused as the filename is used as a unique id
 	-- for reusing currently loaded images
-	image = visual.Picture("image2", "../icon.png")
+	image = visual.Photo("image2", "../icon.png")
 		image.position:set(150, 100)
 		image:setSize(50, 50)
 		image.center = false
 		image.visible = true
 	scene:add(image)
 	
-	image = visual.Picture("image3", "../icon.png")
+	image = visual.Photo("image3", "../icon.png")
 		image.position:set(200, 150)
 		image:setSize(100, 100)
 		image.center = false
@@ -241,6 +241,7 @@ scene = visual.Scene("video")
 
 visual.addScene(scene)
 
+--[[
 -- script
 scene = visual.Scene("script")
 	
@@ -254,3 +255,4 @@ visual.addScene(scene)
 -- same as the above via a quick helper,
 -- both scene and script object share the same name
 visual.addScript("script", "script.lua")
+]]
