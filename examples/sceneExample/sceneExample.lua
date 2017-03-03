@@ -241,7 +241,6 @@ scene = visual.Scene("video")
 
 visual.addScene(scene)
 
---[[
 -- script
 scene = visual.Scene("script")
 	
@@ -255,4 +254,3 @@ visual.addScene(scene)
 -- same as the above via a quick helper,
 -- both scene and script object share the same name
 visual.addScript("script", "script.lua")
-]]
